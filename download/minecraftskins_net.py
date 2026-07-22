@@ -1,16 +1,9 @@
 from collections.abc import Iterator
-from dataclasses import asdict, dataclass
-import json
-from pathlib import Path
+from dataclasses import dataclass
 
-from hishel import BaseFilter, FilterPolicy, Response
-from hishel.httpx import SyncCacheTransport
-from httpx import Client, HTTPTransport
 from selectolax.parser import HTMLParser
 
-
-DATASET = Path(__file__).parent / ".dataset"
-MINECRAFTSKINS_NET_JSONL = DATASET / "minecraftskins_net.jsonl"
+from .sync_cache_client import SyncCacheClient
 
 
 @dataclass
@@ -25,29 +18,6 @@ class Skin:
     download_url: str
 
     downloaded_texture_path: str
-
-
-class SuccessfulResponsesOnly(BaseFilter[Response]):
-    def apply(self, item: Response, body: bytes | None) -> bool:
-        return 200 <= item.status_code < 300
-
-    def needs_body(self) -> bool:
-        return False
-
-
-class SyncCacheClient(Client):
-    def __init__(self, **kwargs) -> None:
-        kwargs.setdefault("follow_redirects", True)
-        kwargs.setdefault("timeout", 30)
-        kwargs.setdefault(
-            "transport",
-            SyncCacheTransport(
-                next_transport=HTTPTransport(retries=3),
-                policy=FilterPolicy(response_filters=[SuccessfulResponsesOnly()]),
-            ),
-        )
-
-        super().__init__(**kwargs)
 
 
 def _get(client: SyncCacheClient, path: str) -> str:
@@ -82,7 +52,7 @@ def _skin_pages(
         yield skin_id, HTMLParser(_get(client, f"/{skin_id}"))
 
 
-def _get_skins_from_minecraftskins_net() -> Iterator[Skin]:
+def get_skins_from_minecraftskins_net() -> Iterator[Skin]:
     seen: set[str] = set()
 
     with SyncCacheClient() as client:
@@ -97,31 +67,3 @@ def _get_skins_from_minecraftskins_net() -> Iterator[Skin]:
                     download_url=f"https://www.minecraftskins.net/{skin_id}/download",
                     downloaded_texture_path=f"{Skin.source}/downloaded_textures/{skin_id}.png",
                 )
-
-
-def main() -> None:
-    DATASET.mkdir(parents=True, exist_ok=True)
-
-    with SyncCacheClient() as client, MINECRAFTSKINS_NET_JSONL.open("w") as file:
-        for skin in _get_skins_from_minecraftskins_net():
-            image = client.get(skin.download_url).raise_for_status().content
-
-            path = DATASET / skin.downloaded_texture_path
-            path.parent.mkdir(parents=True, exist_ok=True)
-            path.write_bytes(image)
-
-            file.write(json.dumps(asdict(skin), ensure_ascii=False) + "\n")
-            file.flush()
-
-    with MINECRAFTSKINS_NET_JSONL.open("r") as file:
-        skins = list(json.loads(line) for line in file)
-
-    skins.sort(key=lambda skin: skin["id"])
-
-    with MINECRAFTSKINS_NET_JSONL.open("w") as file:
-        for skin in skins:
-            file.write(json.dumps(skin, ensure_ascii=False) + "\n")
-
-
-if __name__ == "__main__":
-    main()
