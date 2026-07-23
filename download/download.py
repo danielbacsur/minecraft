@@ -1,4 +1,5 @@
 from database import DATABASE, Database
+from uuidv5 import uuidv5
 
 from .minecraftskins_net import get_skins_from_minecraftskins_net
 from .sync_cache_client import SyncCacheClient
@@ -8,6 +9,8 @@ def download() -> None:
     with SyncCacheClient() as client, Database() as database:
         for skin in get_skins_from_minecraftskins_net():
             image = client.get(skin.download_url).raise_for_status().content
+
+            skin.downloaded_texture_path = f"{skin.source}/downloaded_textures/{uuidv5(image)}.png"  # fmt: skip
 
             path = DATABASE.parent / skin.downloaded_texture_path
             path.parent.mkdir(parents=True, exist_ok=True)

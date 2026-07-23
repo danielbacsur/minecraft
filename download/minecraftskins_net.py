@@ -17,7 +17,7 @@ class Skin:
     description: str
     download_url: str
 
-    downloaded_texture_path: str
+    downloaded_texture_path: str | None = None
 
 
 def _get(client: SyncCacheClient, path: str) -> str:
@@ -65,5 +65,4 @@ def get_skins_from_minecraftskins_net() -> Iterator[Skin]:
                     category=category,
                     description=skin_page.css("p.card-description")[0].text(strip=True),
                     download_url=f"https://www.minecraftskins.net/{skin_id}/download",
-                    downloaded_texture_path=f"{Skin.source}/downloaded_textures/{skin_id}.png",
                 )

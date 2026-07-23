@@ -26,7 +26,7 @@ class Database(Connection):
                 description             TEXT NOT NULL,
                 download_url            TEXT NOT NULL,
 
-                downloaded_texture_path TEXT NOT NULL,
+                downloaded_texture_path TEXT,
 
                 PRIMARY KEY (source, id)
             )
