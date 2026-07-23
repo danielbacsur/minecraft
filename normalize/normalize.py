@@ -1,3 +1,5 @@
+from io import BytesIO
+
 from PIL import Image
 from PIL.Image import Transpose
 
@@ -46,12 +48,14 @@ def normalize() -> None:
             with Image.open(DATABASE.parent / downloaded_texture_path) as image:
                 normalized = _normalize(image)
 
-            normalized_texture_path = f"{source}/normalized_textures/{uuidv5(normalized.tobytes())}.png"  # fmt: skip
+            buffer = BytesIO()
+            normalized.save(buffer, format="PNG", optimize=True)
+            texture = buffer.getvalue()
+
+            normalized_texture_path = f"{source}/normalized_textures/{uuidv5(texture)}.png"  # fmt: skip
 
             path = DATABASE.parent / normalized_texture_path
             path.parent.mkdir(parents=True, exist_ok=True)
-
-            if not path.exists():
-                normalized.save(path, optimize=True)
+            path.write_bytes(texture)
 
             database.set_normalized_texture_path(source, id, normalized_texture_path)
