@@ -27,6 +27,7 @@ class Database(Connection):
                 download_url            TEXT NOT NULL,
 
                 downloaded_texture_path TEXT,
+                normalized_texture_path TEXT,
 
                 PRIMARY KEY (source, id)
             )
@@ -82,4 +83,26 @@ class Database(Connection):
                 download_url,
                 downloaded_texture_path,
             ),
+        )
+
+    def get_unnormalized_skins(self) -> list[tuple[str, str, str]]:
+        return self.execute(
+            """
+            SELECT source, id, downloaded_texture_path
+            FROM skins
+            WHERE downloaded_texture_path IS NOT NULL
+            AND normalized_texture_path IS NULL
+            """
+        ).fetchall()
+
+    def set_normalized_texture_path(
+        self, source: str, id: str, normalized_texture_path: str
+    ) -> None:
+        self.execute(
+            """
+            UPDATE skins
+            SET normalized_texture_path = ?
+            WHERE source = ? AND id = ?
+            """,
+            (normalized_texture_path, source, id),
         )
