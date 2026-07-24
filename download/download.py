@@ -10,9 +10,9 @@ def download() -> None:
         for skin in get_skins_from_minecraftskins_net():
             image = client.get(skin.download_url).raise_for_status().content
 
-            skin.downloaded_texture_path = f"{skin.source}/downloaded_textures/{uuidv5(image)}.png"  # fmt: skip
+            downloaded_texture_path = f"{skin.source}/downloaded_textures/{uuidv5(image)}.png"  # fmt: skip
 
-            path = DATABASE.parent / skin.downloaded_texture_path
+            path = DATABASE.parent / downloaded_texture_path
             path.parent.mkdir(parents=True, exist_ok=True)
             path.write_bytes(image)
 
@@ -24,5 +24,5 @@ def download() -> None:
                 category=skin.category,
                 description=skin.description,
                 download_url=skin.download_url,
-                downloaded_texture_path=skin.downloaded_texture_path,
+                downloaded_texture_path=downloaded_texture_path,
             )

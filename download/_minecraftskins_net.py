@@ -6,7 +6,7 @@ from selectolax.parser import HTMLParser
 from ._sync_cache_client import SyncCacheClient
 
 
-@dataclass
+@dataclass(frozen=True)
 class Skin:
     source = "minecraftskins_net"
     id: str
@@ -16,8 +16,6 @@ class Skin:
     category: str
     description: str
     download_url: str
-
-    downloaded_texture_path: str | None = None
 
 
 def _get(client: SyncCacheClient, path: str) -> str:
