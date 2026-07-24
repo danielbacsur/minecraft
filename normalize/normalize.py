@@ -2,7 +2,8 @@ from io import BytesIO
 
 from PIL import Image
 
-from _database import DATABASE, Database
+from _database import Database
+from _dataset import DATASET
 from _uuidv5 import uuidv5
 
 from ._normalize import _normalize
@@ -11,16 +12,16 @@ from ._normalize import _normalize
 def normalize() -> None:
     with Database() as database:
         for source, id, downloaded_texture_path in database.get_unnormalized_skins():
-            with Image.open(DATABASE.parent / downloaded_texture_path) as image:
-                normalized = _normalize(image)
+            with Image.open(DATASET / downloaded_texture_path) as texture:
+                normalized = _normalize(texture)
 
             buffer = BytesIO()
             normalized.save(buffer, format="PNG", optimize=True)
             texture = buffer.getvalue()
 
-            normalized_texture_path = f"{source}/normalized_textures/{uuidv5(texture)}.png"  # fmt: skip
+            normalized_texture_path = f"normalized/{uuidv5(texture)}.png"
 
-            path = DATABASE.parent / normalized_texture_path
+            path = DATASET / normalized_texture_path
             path.parent.mkdir(parents=True, exist_ok=True)
             path.write_bytes(texture)
 

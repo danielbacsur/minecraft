@@ -19,4 +19,11 @@ requires = ["hatchling>=1.31,<2"]
 build-backend = "hatchling.build"
 
 [tool.hatch.build.targets.wheel]
-packages = ["download", "normalize", "render", "_database.py", "_uuidv5.py"]
+packages = [
+    "download",
+    "normalize",
+    "render",
+    "_database.py",
+    "_dataset.py",
+    "_uuidv5.py",
+]

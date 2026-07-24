@@ -17,20 +17,22 @@ TRANSFORMS = [
 ]
 
 
-def _normalize(image: Image.Image) -> Image.Image:
-    image = image.convert("RGBA")
+def _normalize(texture: Image.Image) -> Image.Image:
+    texture = texture.convert("RGBA")
 
-    if image.size == (64, 64):
-        return image.copy()
+    if texture.size == (64, 64):
+        return texture.copy()
 
-    if image.size != (64, 32):
-        raise ValueError(f"unsupported texture size: {image.size[0]}x{image.size[1]}")
+    if texture.size != (64, 32):
+        raise ValueError(
+            f"unsupported texture size: {texture.size[0]}x{texture.size[1]}"
+        )
 
     normalized = Image.new("RGBA", (64, 64), (0, 0, 0, 0))
-    normalized.paste(image, (0, 0))
+    normalized.paste(texture, (0, 0))
 
     for x, y, width, height, destination_x, destination_y in TRANSFORMS:
-        region = image.crop((x, y, x + width, y + height))
+        region = texture.crop((x, y, x + width, y + height))
         mirrored = region.transpose(Transpose.FLIP_LEFT_RIGHT)
         normalized.paste(mirrored, (destination_x, destination_y))
 

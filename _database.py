@@ -1,13 +1,14 @@
-from pathlib import Path
 from sqlite3 import Connection
 from typing import Literal
 
-DATABASE = Path(__file__).parent / ".dataset" / "database.db"
+from _dataset import DATASET
+
+DATABASE = DATASET / "database.db"
 
 
 class Database(Connection):
     def __init__(self) -> None:
-        DATABASE.parent.mkdir(parents=True, exist_ok=True)
+        DATASET.mkdir(parents=True, exist_ok=True)
 
         super().__init__(DATABASE)
 
@@ -23,7 +24,7 @@ class Database(Connection):
                 title                   TEXT NOT NULL,
                 category                TEXT NOT NULL,
                 description             TEXT NOT NULL,
-                download_url            TEXT NOT NULL,
+                texture_url             TEXT NOT NULL,
 
                 downloaded_texture_path TEXT,
                 normalized_texture_path TEXT,
@@ -46,7 +47,7 @@ class Database(Connection):
         title: str,
         category: str,
         description: str,
-        download_url: str,
+        texture_url: str,
         downloaded_texture_path: str,
     ) -> None:
         self.execute(
@@ -59,7 +60,7 @@ class Database(Connection):
                 title,
                 category,
                 description,
-                download_url,
+                texture_url,
 
                 downloaded_texture_path
             )
@@ -69,7 +70,7 @@ class Database(Connection):
                 title = excluded.title,
                 category = excluded.category,
                 description = excluded.description,
-                download_url = excluded.download_url,
+                texture_url = excluded.texture_url,
 
                 downloaded_texture_path = excluded.downloaded_texture_path
             """,
@@ -80,7 +81,7 @@ class Database(Connection):
                 title,
                 category,
                 description,
-                download_url,
+                texture_url,
                 downloaded_texture_path,
             ),
         )
