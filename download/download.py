@@ -1,8 +1,8 @@
-from database import DATABASE, Database
-from uuidv5 import uuidv5
+from _database import DATABASE, Database
+from _uuidv5 import uuidv5
 
-from .minecraftskins_net import get_skins_from_minecraftskins_net
-from .sync_cache_client import SyncCacheClient
+from ._minecraftskins_net import get_skins_from_minecraftskins_net
+from ._sync_cache_client import SyncCacheClient
 
 
 def download() -> None:

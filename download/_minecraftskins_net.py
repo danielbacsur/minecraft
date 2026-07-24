@@ -3,7 +3,7 @@ from dataclasses import dataclass
 
 from selectolax.parser import HTMLParser
 
-from .sync_cache_client import SyncCacheClient
+from ._sync_cache_client import SyncCacheClient
 
 
 @dataclass

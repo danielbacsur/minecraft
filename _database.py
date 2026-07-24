@@ -2,7 +2,6 @@ from pathlib import Path
 from sqlite3 import Connection
 from typing import Literal
 
-
 DATABASE = Path(__file__).parent / ".dataset" / "database.db"
 
 
