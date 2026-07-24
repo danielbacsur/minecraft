@@ -3,3 +3,4 @@ __pycache__
 .dataset
 .ruff_cache
 .venv
+.env
