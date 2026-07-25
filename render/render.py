@@ -6,14 +6,14 @@ from _database import Database
 from _dataset import DATASET
 from _uuidv5 import uuidv5
 
-from ._render import _render
+from ._multiview import _multiview
 
 
 def render() -> None:
     with Database() as database:
         for source, id, normalized_texture_path in database.get_unrendered_skins():
             with Image.open(DATASET / normalized_texture_path) as texture:
-                rendered = _render(texture)
+                rendered = _multiview(texture)
 
             buffer = BytesIO()
             rendered.save(buffer, format="PNG", optimize=True)

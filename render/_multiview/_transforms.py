@@ -1,9 +1,4 @@
-from PIL import Image
-from PIL.Image import Resampling
-
-TEXTURE_SHEET = [
-    (0, 0, 64, 64, 0, 0, 512, 512),
-]
+type Transform = tuple[int, int, int, int, int, int, int, int]
 
 HEAD_PORTRAIT = [
     (8, 8, 8, 8, 640, 128, 256, 256),
@@ -92,50 +87,13 @@ SLIM_ARMS = [
     (55, 52, 4, 12, 846, 702, 36, 100),
 ]
 
-
-def _black(image: Image.Image) -> int:
-    colors = image.getcolors(maxcolors=64 * 64) or []
-    return sum(count for count, pixel in colors if pixel == (0, 0, 0, 255))
-
-
-def _slim(texture: Image.Image) -> bool:
-    regions = [texture.crop(box) for box in [
-        (50, 16, 52, 20), (54, 20, 56, 32), (42, 48, 44, 52), (46, 52, 48, 64),
-    ]]  # fmt: skip
-
-    if all(region.getchannel("A").getbbox() is None for region in regions):
-        return True
-
-    palettes = [
-        {pixel for _, pixel in region.getcolors(maxcolors=64 * 64) or []}
-        for region in regions
-    ]
-
-    if not all(colors <= {(0, 0, 0, 255), (0, 0, 0, 0)} for colors in palettes):
-        return False
-
-    return _black(texture) == sum(_black(region) for region in regions)
+TEXTURE = [
+    (0, 0, 64, 64, 0, 0, 512, 512),
+]
 
 
-def _render(texture: Image.Image) -> Image.Image:
-    texture = texture.convert("RGBA")
-
-    if texture.size != (64, 64):
-        raise ValueError()
-
-    canvas = Image.new("RGBA", (1024, 1024), (0, 0, 0, 0))
-
-    slim = _slim(texture)
-
-    TRANSFORMS = (
-        TEXTURE_SHEET + HEAD_PORTRAIT + FRONT_VIEW + RIGHT_VIEW +
-        BACK_VIEW + LEFT_VIEW + (SLIM_ARMS if slim else WIDE_ARMS)
+def _transforms(slim: bool) -> list[Transform]:
+    return (
+        TEXTURE + HEAD_PORTRAIT + FRONT_VIEW + RIGHT_VIEW + BACK_VIEW + LEFT_VIEW +
+        (SLIM_ARMS if slim else WIDE_ARMS)
     )  # fmt: skip
-
-    for sx, sy, sw, sh, dx, dy, dw, dh in TRANSFORMS:
-        part = texture.crop((sx, sy, sx + sw, sy + sh))
-        canvas.alpha_composite(part.resize((dw, dh), Resampling.NEAREST), (dx, dy))
-
-    background = Image.new("RGBA", (1024, 1024), (128, 128, 128, 255))
-
-    return Image.alpha_composite(background, canvas)
