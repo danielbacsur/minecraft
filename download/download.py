@@ -8,7 +8,7 @@ from ._sync_cache_client import SyncCacheClient
 
 def download() -> None:
     with SyncCacheClient() as client, Database() as database:
-        for skin in get_skins_from_minecraftskins_net():
+        for skin in get_skins_from_minecraftskins_net(client):
             texture = client.get(skin.texture_url).raise_for_status().content
 
             downloaded_texture_path = f"downloaded/{uuidv5(texture)}.png"

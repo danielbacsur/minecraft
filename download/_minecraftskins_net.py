@@ -50,17 +50,16 @@ def _skin_pages(
         yield skin_id, HTMLParser(_get(client, f"/{skin_id}"))
 
 
-def get_skins_from_minecraftskins_net() -> Iterator[Skin]:
+def get_skins_from_minecraftskins_net(client: SyncCacheClient) -> Iterator[Skin]:
     seen: set[str] = set()
 
-    with SyncCacheClient() as client:
-        for category, category_page in _category_pages(client):
-            for skin_id, skin_page in _skin_pages(client, category_page, seen):
-                yield Skin(
-                    id=skin_id,
-                    url=f"https://www.minecraftskins.net/{skin_id}",
-                    title=skin_page.css("h2.hero-title")[0].text(strip=True),
-                    category=category,
-                    description=skin_page.css("p.card-description")[0].text(strip=True),
-                    texture_url=f"https://www.minecraftskins.net/{skin_id}/download",
-                )
+    for category, category_page in _category_pages(client):
+        for skin_id, skin_page in _skin_pages(client, category_page, seen):
+            yield Skin(
+                id=skin_id,
+                url=f"https://www.minecraftskins.net/{skin_id}",
+                title=skin_page.css("h2.hero-title")[0].text(strip=True),
+                category=category,
+                description=skin_page.css("p.card-description")[0].text(strip=True),
+                texture_url=f"https://www.minecraftskins.net/{skin_id}/download",
+            )
