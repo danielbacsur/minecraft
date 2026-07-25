@@ -17,12 +17,12 @@ def render() -> None:
 
             buffer = BytesIO()
             rendered.save(buffer, format="PNG", optimize=True)
-            multiview = buffer.getvalue()
+            data = buffer.getvalue()
 
-            rendered_multiview_path = f"rendered/{uuidv5(multiview)}.png"
+            rendered_multiview_path = f"rendered/{uuidv5(data)}.png"
 
             path = DATASET / rendered_multiview_path
             path.parent.mkdir(parents=True, exist_ok=True)
-            path.write_bytes(multiview)
+            path.write_bytes(data)
 
             database.set_rendered_multiview_path(source, id, rendered_multiview_path)

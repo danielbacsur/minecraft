@@ -13,16 +13,16 @@ def normalize() -> None:
     with Database() as database:
         for source, id, downloaded_texture_path in database.get_unnormalized_skins():
             with Image.open(DATASET / downloaded_texture_path) as texture:
-                normalized = _normalize(texture)
+                texture = _normalize(texture)
 
             buffer = BytesIO()
-            normalized.save(buffer, format="PNG", optimize=True)
-            texture = buffer.getvalue()
+            texture.save(buffer, format="PNG", optimize=True)
+            data = buffer.getvalue()
 
-            normalized_texture_path = f"normalized/{uuidv5(texture)}.png"
+            normalized_texture_path = f"normalized/{uuidv5(data)}.png"
 
             path = DATASET / normalized_texture_path
             path.parent.mkdir(parents=True, exist_ok=True)
-            path.write_bytes(texture)
+            path.write_bytes(data)
 
             database.set_normalized_texture_path(source, id, normalized_texture_path)
