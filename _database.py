@@ -14,26 +14,25 @@ class Database(Connection):
 
         self.autocommit = True
 
-        self.execute(
-            """
+        self.execute("""
             CREATE TABLE IF NOT EXISTS skins (
-                source                  TEXT NOT NULL,
-                id                      TEXT NOT NULL,
+                source                   TEXT NOT NULL,
+                id                       TEXT NOT NULL,
 
-                url                     TEXT NOT NULL,
-                title                   TEXT NOT NULL,
-                category                TEXT NOT NULL,
-                description             TEXT NOT NULL,
-                texture_url             TEXT NOT NULL,
+                url                      TEXT NOT NULL,
+                title                    TEXT NOT NULL,
+                category                 TEXT NOT NULL,
+                description              TEXT NOT NULL,
+                texture_url              TEXT NOT NULL,
 
-                downloaded_texture_path TEXT,
-                normalized_texture_path TEXT,
-                rendered_multiview_path TEXT,
+                downloaded_texture_path  TEXT,
+                normalized_texture_path  TEXT,
+                multiview_rendering_path TEXT,
+                preview_rendering_path   TEXT,
 
                 PRIMARY KEY (source, id)
             )
-            """
-        )
+        """)
 
     def __exit__(self, *args: object) -> Literal[False]:
         self.close()
@@ -50,82 +49,105 @@ class Database(Connection):
         texture_url: str,
         downloaded_texture_path: str,
     ) -> None:
-        self.execute(
-            """
+        self.execute("""
             INSERT INTO skins (
                 source,
                 id,
-
                 url,
                 title,
                 category,
                 description,
                 texture_url,
-
                 downloaded_texture_path
-            )
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-            ON CONFLICT (source, id) DO UPDATE SET
+            ) VALUES (
+                :source,
+                :id,
+                :url,
+                :title,
+                :category,
+                :description,
+                :texture_url,
+                :downloaded_texture_path
+            ) ON CONFLICT (source, id) DO UPDATE SET
                 url = excluded.url,
                 title = excluded.title,
                 category = excluded.category,
                 description = excluded.description,
                 texture_url = excluded.texture_url,
-
                 downloaded_texture_path = excluded.downloaded_texture_path
-            """,
-            (
-                source,
-                id,
-                url,
-                title,
-                category,
-                description,
-                texture_url,
-                downloaded_texture_path,
-            ),
-        )
+        """, {
+            "source": source,
+            "id": id,
+            "url": url,
+            "title": title,
+            "category": category,
+            "description": description,
+            "texture_url": texture_url,
+            "downloaded_texture_path": downloaded_texture_path,
+        })  # fmt: skip
 
     def get_unnormalized_skins(self) -> list[tuple[str, str, str]]:
-        return self.execute(
-            """
+        return self.execute("""
             SELECT source, id, downloaded_texture_path
             FROM skins
             WHERE downloaded_texture_path IS NOT NULL
-            AND normalized_texture_path IS NULL
-            """
-        ).fetchall()
+              AND normalized_texture_path IS NULL
+            ORDER BY source, id
+        """).fetchall()
 
     def set_normalized_texture_path(
         self, source: str, id: str, normalized_texture_path: str
     ) -> None:
-        self.execute(
-            """
+        self.execute("""
             UPDATE skins
-            SET normalized_texture_path = ?
-            WHERE source = ? AND id = ?
-            """,
-            (normalized_texture_path, source, id),
-        )
+            SET normalized_texture_path = :normalized_texture_path
+            WHERE source = :source AND id = :id
+        """, {
+            "source": source,
+            "id": id,
+            "normalized_texture_path": normalized_texture_path,
+        })  # fmt: skip
 
-    def get_unrendered_skins(self) -> list[tuple[str, str, str]]:
-        return self.execute(
-            """
+    def get_unrendered_multiviews(self) -> list[tuple[str, str, str]]:
+        return self.execute("""
             SELECT source, id, normalized_texture_path
             FROM skins
             WHERE normalized_texture_path IS NOT NULL
-            AND rendered_multiview_path IS NULL
-            """
-        ).fetchall()
+              AND multiview_rendering_path IS NULL
+            ORDER BY source, id
+        """).fetchall()
 
-    def set_rendered_multiview_path(
-        self, source: str, id: str, rendered_multiview_path: str
+    def set_multiview_rendering_path(
+        self, source: str, id: str, multiview_rendering_path: str
     ) -> None:
-        self.execute(
-            """
+        self.execute("""
             UPDATE skins
-            SET rendered_multiview_path = ?
-            WHERE source = ? AND id = ?
-            """,
-            (rendered_multiview_path, source, id),
-        )
+            SET multiview_rendering_path = :multiview_rendering_path
+            WHERE source = :source AND id = :id
+        """, {
+            "source": source,
+            "id": id,
+            "multiview_rendering_path": multiview_rendering_path,
+        })  # fmt: skip
+
+    def get_unrendered_previews(self) -> list[tuple[str, str, str]]:
+        return self.execute("""
+            SELECT source, id, normalized_texture_path
+            FROM skins
+            WHERE normalized_texture_path IS NOT NULL
+              AND preview_rendering_path IS NULL
+            ORDER BY source, id
+        """).fetchall()
+
+    def set_preview_rendering_path(
+        self, source: str, id: str, preview_rendering_path: str
+    ) -> None:
+        self.execute("""
+            UPDATE skins
+            SET preview_rendering_path = :preview_rendering_path
+            WHERE source = :source AND id = :id
+        """, {
+            "source": source,
+            "id": id,
+            "preview_rendering_path": preview_rendering_path,
+        })  # fmt: skip
