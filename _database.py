@@ -30,6 +30,12 @@ class Database(Connection):
                 multiview_rendering_path TEXT,
                 preview_rendering_path   TEXT,
 
+                identity                 TEXT,
+                identity_text            TEXT,
+
+                appearance               TEXT,
+                appearance_text          TEXT,
+
                 PRIMARY KEY (source, id)
             )
         """)
@@ -150,4 +156,55 @@ class Database(Connection):
             "source": source,
             "id": id,
             "preview_rendering_path": preview_rendering_path,
+        })  # fmt: skip
+
+    def get_unidentified_skins(self) -> list[tuple[str, str, str]]:
+        # `identity` is null for every skin that depicts no named character, so
+        # it cannot say whether one has been looked at yet. `identity_text` is
+        # written either way and answers that.
+        return self.execute("""
+            SELECT source, id, normalized_texture_path
+            FROM skins
+            WHERE preview_rendering_path IS NOT NULL
+              AND identity_text IS NULL
+            ORDER BY source, id
+        """).fetchall()
+
+    def set_identity(
+        self, source: str, id: str, identity: str | None, identity_text: str
+    ) -> None:
+        self.execute("""
+            UPDATE skins
+            SET identity = :identity,
+                identity_text = :identity_text
+            WHERE source = :source AND id = :id
+        """, {
+            "source": source,
+            "id": id,
+            "identity": identity,
+            "identity_text": identity_text,
+        })  # fmt: skip
+
+    def get_undescribed_skins(self) -> list[tuple[str, str, str]]:
+        return self.execute("""
+            SELECT source, id, normalized_texture_path
+            FROM skins
+            WHERE preview_rendering_path IS NOT NULL
+              AND appearance IS NULL
+            ORDER BY source, id
+        """).fetchall()
+
+    def set_appearance(
+        self, source: str, id: str, appearance: str, appearance_text: str
+    ) -> None:
+        self.execute("""
+            UPDATE skins
+            SET appearance = :appearance,
+                appearance_text = :appearance_text
+            WHERE source = :source AND id = :id
+        """, {
+            "source": source,
+            "id": id,
+            "appearance": appearance,
+            "appearance_text": appearance_text,
         })  # fmt: skip
