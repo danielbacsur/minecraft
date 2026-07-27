@@ -32,9 +32,13 @@ class Database(Connection):
 
                 identity                 TEXT,
                 identity_text            TEXT,
+                identity_embedding       BLOB,
 
                 appearance               TEXT,
                 appearance_text          TEXT,
+                appearance_embedding     BLOB,
+
+                multimodal_embedding     BLOB,
 
                 PRIMARY KEY (source, id)
             )
@@ -207,4 +211,70 @@ class Database(Connection):
             "id": id,
             "appearance": appearance,
             "appearance_text": appearance_text,
+        })  # fmt: skip
+
+    def get_unembedded_identities(self) -> list[tuple[str, str, str]]:
+        return self.execute("""
+            SELECT source, id, identity_text
+            FROM skins
+            WHERE identity IS NOT NULL
+              AND identity_embedding IS NULL
+            ORDER BY source, id
+        """).fetchall()
+
+    def set_identity_embedding(
+        self, source: str, id: str, identity_embedding: bytes
+    ) -> None:
+        self.execute("""
+            UPDATE skins
+            SET identity_embedding = :identity_embedding
+            WHERE source = :source AND id = :id
+        """, {
+            "source": source,
+            "id": id,
+            "identity_embedding": identity_embedding,
+        })  # fmt: skip
+
+    def get_unembedded_appearances(self) -> list[tuple[str, str, str]]:
+        return self.execute("""
+            SELECT source, id, appearance_text
+            FROM skins
+            WHERE appearance IS NOT NULL
+              AND appearance_embedding IS NULL
+            ORDER BY source, id
+        """).fetchall()
+
+    def set_appearance_embedding(
+        self, source: str, id: str, appearance_embedding: bytes
+    ) -> None:
+        self.execute("""
+            UPDATE skins
+            SET appearance_embedding = :appearance_embedding
+            WHERE source = :source AND id = :id
+        """, {
+            "source": source,
+            "id": id,
+            "appearance_embedding": appearance_embedding,
+        })  # fmt: skip
+
+    def get_unembedded_previews(self) -> list[tuple[str, str, str]]:
+        return self.execute("""
+            SELECT source, id, preview_rendering_path
+            FROM skins
+            WHERE preview_rendering_path IS NOT NULL
+              AND multimodal_embedding IS NULL
+            ORDER BY source, id
+        """).fetchall()
+
+    def set_multimodal_embedding(
+        self, source: str, id: str, multimodal_embedding: bytes
+    ) -> None:
+        self.execute("""
+            UPDATE skins
+            SET multimodal_embedding = :multimodal_embedding
+            WHERE source = :source AND id = :id
+        """, {
+            "source": source,
+            "id": id,
+            "multimodal_embedding": multimodal_embedding,
         })  # fmt: skip
