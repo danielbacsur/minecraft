@@ -1,8 +1,11 @@
 from collections.abc import Iterator
 
-from _database import Database
+from PIL import Image
 
-from ._voyage import _embed_texts
+from _database import Database
+from _dataset import DATASET
+
+from ._voyage import _embed_images, _embed_texts
 
 
 def _batches[T](values: list[T], size: int) -> Iterator[list[T]]:
@@ -25,3 +28,14 @@ def embed() -> None:
 
             for (source, id, _), embedding in zip(batch, embeddings):
                 database.set_appearance_embedding(source, id, embedding)
+
+        previews = database.get_unembedded_previews()
+        for batch in _batches(previews, 16):
+            images = [Image.open(DATASET / path) for _, _, path in batch]
+            embeddings = _embed_images(images)
+
+            for image in images:
+                image.close()
+
+            for (source, id, _), embedding in zip(batch, embeddings):
+                database.set_multimodal_embedding(source, id, embedding)
