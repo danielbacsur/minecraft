@@ -15,6 +15,7 @@ download = "download:download"
 normalize = "normalize:normalize"
 render = "render:render"
 caption = "caption:caption"
+embed = "embed:embed"
 
 [build-system]
 requires = ["hatchling>=1.31,<2"]
@@ -26,6 +27,7 @@ packages = [
     "normalize",
     "render",
     "caption",
+    "embed",
     "_database.py",
     "_dataset.py",
     "_uuidv5.py",
