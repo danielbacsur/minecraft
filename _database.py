@@ -110,7 +110,9 @@ class Database(Connection):
     ) -> None:
         self.execute("""
             UPDATE skins
-            SET normalized_texture_path = :normalized_texture_path
+            SET normalized_texture_path = :normalized_texture_path,
+                multiview_rendering_path = IIF(normalized_texture_path IS :normalized_texture_path, multiview_rendering_path, NULL),
+                preview_rendering_path = IIF(normalized_texture_path IS :normalized_texture_path, preview_rendering_path, NULL)
             WHERE source = :source AND id = :id
         """, {
             "source": source,
@@ -154,7 +156,12 @@ class Database(Connection):
     ) -> None:
         self.execute("""
             UPDATE skins
-            SET preview_rendering_path = :preview_rendering_path
+            SET preview_rendering_path = :preview_rendering_path,
+                identity = IIF(preview_rendering_path IS :preview_rendering_path, identity, NULL),
+                identity_text = IIF(preview_rendering_path IS :preview_rendering_path, identity_text, NULL),
+                appearance = IIF(preview_rendering_path IS :preview_rendering_path, appearance, NULL),
+                appearance_text = IIF(preview_rendering_path IS :preview_rendering_path, appearance_text, NULL),
+                multimodal_embedding = IIF(preview_rendering_path IS :preview_rendering_path, multimodal_embedding, NULL)
             WHERE source = :source AND id = :id
         """, {
             "source": source,
