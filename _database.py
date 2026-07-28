@@ -27,8 +27,8 @@ class Database(Connection):
 
                 downloaded_texture_path  TEXT,
                 normalized_texture_path  TEXT,
-                multiview_rendering_path TEXT,
                 preview_rendering_path   TEXT,
+                multiview_rendering_path TEXT,
 
                 identity                 TEXT,
                 identity_text            TEXT,
@@ -111,35 +111,13 @@ class Database(Connection):
         self.execute("""
             UPDATE skins
             SET normalized_texture_path = :normalized_texture_path,
-                multiview_rendering_path = IIF(normalized_texture_path IS :normalized_texture_path, multiview_rendering_path, NULL),
-                preview_rendering_path = IIF(normalized_texture_path IS :normalized_texture_path, preview_rendering_path, NULL)
+                preview_rendering_path = IIF(normalized_texture_path IS :normalized_texture_path, preview_rendering_path, NULL),
+                multiview_rendering_path = IIF(normalized_texture_path IS :normalized_texture_path, multiview_rendering_path, NULL)
             WHERE source = :source AND id = :id
         """, {
             "source": source,
             "id": id,
             "normalized_texture_path": normalized_texture_path,
-        })  # fmt: skip
-
-    def get_unrendered_multiviews(self) -> list[tuple[str, str, str]]:
-        return self.execute("""
-            SELECT source, id, normalized_texture_path
-            FROM skins
-            WHERE normalized_texture_path IS NOT NULL
-              AND multiview_rendering_path IS NULL
-            ORDER BY source, id
-        """).fetchall()
-
-    def set_multiview_rendering_path(
-        self, source: str, id: str, multiview_rendering_path: str
-    ) -> None:
-        self.execute("""
-            UPDATE skins
-            SET multiview_rendering_path = :multiview_rendering_path
-            WHERE source = :source AND id = :id
-        """, {
-            "source": source,
-            "id": id,
-            "multiview_rendering_path": multiview_rendering_path,
         })  # fmt: skip
 
     def get_unrendered_previews(self) -> list[tuple[str, str, str]]:
@@ -167,6 +145,28 @@ class Database(Connection):
             "source": source,
             "id": id,
             "preview_rendering_path": preview_rendering_path,
+        })  # fmt: skip
+
+    def get_unrendered_multiviews(self) -> list[tuple[str, str, str]]:
+        return self.execute("""
+            SELECT source, id, normalized_texture_path
+            FROM skins
+            WHERE normalized_texture_path IS NOT NULL
+              AND multiview_rendering_path IS NULL
+            ORDER BY source, id
+        """).fetchall()
+
+    def set_multiview_rendering_path(
+        self, source: str, id: str, multiview_rendering_path: str
+    ) -> None:
+        self.execute("""
+            UPDATE skins
+            SET multiview_rendering_path = :multiview_rendering_path
+            WHERE source = :source AND id = :id
+        """, {
+            "source": source,
+            "id": id,
+            "multiview_rendering_path": multiview_rendering_path,
         })  # fmt: skip
 
     def get_unidentified_skins(self) -> list[tuple[str, str, str]]:
