@@ -11,7 +11,7 @@ def download() -> None:
         for skin in get_skins_from_minecraftskins_net(client):
             data = client.get(skin.texture_url).raise_for_status().content
 
-            downloaded_texture_path = f"downloaded/{uuidv5(data)}.png"
+            downloaded_texture_path = f"downloaded_textures/{uuidv5(data)}.png"
 
             path = DATASET / downloaded_texture_path
             path.parent.mkdir(parents=True, exist_ok=True)

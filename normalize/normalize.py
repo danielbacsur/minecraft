@@ -19,7 +19,7 @@ def normalize() -> None:
             texture.save(buffer, format="PNG", optimize=True)
             data = buffer.getvalue()
 
-            normalized_texture_path = f"normalized/{uuidv5(data)}.png"
+            normalized_texture_path = f"normalized_textures/{uuidv5(data)}.png"
 
             path = DATASET / normalized_texture_path
             path.parent.mkdir(parents=True, exist_ok=True)
