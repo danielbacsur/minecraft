@@ -1,0 +1,80 @@
+from struct import unpack
+
+from datasets import Dataset, Features, Image, Sequence, Value
+
+from _database import Database
+from _dataset import DATASET
+
+
+def _image(path: str) -> str:
+    return str(DATASET / path)
+
+
+def _embedding(embedding: bytes | None) -> list[float] | None:
+    return list(unpack("<1024f", embedding)) if embedding else None
+
+
+def push() -> None:
+    with Database() as database:
+        skins = database.get_skins()
+
+    dataset = Dataset.from_list([{
+        "source": source,
+        "id": id,
+        "url": url,
+        "title": title,
+        "category": category,
+        "description": description,
+        "texture_url": texture_url,
+        "downloaded_texture": _image(downloaded_texture_path),
+        "normalized_texture": _image(normalized_texture_path),
+        "multiview_rendering": _image(multiview_rendering_path),
+        "preview_rendering": _image(preview_rendering_path),
+        "identity": identity,
+        "identity_text": identity_text,
+        "identity_embedding": _embedding(identity_embedding),
+        "appearance": appearance,
+        "appearance_text": appearance_text,
+        "appearance_embedding": _embedding(appearance_embedding),
+        "multimodal_embedding": _embedding(multimodal_embedding),
+    } for (
+        source,
+        id,
+        url,
+        title,
+        category,
+        description,
+        texture_url,
+        downloaded_texture_path,
+        normalized_texture_path,
+        multiview_rendering_path,
+        preview_rendering_path,
+        identity,
+        identity_text,
+        identity_embedding,
+        appearance,
+        appearance_text,
+        appearance_embedding,
+        multimodal_embedding,
+    ) in skins], Features({
+        "source": Value("string"),
+        "id": Value("string"),
+        "url": Value("string"),
+        "title": Value("string"),
+        "category": Value("string"),
+        "description": Value("string"),
+        "texture_url": Value("string"),
+        "downloaded_texture": Image(),
+        "normalized_texture": Image(),
+        "multiview_rendering": Image(),
+        "preview_rendering": Image(),
+        "identity": Value("string"),
+        "identity_text": Value("string"),
+        "identity_embedding": Sequence(Value("float32")),
+        "appearance": Value("string"),
+        "appearance_text": Value("string"),
+        "appearance_embedding": Sequence(Value("float32")),
+        "multimodal_embedding": Sequence(Value("float32")),
+    }))  # fmt: skip
+
+    dataset.push_to_hub("danielbacsur/minecraft-skins-20k-1024k-captioned")

@@ -288,3 +288,7 @@ class Database(Connection):
             "multimodal_embedding": multimodal_embedding,
         })  # fmt: skip
 
+    def get_skins(self) -> list[tuple]:
+        return self.execute("""
+            SELECT * FROM skins ORDER BY source, id
+        """).fetchall()
