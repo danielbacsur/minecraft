@@ -187,7 +187,8 @@ class Database(Connection):
         self.execute("""
             UPDATE skins
             SET identity = :identity,
-                identity_text = :identity_text
+                identity_text = :identity_text,
+                identity_embedding = IIF(identity_text IS :identity_text, identity_embedding, NULL)
             WHERE source = :source AND id = :id
         """, {
             "source": source,
@@ -211,7 +212,8 @@ class Database(Connection):
         self.execute("""
             UPDATE skins
             SET appearance = :appearance,
-                appearance_text = :appearance_text
+                appearance_text = :appearance_text,
+                appearance_embedding = IIF(appearance_text IS :appearance_text, appearance_embedding, NULL)
             WHERE source = :source AND id = :id
         """, {
             "source": source,
