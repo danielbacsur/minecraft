@@ -1,0 +1,37 @@
+[project]
+name = "minecraft-skins-20k-1024k-captioned"
+requires-python = ">=3.12"
+version = "0.0.0"
+
+dependencies = [
+    "datasets>=4.0.0",
+    "hishel[httpx]>=1.3.0",
+    "pillow>=12.3.0",
+    "selectolax>=0.4.11",
+    "voyageai>=0.5.0",
+]
+
+[project.scripts]
+download = "download:download"
+normalize = "normalize:normalize"
+render = "render:render"
+caption = "caption:caption"
+embed = "embed:embed"
+push = "push:push"
+
+[build-system]
+requires = ["hatchling>=1.31,<2"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = [
+    "download",
+    "normalize",
+    "render",
+    "caption",
+    "embed",
+    "push",
+    "_database.py",
+    "_dataset.py",
+    "_uuidv5.py",
+]

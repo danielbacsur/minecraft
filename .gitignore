@@ -1,6 +1,2 @@
-__pycache__
-.cache
-.dataset
 .ruff_cache
 .venv
-.env

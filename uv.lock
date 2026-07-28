@@ -16,6 +16,11 @@ resolution-markers = [
     "python_full_version >= '3.15' and sys_platform != 'emscripten' and sys_platform != 'win32'",
 ]
 
+[manifest]
+members = [
+    "minecraft-skins-20k-1024k-captioned",
+]
+
 [[package]]
 name = "aiohappyeyeballs"
 version = "2.7.1"
@@ -639,7 +644,7 @@ wheels = [
 [[package]]
 name = "minecraft-skins-20k-1024k-captioned"
 version = "0.0.0"
-source = { editable = "." }
+source = { editable = "datasets/minecraft-skins-20k-1024k-captioned" }
 dependencies = [
     { name = "datasets" },
     { name = "hishel", extra = ["httpx"] },
