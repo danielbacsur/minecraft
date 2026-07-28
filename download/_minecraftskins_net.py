@@ -11,11 +11,11 @@ class Skin:
     source = "minecraftskins_net"
     id: str
 
-    url: str
-    title: str
-    category: str
-    description: str
-    texture_url: str
+    url: str | None
+    title: str | None
+    category: str | None
+    description: str | None
+    texture_url: str | None
 
 
 def _get(client: SyncCacheClient, path: str) -> str:
@@ -58,8 +58,9 @@ def get_skins_from_minecraftskins_net(client: SyncCacheClient) -> Iterator[Skin]
             yield Skin(
                 id=skin_id,
                 url=f"https://www.minecraftskins.net/{skin_id}",
-                title=skin_page.css("h2.hero-title")[0].text(strip=True),
+                title=skin_page.css("h2.hero-title")[0].text(strip=True) or None,
                 category=category,
-                description=skin_page.css("p.card-description")[0].text(strip=True),
+                description=skin_page.css("p.card-description")[0].text(strip=True)
+                or None,
                 texture_url=f"https://www.minecraftskins.net/{skin_id}/download",
             )

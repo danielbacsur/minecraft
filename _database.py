@@ -19,11 +19,11 @@ class Database(Connection):
                 source                   TEXT NOT NULL,
                 id                       TEXT NOT NULL,
 
-                url                      TEXT NOT NULL,
-                title                    TEXT NOT NULL,
-                category                 TEXT NOT NULL,
-                description              TEXT NOT NULL,
-                texture_url              TEXT NOT NULL,
+                url                      TEXT,
+                title                    TEXT,
+                category                 TEXT,
+                description              TEXT,
+                texture_url              TEXT,
 
                 downloaded_texture_path  TEXT,
                 normalized_texture_path  TEXT,
@@ -52,11 +52,11 @@ class Database(Connection):
         self,
         source: str,
         id: str,
-        url: str,
-        title: str,
-        category: str,
-        description: str,
-        texture_url: str,
+        url: str | None,
+        title: str | None,
+        category: str | None,
+        description: str | None,
+        texture_url: str | None,
         downloaded_texture_path: str,
     ) -> None:
         self.execute("""
@@ -287,3 +287,4 @@ class Database(Connection):
             "id": id,
             "multimodal_embedding": multimodal_embedding,
         })  # fmt: skip
+
