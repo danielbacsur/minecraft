@@ -1,2 +1,4 @@
 .ruff_cache
+.turbo
 .venv
+node_modules
