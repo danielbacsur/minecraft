@@ -1,7 +1,7 @@
 import { drizzleAdapter } from "@better-auth/drizzle-adapter";
 import { postgres, schema } from "@minecraft/postgres";
 import { betterAuth } from "better-auth";
-import { nextCookies } from "better-auth/next-js";
+import { nextCookies, toNextJsHandler } from "better-auth/next-js";
 
 export const auth = betterAuth({
   database: drizzleAdapter(postgres, {
@@ -35,3 +35,5 @@ export const auth = betterAuth({
 
   plugins: [nextCookies()],
 });
+
+export const { GET, POST } = toNextJsHandler(auth);
