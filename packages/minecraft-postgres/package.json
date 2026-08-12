@@ -1,0 +1,23 @@
+{
+  "name": "@minecraft/postgres",
+  "version": "0.0.0",
+  "private": true,
+
+  "type": "module",
+
+  "exports": {
+    ".": "./src/index.ts"
+  },
+
+  "dependencies": {
+    "@neondatabase/serverless": "1.1.0",
+    "dotenv": "17.4.2",
+    "drizzle-orm": "1.0.0-rc.4"
+  },
+
+  "devDependencies": {
+    "@types/node": "^20",
+    "drizzle-kit": "1.0.0-rc.4",
+    "typescript": "^5"
+  }
+}
