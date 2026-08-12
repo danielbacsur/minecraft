@@ -1,0 +1,27 @@
+{
+  "name": "@minecraft/auth",
+  "version": "0.0.0",
+  "private": true,
+
+  "type": "module",
+
+  "exports": {
+    "./server": "./src/server.ts",
+    "./react": "./src/react.ts"
+  },
+
+  "dependencies": {
+    "@better-auth/drizzle-adapter": "1.6.26",
+    "@minecraft/postgres": "*",
+    "better-auth": "1.6.26"
+  },
+
+  "devDependencies": {
+    "@types/node": "^20",
+    "typescript": "^5"
+  },
+
+  "peerDependencies": {
+    "react": "^19"
+  }
+}
