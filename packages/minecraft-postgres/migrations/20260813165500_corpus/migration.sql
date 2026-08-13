@@ -17,6 +17,7 @@ CREATE TABLE "corpus"."skins" (
 	"identity_text_search" tsvector GENERATED ALWAYS AS (to_tsvector('english', coalesce(identity_text, ''))) STORED NOT NULL,
 	"identity_names" text NOT NULL,
 	"identity_names_search" tsvector GENERATED ALWAYS AS (to_tsvector('simple', coalesce(identity_names, ''))) STORED NOT NULL,
+	"identity_names_normalised" text GENERATED ALWAYS AS (regexp_replace(lower(immutable_unaccent(identity_names)), '[^a-z0-9, ]', '', 'g')) STORED NOT NULL,
 	"identity_keywords" text NOT NULL,
 	"identity_keywords_search" tsvector GENERATED ALWAYS AS (to_tsvector('simple', coalesce(identity_keywords, ''))) STORED NOT NULL,
 	"identity_embedding" vector(1024),
@@ -31,9 +32,9 @@ CREATE TABLE "corpus"."skins" (
 	"multimodal_embedding" vector(1024)
 );
 --> statement-breakpoint
-CREATE INDEX "skins_identity_names_trgm_index" ON "corpus"."skins" USING gin (regexp_replace(lower(immutable_unaccent(identity_names)), '[^a-z0-9, ]', '', 'g') gin_trgm_ops);--> statement-breakpoint
 CREATE INDEX "skins_identity_text_search_index" ON "corpus"."skins" USING gin ("identity_text_search");--> statement-breakpoint
 CREATE INDEX "skins_identity_names_search_index" ON "corpus"."skins" USING gin ("identity_names_search");--> statement-breakpoint
+CREATE INDEX "skins_identity_names_normalised_index" ON "corpus"."skins" USING gin ("identity_names_normalised" gin_trgm_ops);--> statement-breakpoint
 CREATE INDEX "skins_identity_keywords_search_index" ON "corpus"."skins" USING gin ("identity_keywords_search");--> statement-breakpoint
 CREATE INDEX "skins_appearance_text_search_index" ON "corpus"."skins" USING gin ("appearance_text_search");--> statement-breakpoint
 CREATE INDEX "skins_appearance_keywords_search_index" ON "corpus"."skins" USING gin ("appearance_keywords_search");--> statement-breakpoint

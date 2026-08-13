@@ -31,6 +31,7 @@ export const skins = corpus.table("skins", {
 
   identityNames: text().notNull(),
   identityNamesSearch: tsvector().generatedAlwaysAs(sql`to_tsvector('simple', coalesce(identity_names, ''))`).notNull(),
+  identityNamesNormalised: text().generatedAlwaysAs(sql`regexp_replace(lower(immutable_unaccent(identity_names)), '[^a-z0-9, ]', '', 'g')`).notNull(),
 
   identityKeywords: text().notNull(),
   identityKeywordsSearch: tsvector().generatedAlwaysAs(sql`to_tsvector('simple', coalesce(identity_keywords, ''))`).notNull(),
@@ -67,9 +68,9 @@ export const skins = corpus.table("skins", {
 
   multimodalEmbedding: vector({ dimensions: 1024 }),
 }, (table) => [
-  index("skins_identity_names_trgm_index").using("gin", sql`regexp_replace(lower(immutable_unaccent(identity_names)), '[^a-z0-9, ]', '', 'g') gin_trgm_ops`),
   index().using("gin", table.identityTextSearch),
   index().using("gin", table.identityNamesSearch),
+  index().using("gin", table.identityNamesNormalised.op("gin_trgm_ops")),
   index().using("gin", table.identityKeywordsSearch),
   index().using("gin", table.appearanceTextSearch),
   index().using("gin", table.appearanceKeywordsSearch),
