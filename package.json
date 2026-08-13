@@ -35,6 +35,7 @@
   "workspaces": [
     "apps/minecraft-frontend",
     "packages/minecraft-auth",
+    "packages/minecraft-corpus",
     "packages/minecraft-postgres"
   ]
 }
