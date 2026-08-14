@@ -34,10 +34,14 @@ class Database(Connection):
 
                 identity                 TEXT,
                 identity_text            TEXT,
+                identity_names           TEXT,
+                identity_keywords        TEXT,
                 identity_embedding       BLOB,
 
                 appearance               TEXT,
                 appearance_text          TEXT,
+                appearance_keywords      TEXT,
+                appearance_attributes    TEXT,
                 appearance_embedding     BLOB,
 
                 multimodal_embedding     BLOB,
@@ -182,54 +186,41 @@ class Database(Connection):
             "multiview_rendering_path": multiview_rendering_path,
         })  # fmt: skip
 
-    def get_unidentified_skins(self) -> list[tuple[str, str, str]]:
-        return self.execute("""
-            SELECT source, slug, normalized_texture_path
-            FROM skins
-            WHERE preview_rendering_path IS NOT NULL
-              AND identity_text IS NULL
-            ORDER BY source, slug
-        """).fetchall()
-
-    def set_identity(
-        self, source: str, slug: str, identity: str | None, identity_text: str
+    def set_caption(
+        self,
+        id: str,
+        identity: str,
+        identity_text: str,
+        identity_names: str,
+        identity_keywords: str,
+        appearance: str,
+        appearance_text: str,
+        appearance_keywords: str,
+        appearance_attributes: str,
     ) -> None:
         self.execute("""
             UPDATE skins
             SET identity = :identity,
                 identity_text = :identity_text,
-                identity_embedding = IIF(identity_text IS :identity_text, identity_embedding, NULL)
-            WHERE source = :source AND slug = :slug
+                identity_names = :identity_names,
+                identity_keywords = :identity_keywords,
+                appearance = :appearance,
+                appearance_text = :appearance_text,
+                appearance_keywords = :appearance_keywords,
+                appearance_attributes = :appearance_attributes,
+                identity_embedding = IIF(identity_text IS :identity_text, identity_embedding, NULL),
+                appearance_embedding = IIF(appearance_text IS :appearance_text, appearance_embedding, NULL)
+            WHERE id = :id
         """, {
-            "source": source,
-            "slug": slug,
+            "id": id,
             "identity": identity,
             "identity_text": identity_text,
-        })  # fmt: skip
-
-    def get_undescribed_skins(self) -> list[tuple[str, str, str]]:
-        return self.execute("""
-            SELECT source, slug, normalized_texture_path
-            FROM skins
-            WHERE preview_rendering_path IS NOT NULL
-              AND appearance IS NULL
-            ORDER BY source, slug
-        """).fetchall()
-
-    def set_appearance(
-        self, source: str, slug: str, appearance: str, appearance_text: str
-    ) -> None:
-        self.execute("""
-            UPDATE skins
-            SET appearance = :appearance,
-                appearance_text = :appearance_text,
-                appearance_embedding = IIF(appearance_text IS :appearance_text, appearance_embedding, NULL)
-            WHERE source = :source AND slug = :slug
-        """, {
-            "source": source,
-            "slug": slug,
+            "identity_names": identity_names,
+            "identity_keywords": identity_keywords,
             "appearance": appearance,
             "appearance_text": appearance_text,
+            "appearance_keywords": appearance_keywords,
+            "appearance_attributes": appearance_attributes,
         })  # fmt: skip
 
     def get_unembedded_identities(self) -> list[tuple[str, str, str]]:
