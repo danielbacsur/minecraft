@@ -17,6 +17,11 @@ def _document(*parts: str) -> str:
     return "\n".join(part for part in parts if part)
 
 
+def _flatten(image: Image.Image) -> Image.Image:
+    background = Image.new("RGBA", image.size, (128, 128, 128, 255))
+    return Image.alpha_composite(background, image.convert("RGBA")).convert("RGB")
+
+
 def embed() -> None:
     with Database() as database:
         identities = database.get_unembedded_identities()
@@ -37,7 +42,7 @@ def embed() -> None:
         previews = database.get_unembedded_previews()
         for batch in _batches(previews, 16):
             images = [Image.open(DATASET / path) for _, _, path in batch]
-            embeddings = _embed_images(images)
+            embeddings = _embed_images([_flatten(image) for image in images])
 
             for image in images:
                 image.close()
