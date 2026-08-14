@@ -32,7 +32,7 @@ export async function rerank(
   const response = await voyage.rerank({
     query,
     documents,
-    model: "rerank-2.5",
+    model: "rerank-2.5-lite",
     topK: documents.length,
   });
 

@@ -19,7 +19,7 @@ def download() -> None:
 
             database.upsert(
                 source=skin.source,
-                id=skin.id,
+                slug=skin.slug,
                 url=skin.url,
                 title=skin.title,
                 category=skin.category,

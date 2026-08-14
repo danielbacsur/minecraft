@@ -16,8 +16,10 @@ class Database(Connection):
 
         self.execute("""
             CREATE TABLE IF NOT EXISTS skins (
+                id                       TEXT,
+
                 source                   TEXT NOT NULL,
-                id                       TEXT NOT NULL,
+                slug                     TEXT NOT NULL,
 
                 url                      TEXT,
                 title                    TEXT,
@@ -32,15 +34,19 @@ class Database(Connection):
 
                 identity                 TEXT,
                 identity_text            TEXT,
+                identity_names           TEXT,
+                identity_keywords        TEXT,
                 identity_embedding       BLOB,
 
                 appearance               TEXT,
                 appearance_text          TEXT,
+                appearance_keywords      TEXT,
+                appearance_attributes    TEXT,
                 appearance_embedding     BLOB,
 
                 multimodal_embedding     BLOB,
 
-                PRIMARY KEY (source, id)
+                PRIMARY KEY (source, slug)
             )
         """)
 
@@ -51,7 +57,7 @@ class Database(Connection):
     def upsert(
         self,
         source: str,
-        id: str,
+        slug: str,
         url: str | None,
         title: str | None,
         category: str | None,
@@ -62,7 +68,7 @@ class Database(Connection):
         self.execute("""
             INSERT INTO skins (
                 source,
-                id,
+                slug,
                 url,
                 title,
                 category,
@@ -71,14 +77,14 @@ class Database(Connection):
                 downloaded_texture_path
             ) VALUES (
                 :source,
-                :id,
+                :slug,
                 :url,
                 :title,
                 :category,
                 :description,
                 :texture_url,
                 :downloaded_texture_path
-            ) ON CONFLICT (source, id) DO UPDATE SET
+            ) ON CONFLICT (source, slug) DO UPDATE SET
                 url = excluded.url,
                 title = excluded.title,
                 category = excluded.category,
@@ -87,7 +93,7 @@ class Database(Connection):
                 downloaded_texture_path = excluded.downloaded_texture_path
         """, {
             "source": source,
-            "id": id,
+            "slug": slug,
             "url": url,
             "title": title,
             "category": category,
@@ -98,39 +104,50 @@ class Database(Connection):
 
     def get_unnormalized_skins(self) -> list[tuple[str, str, str]]:
         return self.execute("""
-            SELECT source, id, downloaded_texture_path
+            SELECT source, slug, downloaded_texture_path
             FROM skins
             WHERE downloaded_texture_path IS NOT NULL
               AND normalized_texture_path IS NULL
-            ORDER BY source, id
+            ORDER BY source, slug
         """).fetchall()
 
+    def set_id(self, source: str, slug: str, id: str) -> None:
+        self.execute("""
+            UPDATE skins
+            SET id = :id
+            WHERE source = :source AND slug = :slug
+        """, {
+            "source": source,
+            "slug": slug,
+            "id": id,
+        })  # fmt: skip
+
     def set_normalized_texture_path(
-        self, source: str, id: str, normalized_texture_path: str
+        self, source: str, slug: str, normalized_texture_path: str
     ) -> None:
         self.execute("""
             UPDATE skins
             SET normalized_texture_path = :normalized_texture_path,
                 preview_rendering_path = IIF(normalized_texture_path IS :normalized_texture_path, preview_rendering_path, NULL),
                 multiview_rendering_path = IIF(normalized_texture_path IS :normalized_texture_path, multiview_rendering_path, NULL)
-            WHERE source = :source AND id = :id
+            WHERE source = :source AND slug = :slug
         """, {
             "source": source,
-            "id": id,
+            "slug": slug,
             "normalized_texture_path": normalized_texture_path,
         })  # fmt: skip
 
     def get_unrendered_previews(self) -> list[tuple[str, str, str]]:
         return self.execute("""
-            SELECT source, id, normalized_texture_path
+            SELECT source, slug, normalized_texture_path
             FROM skins
             WHERE normalized_texture_path IS NOT NULL
               AND preview_rendering_path IS NULL
-            ORDER BY source, id
+            ORDER BY source, slug
         """).fetchall()
 
     def set_preview_rendering_path(
-        self, source: str, id: str, preview_rendering_path: str
+        self, source: str, slug: str, preview_rendering_path: str
     ) -> None:
         self.execute("""
             UPDATE skins
@@ -140,155 +157,139 @@ class Database(Connection):
                 appearance = IIF(preview_rendering_path IS :preview_rendering_path, appearance, NULL),
                 appearance_text = IIF(preview_rendering_path IS :preview_rendering_path, appearance_text, NULL),
                 multimodal_embedding = IIF(preview_rendering_path IS :preview_rendering_path, multimodal_embedding, NULL)
-            WHERE source = :source AND id = :id
+            WHERE source = :source AND slug = :slug
         """, {
             "source": source,
-            "id": id,
+            "slug": slug,
             "preview_rendering_path": preview_rendering_path,
         })  # fmt: skip
 
     def get_unrendered_multiviews(self) -> list[tuple[str, str, str]]:
         return self.execute("""
-            SELECT source, id, normalized_texture_path
+            SELECT source, slug, normalized_texture_path
             FROM skins
             WHERE normalized_texture_path IS NOT NULL
               AND multiview_rendering_path IS NULL
-            ORDER BY source, id
+            ORDER BY source, slug
         """).fetchall()
 
     def set_multiview_rendering_path(
-        self, source: str, id: str, multiview_rendering_path: str
+        self, source: str, slug: str, multiview_rendering_path: str
     ) -> None:
         self.execute("""
             UPDATE skins
             SET multiview_rendering_path = :multiview_rendering_path
-            WHERE source = :source AND id = :id
+            WHERE source = :source AND slug = :slug
         """, {
             "source": source,
-            "id": id,
+            "slug": slug,
             "multiview_rendering_path": multiview_rendering_path,
         })  # fmt: skip
 
-    def get_unidentified_skins(self) -> list[tuple[str, str, str]]:
-        # `identity` is null for every skin that depicts no named character, so
-        # it cannot say whether one has been looked at yet. `identity_text` is
-        # written either way and answers that.
-        return self.execute("""
-            SELECT source, id, normalized_texture_path
-            FROM skins
-            WHERE preview_rendering_path IS NOT NULL
-              AND identity_text IS NULL
-            ORDER BY source, id
-        """).fetchall()
-
-    def set_identity(
-        self, source: str, id: str, identity: str | None, identity_text: str
+    def set_caption(
+        self,
+        id: str,
+        identity: str,
+        identity_text: str,
+        identity_names: str,
+        identity_keywords: str,
+        appearance: str,
+        appearance_text: str,
+        appearance_keywords: str,
+        appearance_attributes: str,
     ) -> None:
         self.execute("""
             UPDATE skins
             SET identity = :identity,
                 identity_text = :identity_text,
-                identity_embedding = IIF(identity_text IS :identity_text, identity_embedding, NULL)
-            WHERE source = :source AND id = :id
+                identity_names = :identity_names,
+                identity_keywords = :identity_keywords,
+                appearance = :appearance,
+                appearance_text = :appearance_text,
+                appearance_keywords = :appearance_keywords,
+                appearance_attributes = :appearance_attributes,
+                identity_embedding = IIF(identity_text IS :identity_text, identity_embedding, NULL),
+                appearance_embedding = IIF(appearance_text IS :appearance_text, appearance_embedding, NULL)
+            WHERE id = :id
         """, {
-            "source": source,
             "id": id,
             "identity": identity,
             "identity_text": identity_text,
-        })  # fmt: skip
-
-    def get_undescribed_skins(self) -> list[tuple[str, str, str]]:
-        return self.execute("""
-            SELECT source, id, normalized_texture_path
-            FROM skins
-            WHERE preview_rendering_path IS NOT NULL
-              AND appearance IS NULL
-            ORDER BY source, id
-        """).fetchall()
-
-    def set_appearance(
-        self, source: str, id: str, appearance: str, appearance_text: str
-    ) -> None:
-        self.execute("""
-            UPDATE skins
-            SET appearance = :appearance,
-                appearance_text = :appearance_text,
-                appearance_embedding = IIF(appearance_text IS :appearance_text, appearance_embedding, NULL)
-            WHERE source = :source AND id = :id
-        """, {
-            "source": source,
-            "id": id,
+            "identity_names": identity_names,
+            "identity_keywords": identity_keywords,
             "appearance": appearance,
             "appearance_text": appearance_text,
+            "appearance_keywords": appearance_keywords,
+            "appearance_attributes": appearance_attributes,
         })  # fmt: skip
 
     def get_unembedded_identities(self) -> list[tuple[str, str, str]]:
         return self.execute("""
-            SELECT source, id, identity_text
+            SELECT source, slug, identity_text
             FROM skins
             WHERE identity IS NOT NULL
               AND identity_embedding IS NULL
-            ORDER BY source, id
+            ORDER BY source, slug
         """).fetchall()
 
     def set_identity_embedding(
-        self, source: str, id: str, identity_embedding: bytes
+        self, source: str, slug: str, identity_embedding: bytes
     ) -> None:
         self.execute("""
             UPDATE skins
             SET identity_embedding = :identity_embedding
-            WHERE source = :source AND id = :id
+            WHERE source = :source AND slug = :slug
         """, {
             "source": source,
-            "id": id,
+            "slug": slug,
             "identity_embedding": identity_embedding,
         })  # fmt: skip
 
-    def get_unembedded_appearances(self) -> list[tuple[str, str, str]]:
+    def get_unembedded_appearances(self) -> list[tuple[str, str, str, str]]:
         return self.execute("""
-            SELECT source, id, appearance_text
+            SELECT source, slug, appearance_text, appearance_attributes
             FROM skins
             WHERE appearance IS NOT NULL
               AND appearance_embedding IS NULL
-            ORDER BY source, id
+            ORDER BY source, slug
         """).fetchall()
 
     def set_appearance_embedding(
-        self, source: str, id: str, appearance_embedding: bytes
+        self, source: str, slug: str, appearance_embedding: bytes
     ) -> None:
         self.execute("""
             UPDATE skins
             SET appearance_embedding = :appearance_embedding
-            WHERE source = :source AND id = :id
+            WHERE source = :source AND slug = :slug
         """, {
             "source": source,
-            "id": id,
+            "slug": slug,
             "appearance_embedding": appearance_embedding,
         })  # fmt: skip
 
     def get_unembedded_previews(self) -> list[tuple[str, str, str]]:
         return self.execute("""
-            SELECT source, id, preview_rendering_path
+            SELECT source, slug, preview_rendering_path
             FROM skins
             WHERE preview_rendering_path IS NOT NULL
               AND multimodal_embedding IS NULL
-            ORDER BY source, id
+            ORDER BY source, slug
         """).fetchall()
 
     def set_multimodal_embedding(
-        self, source: str, id: str, multimodal_embedding: bytes
+        self, source: str, slug: str, multimodal_embedding: bytes
     ) -> None:
         self.execute("""
             UPDATE skins
             SET multimodal_embedding = :multimodal_embedding
-            WHERE source = :source AND id = :id
+            WHERE source = :source AND slug = :slug
         """, {
             "source": source,
-            "id": id,
+            "slug": slug,
             "multimodal_embedding": multimodal_embedding,
         })  # fmt: skip
 
     def get_skins(self) -> list[tuple]:
         return self.execute("""
-            SELECT * FROM skins ORDER BY source, id
+            SELECT * FROM skins ORDER BY source, slug
         """).fetchall()

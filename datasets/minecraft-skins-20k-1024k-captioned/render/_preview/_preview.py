@@ -17,6 +17,4 @@ def _preview(texture: Image.Image) -> Image.Image:
         part = texture.crop((sx, sy, sx + sw, sy + sh))
         canvas.alpha_composite(part.resize((dw, dh), Resampling.NEAREST), (dx, dy))
 
-    background = Image.new("RGBA", (832, 320), (128, 128, 128, 255))
-
-    return Image.alpha_composite(background, canvas)
+    return canvas
