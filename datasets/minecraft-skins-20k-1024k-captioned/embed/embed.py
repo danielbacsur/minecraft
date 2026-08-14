@@ -19,15 +19,15 @@ def embed() -> None:
         for batch in _batches(identities, 64):
             embeddings = _embed_texts([text for _, _, text in batch])
 
-            for (source, id, _), embedding in zip(batch, embeddings):
-                database.set_identity_embedding(source, id, embedding)
+            for (source, slug, _), embedding in zip(batch, embeddings):
+                database.set_identity_embedding(source, slug, embedding)
 
         appearances = database.get_unembedded_appearances()
         for batch in _batches(appearances, 64):
             embeddings = _embed_texts([text for _, _, text in batch])
 
-            for (source, id, _), embedding in zip(batch, embeddings):
-                database.set_appearance_embedding(source, id, embedding)
+            for (source, slug, _), embedding in zip(batch, embeddings):
+                database.set_appearance_embedding(source, slug, embedding)
 
         previews = database.get_unembedded_previews()
         for batch in _batches(previews, 16):
@@ -37,5 +37,5 @@ def embed() -> None:
             for image in images:
                 image.close()
 
-            for (source, id, _), embedding in zip(batch, embeddings):
-                database.set_multimodal_embedding(source, id, embedding)
+            for (source, slug, _), embedding in zip(batch, embeddings):
+                database.set_multimodal_embedding(source, slug, embedding)

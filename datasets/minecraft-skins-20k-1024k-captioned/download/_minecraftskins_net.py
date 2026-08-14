@@ -9,7 +9,7 @@ from ._sync_cache_client import SyncCacheClient
 @dataclass(frozen=True)
 class Skin:
     source = "minecraftskins_net"
-    id: str
+    slug: str
 
     url: str | None
     title: str | None
@@ -41,26 +41,25 @@ def _skin_pages(
     client: SyncCacheClient, category_page: HTMLParser, seen: set[str]
 ) -> Iterator[tuple[str, HTMLParser]]:
     for link in category_page.css("div.card a.panel-link"):
-        skin_id = link.attrs.sget("href").strip("/")
+        slug = link.attrs.sget("href").strip("/")
 
-        if skin_id in seen:
+        if slug in seen:
             continue
 
-        seen.add(skin_id)
-        yield skin_id, HTMLParser(_get(client, f"/{skin_id}"))
+        seen.add(slug)
+        yield slug, HTMLParser(_get(client, f"/{slug}"))
 
 
 def get_skins_from_minecraftskins_net(client: SyncCacheClient) -> Iterator[Skin]:
     seen: set[str] = set()
 
     for category, category_page in _category_pages(client):
-        for skin_id, skin_page in _skin_pages(client, category_page, seen):
+        for slug, skin_page in _skin_pages(client, category_page, seen):
             yield Skin(
-                id=skin_id,
-                url=f"https://www.minecraftskins.net/{skin_id}",
+                slug=slug,
+                url=f"https://www.minecraftskins.net/{slug}",
                 title=skin_page.css("h2.hero-title")[0].text(strip=True) or None,
                 category=category,
-                description=skin_page.css("p.card-description")[0].text(strip=True)
-                or None,
-                texture_url=f"https://www.minecraftskins.net/{skin_id}/download",
-            )
+                description=skin_page.css("p.card-description")[0].text(strip=True) or None,
+                texture_url=f"https://www.minecraftskins.net/{slug}/download",
+            )  # fmt: skip
