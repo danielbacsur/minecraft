@@ -245,9 +245,9 @@ class Database(Connection):
             "identity_embedding": identity_embedding,
         })  # fmt: skip
 
-    def get_unembedded_appearances(self) -> list[tuple[str, str, str]]:
+    def get_unembedded_appearances(self) -> list[tuple[str, str, str, str]]:
         return self.execute("""
-            SELECT source, slug, appearance_text
+            SELECT source, slug, appearance_text, appearance_attributes
             FROM skins
             WHERE appearance IS NOT NULL
               AND appearance_embedding IS NULL
