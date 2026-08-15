@@ -6,14 +6,14 @@ from _database import Database
 from _dataset import DATASET
 from _uuidv5 import uuidv5
 
-from ._normalize import _normalize
+from ._normalized import normalized
 
 
 def normalize() -> None:
     with Database() as database:
         for source, slug, downloaded_texture_path in database.get_unnormalized_skins():
             with Image.open(DATASET / downloaded_texture_path) as texture:
-                texture = _normalize(texture)
+                texture = normalized(texture)
 
             buffer = BytesIO()
             texture.save(buffer, format="PNG", optimize=True)

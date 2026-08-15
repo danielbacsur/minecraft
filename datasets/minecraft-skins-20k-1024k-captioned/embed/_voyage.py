@@ -12,7 +12,7 @@ def _encode(embedding: Sequence[float]) -> bytes:
     return pack("<1024f", *embedding)
 
 
-def _embed_texts(texts: list[str]) -> list[bytes]:
+def embed_texts(texts: list[str]) -> list[bytes]:
     result = _client.embed(
         texts=texts,
         model="voyage-4-large",
@@ -23,7 +23,7 @@ def _embed_texts(texts: list[str]) -> list[bytes]:
     return [_encode(embedding) for embedding in result.embeddings]
 
 
-def _embed_images(images: Sequence[Image.Image]) -> list[bytes]:
+def embed_images(images: Sequence[Image.Image]) -> list[bytes]:
     result = _client.multimodal_embed(
         inputs=[[image] for image in images],
         model="voyage-multimodal-3.5",

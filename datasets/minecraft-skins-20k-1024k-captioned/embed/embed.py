@@ -5,7 +5,7 @@ from PIL import Image
 from _database import Database
 from _dataset import DATASET
 
-from ._voyage import _embed_images, _embed_texts
+from ._voyage import embed_images, embed_texts
 
 
 def _batches[T](values: list[T], size: int) -> Iterator[list[T]]:
@@ -27,7 +27,7 @@ def embed() -> None:
         identities = database.get_unembedded_identities()
         for batch in _batches(identities, 64):
             texts = [_document(text) for _, _, text in batch]
-            embeddings = _embed_texts(texts)
+            embeddings = embed_texts(texts)
 
             for (source, slug, _), embedding in zip(batch, embeddings):
                 database.set_identity_embedding(source, slug, embedding)
@@ -35,14 +35,14 @@ def embed() -> None:
         appearances = database.get_unembedded_appearances()
         for batch in _batches(appearances, 64):
             texts = [_document(text, attributes) for _, _, text, attributes in batch]
-            embeddings = _embed_texts(texts)
+            embeddings = embed_texts(texts)
             for (source, slug, _, _), embedding in zip(batch, embeddings):
                 database.set_appearance_embedding(source, slug, embedding)
 
         previews = database.get_unembedded_previews()
         for batch in _batches(previews, 16):
             images = [Image.open(DATASET / path) for _, _, path in batch]
-            embeddings = _embed_images([_flatten(image) for image in images])
+            embeddings = embed_images([_flatten(image) for image in images])
 
             for image in images:
                 image.close()

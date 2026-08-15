@@ -18,7 +18,7 @@ TRANSFORMS = [
 ]
 
 
-def _normalize(texture: Image.Image) -> Image.Image:
+def normalized(texture: Image.Image) -> Image.Image:
     texture = texture.convert("RGBA")
 
     if texture.size == (64, 64):

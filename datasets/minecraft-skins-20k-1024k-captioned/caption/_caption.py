@@ -73,7 +73,7 @@ def _appearance_attributes(skin: dict[str, Any]) -> str:
     )
 
 
-def columns(skin: dict[str, Any]) -> dict[str, str]:
+def spread_caption_columns(skin: dict[str, Any]) -> dict[str, str]:
     return {
         "identity": _identity(skin),
         "identity_text": _identity_text(skin),

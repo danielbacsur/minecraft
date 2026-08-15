@@ -6,8 +6,8 @@ from _database import Database
 from _dataset import DATASET
 from _uuidv5 import uuidv5
 
-from ._multiview import _multiview
-from ._preview import _preview
+from ._multiview import multiview
+from ._preview import preview
 
 
 def _store(rendering: Image.Image, directory: str) -> str:
@@ -28,14 +28,14 @@ def render() -> None:
     with Database() as database:
         for source, slug, normalized_texture_path in database.get_unrendered_previews():
             with Image.open(DATASET / normalized_texture_path) as texture:
-                preview = _preview(texture)
+                preview_rendering = preview(texture)
 
-            preview_rendering_path = _store(preview, "preview_renderings")
+            preview_rendering_path = _store(preview_rendering, "preview_renderings")
             database.set_preview_rendering_path(source, slug, preview_rendering_path)
 
         for (source, slug, normalized_texture_path) in database.get_unrendered_multiviews():  # fmt: skip
             with Image.open(DATASET / normalized_texture_path) as texture:
-                multiview = _multiview(texture)
+                multiview_rendering = multiview(texture)
 
-            multiview_rendering_path = _store(multiview, "multiview_renderings")
+            multiview_rendering_path = _store(multiview_rendering, "multiview_renderings")  # fmt: skip
             database.set_multiview_rendering_path(source, slug, multiview_rendering_path)  # fmt: skip

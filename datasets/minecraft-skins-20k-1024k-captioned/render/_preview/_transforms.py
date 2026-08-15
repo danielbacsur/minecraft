@@ -88,7 +88,7 @@ SLIM_ARMS = [
 ]
 
 
-def _transforms(slim: bool) -> list[Transform]:
+def transforms(slim: bool) -> list[Transform]:
     return (
         HEAD_PORTRAIT + FRONT_VIEW + RIGHT_VIEW + BACK_VIEW + LEFT_VIEW +
         (SLIM_ARMS if slim else WIDE_ARMS)

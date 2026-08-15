@@ -1,4 +1,4 @@
-from ._multiview import _multiview
+from .multiview import multiview
 
 
-__all__ = ["_multiview"]
+__all__ = ["multiview"]

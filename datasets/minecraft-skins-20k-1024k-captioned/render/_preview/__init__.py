@@ -1,4 +1,4 @@
-from ._preview import _preview
+from .preview import preview
 
 
-__all__ = ["_preview"]
+__all__ = ["preview"]
