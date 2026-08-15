@@ -289,31 +289,6 @@ class Database(Connection):
             "multimodal_embedding": multimodal_embedding,
         })  # fmt: skip
 
-    def get_corpus(self) -> list[tuple]:
-        return self.execute("""
-            SELECT DISTINCT
-                id,
-
-                identity,
-                identity_text,
-                identity_names,
-                identity_keywords,
-                identity_embedding,
-
-                appearance,
-                appearance_text,
-                appearance_keywords,
-                appearance_attributes,
-                appearance_embedding,
-
-                multimodal_embedding
-            FROM skins
-            WHERE identity_embedding IS NOT NULL
-              AND appearance_embedding IS NOT NULL
-              AND multimodal_embedding IS NOT NULL
-            ORDER BY id
-        """).fetchall()
-
     def get_skins(self) -> list[tuple]:
         return self.execute("""
             SELECT * FROM skins ORDER BY source, slug
