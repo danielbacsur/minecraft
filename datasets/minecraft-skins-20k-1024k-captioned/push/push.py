@@ -92,4 +92,6 @@ def push() -> None:
         "multimodal_embedding": Sequence(Value("float32")),
     }))  # fmt: skip
 
-    dataset.push_to_hub("danielbacsur/minecraft-skins-20k-1024k-captioned")
+    dataset.push_to_hub(
+        "danielbacsur/minecraft-skins-20k-1024k-captioned", split="train"
+    )
