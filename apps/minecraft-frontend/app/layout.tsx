@@ -8,4 +8,4 @@ export default function Layout({ children }: LayoutProps<"/">) {
   );
 }
 
-export * from "./metadata";
+export { metadata } from "./metadata";

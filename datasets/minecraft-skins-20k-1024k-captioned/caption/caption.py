@@ -3,7 +3,8 @@ from pathlib import Path
 
 from _database import Database
 
-from ._transforms import columns
+from ._caption import spread_caption_columns
+
 
 CAPTIONS = Path(__file__).parent / "captions.jsonl"
 
@@ -13,4 +14,4 @@ def caption() -> None:
         for caption in captions:
             skin = loads(caption)
 
-            database.set_caption(skin["id"], **columns(skin))
+            database.set_caption(skin["id"], **spread_caption_columns(skin))

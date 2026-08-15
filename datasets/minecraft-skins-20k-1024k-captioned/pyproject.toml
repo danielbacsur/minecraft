@@ -7,6 +7,7 @@ dependencies = [
     "datasets>=4.0.0",
     "hishel[httpx]>=1.3.0",
     "pillow>=12.3.0",
+    "psycopg[binary]>=3.2.0",
     "selectolax>=0.4.11",
     "voyageai>=0.5.0",
 ]
@@ -18,6 +19,7 @@ render = "render:render"
 caption = "caption:caption"
 embed = "embed:embed"
 push = "push:push"
+index = "index:index"
 
 [build-system]
 requires = ["hatchling>=1.31,<2"]
@@ -31,7 +33,12 @@ packages = [
     "caption",
     "embed",
     "push",
+    "index",
     "_database.py",
     "_dataset.py",
     "_uuidv5.py",
 ]
+
+[tool.ruff.lint.isort]
+known-first-party = ["_database", "_dataset", "_uuidv5"]
+lines-after-imports = 2

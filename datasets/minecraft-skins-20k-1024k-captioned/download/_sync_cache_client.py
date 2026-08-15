@@ -3,7 +3,7 @@ from hishel.httpx import SyncCacheTransport
 from httpx import Client, HTTPTransport
 
 
-class SuccessfulResponsesOnly(BaseFilter[Response]):
+class _SuccessfulResponsesOnly(BaseFilter[Response]):
     def apply(self, item: Response, body: bytes | None) -> bool:
         return 200 <= item.status_code < 300
 
@@ -19,7 +19,7 @@ class SyncCacheClient(Client):
             "transport",
             SyncCacheTransport(
                 next_transport=HTTPTransport(retries=3),
-                policy=FilterPolicy(response_filters=[SuccessfulResponsesOnly()]),
+                policy=FilterPolicy(response_filters=[_SuccessfulResponsesOnly()]),
             ),
         )
 

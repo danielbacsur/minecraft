@@ -3,6 +3,7 @@ from typing import Literal
 
 from _dataset import DATASET
 
+
 DATABASE = DATASET / "database.db"
 
 

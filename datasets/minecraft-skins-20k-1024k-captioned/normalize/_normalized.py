@@ -1,6 +1,7 @@
 from PIL import Image
 from PIL.Image import Transpose
 
+
 TRANSFORMS = [
     (4, 16, 4, 4, 20, 48),
     (8, 16, 4, 4, 24, 48),
@@ -17,7 +18,7 @@ TRANSFORMS = [
 ]
 
 
-def _normalize(texture: Image.Image) -> Image.Image:
+def normalized(texture: Image.Image) -> Image.Image:
     texture = texture.convert("RGBA")
 
     if texture.size == (64, 64):
