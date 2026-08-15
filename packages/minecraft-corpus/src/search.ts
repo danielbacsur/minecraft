@@ -2,7 +2,7 @@ import { postgres, schema, sql } from "@minecraft/postgres";
 
 import { embedQuery, embedMultimodalQuery, rerank } from "./voyage";
 
-export type Candidate = {
+type Candidate = {
   id: string;
   document: string;
 };
