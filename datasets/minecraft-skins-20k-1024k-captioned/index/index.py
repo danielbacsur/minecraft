@@ -10,7 +10,7 @@ def _vector(embedding: bytes) -> str:
     return f"[{','.join(map(repr, unpack('<1024f', embedding)))}]"
 
 
-def sync() -> None:
+def index() -> None:
     with Database() as database:
         corpus = database.get_corpus()
 

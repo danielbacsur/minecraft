@@ -19,7 +19,7 @@ render = "render:render"
 caption = "caption:caption"
 embed = "embed:embed"
 push = "push:push"
-sync = "sync:sync"
+index = "index:index"
 
 [build-system]
 requires = ["hatchling>=1.31,<2"]
@@ -33,7 +33,7 @@ packages = [
     "caption",
     "embed",
     "push",
-    "sync",
+    "index",
     "_database.py",
     "_dataset.py",
     "_uuidv5.py",
