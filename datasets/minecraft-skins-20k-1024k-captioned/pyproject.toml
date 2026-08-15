@@ -39,3 +39,5 @@ packages = [
     "_uuidv5.py",
 ]
 
+[tool.ruff.lint.isort]
+known-first-party = ["_database", "_dataset", "_uuidv5"]
