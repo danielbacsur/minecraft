@@ -4,6 +4,7 @@ from struct import pack
 from PIL import Image
 from voyageai.client import Client
 
+
 _client = Client(max_retries=5)
 
 

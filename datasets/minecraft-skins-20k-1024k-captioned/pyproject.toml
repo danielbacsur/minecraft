@@ -41,3 +41,4 @@ packages = [
 
 [tool.ruff.lint.isort]
 known-first-party = ["_database", "_dataset", "_uuidv5"]
+lines-after-imports = 2

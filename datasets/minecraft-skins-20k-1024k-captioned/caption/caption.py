@@ -5,6 +5,7 @@ from _database import Database
 
 from ._transforms import columns
 
+
 CAPTIONS = Path(__file__).parent / "captions.jsonl"
 
 

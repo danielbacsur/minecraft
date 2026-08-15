@@ -1,6 +1,7 @@
 from PIL import Image
 from PIL.Image import Transpose
 
+
 TRANSFORMS = [
     (4, 16, 4, 4, 20, 48),
     (8, 16, 4, 4, 24, 48),
