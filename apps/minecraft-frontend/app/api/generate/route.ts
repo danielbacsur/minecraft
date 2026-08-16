@@ -4,10 +4,11 @@ import { z } from "zod";
 
 import { auth } from "@minecraft/auth/server";
 
+import { normalize } from "./_utils/normalize";
 import { translate } from "./_utils/translate";
 
 const Query = z.object({
-  query: z.string().min(1).max(1000),
+  query: z.string().max(1000).transform(normalize).pipe(z.string().min(1)),
 });
 
 export async function POST(request: NextRequest) {
