@@ -150,12 +150,12 @@ async function recall(text: string): Promise<Candidate[]> {
 }
 
 export async function search(
-  text: string,
+  query: string,
   options: SearchOptions = {},
 ): Promise<SearchResult[]> {
-  const { limit = 10 } = options;
+  const { limit = 1 } = options;
 
-  const trimmed = text.trim();
+  const trimmed = query.trim();
   if (!trimmed) return [];
 
   const candidates = await recall(trimmed);

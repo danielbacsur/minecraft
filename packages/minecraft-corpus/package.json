@@ -11,7 +11,7 @@
 
   "dependencies": {
     "@minecraft/postgres": "*",
-    "voyageai": "^0.4.0"
+    "voyageai": "0.4.0"
   },
 
   "devDependencies": {
