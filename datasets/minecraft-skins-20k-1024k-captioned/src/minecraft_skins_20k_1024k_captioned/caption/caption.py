@@ -1,8 +1,7 @@
 from json import loads
 from pathlib import Path
 
-from _database import Database
-
+from .._database import Database
 from ._caption import spread_caption_columns
 
 

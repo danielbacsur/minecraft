@@ -11,7 +11,7 @@ from tqdm import tqdm
 
 MANIFEST_URL = "https://piston-meta.mojang.com/mc/game/version_manifest_v2.json"
 RESOURCE_URL = "https://resources.download.minecraft.net"
-DOWNLOAD_DIR = Path(__file__).resolve().parents[2] / "resources"
+DOWNLOAD_DIR = Path(__file__).resolve().parents[3] / "resources"
 
 
 def _fetch(url: str, sha1: str | None = None) -> bytes:

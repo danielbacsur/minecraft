@@ -2,9 +2,8 @@ from collections.abc import Iterator
 
 from PIL import Image
 
-from _database import Database
-from _dataset import DATASET
-
+from .._database import Database
+from .._dataset import DATASET
 from ._voyage import embed_images, embed_texts
 
 

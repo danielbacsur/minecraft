@@ -1,7 +1,6 @@
-from _database import Database
-from _dataset import DATASET
-from _uuidv5 import uuidv5
-
+from .._database import Database
+from .._dataset import DATASET
+from .._uuidv5 import uuidv5
 from ._minecraftskins_net import get_skins_from_minecraftskins_net
 from ._sync_cache_client import SyncCacheClient
 

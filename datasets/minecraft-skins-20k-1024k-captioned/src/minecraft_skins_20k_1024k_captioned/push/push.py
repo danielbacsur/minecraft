@@ -2,8 +2,8 @@ from struct import unpack
 
 from datasets import Dataset, Features, Image, Sequence, Value
 
-from _database import Database
-from _dataset import DATASET
+from .._database import Database
+from .._dataset import DATASET
 
 
 def _image(path: str) -> str:

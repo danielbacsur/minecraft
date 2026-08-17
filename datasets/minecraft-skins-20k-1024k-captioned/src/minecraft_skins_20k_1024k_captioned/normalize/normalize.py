@@ -2,10 +2,9 @@ from io import BytesIO
 
 from PIL import Image
 
-from _database import Database
-from _dataset import DATASET
-from _uuidv5 import uuidv5
-
+from .._database import Database
+from .._dataset import DATASET
+from .._uuidv5 import uuidv5
 from ._normalized import normalized
 
 

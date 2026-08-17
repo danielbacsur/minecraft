@@ -1,7 +1,7 @@
 from sqlite3 import Connection
 from typing import Literal
 
-from _dataset import DATASET
+from ._dataset import DATASET
 
 
 DATABASE = DATASET / "database.db"

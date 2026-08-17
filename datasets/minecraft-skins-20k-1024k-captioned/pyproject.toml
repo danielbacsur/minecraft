@@ -13,34 +13,21 @@ dependencies = [
 ]
 
 [project.scripts]
-download = "download:download"
-normalize = "normalize:normalize"
-render = "render:render"
-caption = "caption:caption"
-embed = "embed:embed"
-push = "push:push"
-index = "index:index"
-sync = "sync:sync"
+download = "minecraft_skins_20k_1024k_captioned.download:download"
+normalize = "minecraft_skins_20k_1024k_captioned.normalize:normalize"
+render = "minecraft_skins_20k_1024k_captioned.render:render"
+caption = "minecraft_skins_20k_1024k_captioned.caption:caption"
+embed = "minecraft_skins_20k_1024k_captioned.embed:embed"
+push = "minecraft_skins_20k_1024k_captioned.push:push"
+index = "minecraft_skins_20k_1024k_captioned.index:index"
+sync = "minecraft_skins_20k_1024k_captioned.sync:sync"
 
 [build-system]
 requires = ["hatchling>=1.31,<2"]
 build-backend = "hatchling.build"
 
 [tool.hatch.build.targets.wheel]
-packages = [
-    "download",
-    "normalize",
-    "render",
-    "caption",
-    "embed",
-    "push",
-    "index",
-    "sync",
-    "_database.py",
-    "_dataset.py",
-    "_uuidv5.py",
-]
+packages = ["src/minecraft_skins_20k_1024k_captioned"]
 
 [tool.ruff.lint.isort]
-known-first-party = ["_database", "_dataset", "_uuidv5"]
 lines-after-imports = 2
