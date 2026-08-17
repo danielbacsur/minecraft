@@ -29,7 +29,7 @@ def _json(url: str):
 
 
 def _save(item: tuple[str, dict]) -> None:
-    destination, sha1 = DOWNLOAD_DIR / "assets" / item[0], item[1]["hash"]
+    destination, sha1 = DOWNLOAD_DIR / "client" / item[0], item[1]["hash"]
 
     if destination.is_file() and hashlib.sha1(destination.read_bytes()).hexdigest() == sha1:  # fmt: skip
         return
@@ -39,6 +39,22 @@ def _save(item: tuple[str, dict]) -> None:
     destination.write_bytes(data)
 
 
+def _unpack(archive: ZipFile, prefix: str, directory: str) -> None:
+    for name in archive.namelist():
+        if not name.startswith(prefix) or name.endswith("/"):
+            continue
+
+        destination = DOWNLOAD_DIR / directory / name.removeprefix(prefix)
+        destination.parent.mkdir(parents=True, exist_ok=True)
+        destination.write_bytes(archive.read(name))
+
+
+def _bundled(archive: ZipFile) -> ZipFile:
+    name = next(n for n in archive.namelist() if n.startswith("META-INF/versions/") and n.endswith(".jar"))  # fmt: skip
+
+    return ZipFile(io.BytesIO(archive.read(name)))
+
+
 def download() -> None:
     manifest = _json(MANIFEST_URL)
     release = manifest["latest"]["release"]
@@ -46,9 +62,15 @@ def download() -> None:
 
     client = version["downloads"]["client"]
     with ZipFile(io.BytesIO(_fetch(client["url"], client["sha1"]))) as archive:
-        archive.extractall(
-            DOWNLOAD_DIR, [n for n in archive.namelist() if n.startswith("assets/")]
-        )
+        _unpack(archive, "assets/", "client")
+        (DOWNLOAD_DIR / "version.json").write_bytes(archive.read("version.json"))
+
+    server = version["downloads"]["server"]
+    with (
+        ZipFile(io.BytesIO(_fetch(server["url"], server["sha1"]))) as archive,
+        _bundled(archive) as bundled,
+    ):
+        _unpack(bundled, "data/", "server")
 
     objects = _json(version["assetIndex"]["url"])["objects"]
     with ThreadPoolExecutor(max_workers=128) as executor:
