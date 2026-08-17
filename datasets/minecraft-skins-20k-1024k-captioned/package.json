@@ -1,0 +1,16 @@
+{
+  "name": "@minecraft/skins-20k-1024k-captioned",
+  "version": "0.0.0",
+  "private": true,
+
+  "scripts": {
+    "download": "uv run --package minecraft-skins-20k-1024k-captioned download",
+    "normalize": "uv run --package minecraft-skins-20k-1024k-captioned normalize",
+    "render": "uv run --package minecraft-skins-20k-1024k-captioned render",
+    "caption": "uv run --package minecraft-skins-20k-1024k-captioned caption",
+    "embed": "uv run --package minecraft-skins-20k-1024k-captioned embed",
+    "push": "uv run --package minecraft-skins-20k-1024k-captioned push",
+    "index": "uv run --package minecraft-skins-20k-1024k-captioned index",
+    "sync": "uv run --package minecraft-skins-20k-1024k-captioned sync"
+  }
+}
