@@ -6,6 +6,7 @@ import { auth } from "@minecraft/auth/server";
 import { search } from "@minecraft/corpus";
 
 import { normalize } from "./_utils/normalize";
+import { simulate } from "./_utils/simulate";
 import { texture } from "./_utils/texture";
 import { translate } from "./_utils/translate";
 
@@ -33,11 +34,11 @@ export async function POST(request: NextRequest) {
     return Response.json({ error: "Not Found" }, { status: 404 });
   }
 
-  const png = await texture(first.id);
+  const stream = simulate(await texture(first.id));
 
-  return new Response(png, {
+  return new Response(stream, {
     headers: {
-      "Content-Type": "image/png",
+      "Content-Type": "text/plain; charset=utf-8",
       "Cache-Control": "no-cache, no-transform",
     },
   });
