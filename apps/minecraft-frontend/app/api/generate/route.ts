@@ -2,7 +2,7 @@ import type { NextRequest } from "next/server";
 
 import { z } from "zod";
 
-import { auth } from "@minecraft/auth/server";
+// import { auth } from "@minecraft/auth/server";
 import { search } from "@minecraft/corpus";
 
 import { normalize } from "./_utils/normalize";
@@ -15,11 +15,11 @@ const Query = z.object({
 });
 
 export async function POST(request: NextRequest) {
-  const session = await auth.api.getSession({ headers: request.headers });
+  // const session = await auth.api.getSession({ headers: request.headers });
 
-  if (!session) {
-    return Response.json({ error: "Unauthorized" }, { status: 401 });
-  }
+  // if (!session) {
+  //   return Response.json({ error: "Unauthorized" }, { status: 401 });
+  // }
 
   const parsed = Query.safeParse(await request.json().catch(() => null));
 
