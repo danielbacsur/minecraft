@@ -6,6 +6,7 @@ import { auth } from "@minecraft/auth/server";
 import { search } from "@minecraft/corpus";
 
 import { normalize } from "./_utils/normalize";
+import { texture } from "./_utils/texture";
 import { translate } from "./_utils/translate";
 
 const Query = z.object({
@@ -32,5 +33,12 @@ export async function POST(request: NextRequest) {
     return Response.json({ error: "Not Found" }, { status: 404 });
   }
 
-  return Response.json({ id: first.id });
+  const png = await texture(first.id);
+
+  return new Response(png, {
+    headers: {
+      "Content-Type": "image/png",
+      "Cache-Control": "no-cache, no-transform",
+    },
+  });
 }
