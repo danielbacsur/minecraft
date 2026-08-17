@@ -3,6 +3,7 @@ import type { NextRequest } from "next/server";
 import { z } from "zod";
 
 import { auth } from "@minecraft/auth/server";
+import { search } from "@minecraft/corpus";
 
 import { normalize } from "./_utils/normalize";
 import { translate } from "./_utils/translate";
@@ -25,6 +26,11 @@ export async function POST(request: NextRequest) {
   }
 
   const english = await translate(parsed.data.query);
+  const [first] = await search(english, { limit: 1 });
 
-  return Response.json({ english });
+  if (!first) {
+    return Response.json({ error: "Not Found" }, { status: 404 });
+  }
+
+  return Response.json({ id: first.id });
 }
