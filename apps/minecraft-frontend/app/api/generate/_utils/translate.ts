@@ -1,4 +1,11 @@
+import { Cache } from "./cache";
+
+const cache = new Cache<string>("translate");
+
 export async function translate(text: string) {
+  const cached = await cache.get(text);
+  if (cached !== undefined) return cached;
+
   const url = new URL(
     `https://translation.googleapis.com/language/translate/v2?${new URLSearchParams(
       { key: process.env.GOOGLE_TRANSLATE_API_KEY as string },
@@ -15,5 +22,8 @@ export async function translate(text: string) {
 
   const { data } = await response.json();
 
-  return data.translations[0].translatedText as string;
+  const translation = data.translations[0].translatedText as string;
+
+  await cache.set(text, translation);
+  return translation;
 }
