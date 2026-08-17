@@ -1,0 +1,9 @@
+{
+  "name": "@minecraft/resources",
+  "version": "0.0.0",
+  "private": true,
+
+  "scripts": {
+    "download": "uv run --package minecraft-resources download"
+  }
+}

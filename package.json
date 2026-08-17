@@ -34,8 +34,10 @@
 
   "workspaces": [
     "apps/minecraft-frontend",
+    "datasets/minecraft-skins-20k-1024k-captioned",
     "packages/minecraft-auth",
     "packages/minecraft-corpus",
-    "packages/minecraft-postgres"
+    "packages/minecraft-postgres",
+    "packages/minecraft-resources"
   ]
 }

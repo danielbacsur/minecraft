@@ -2,9 +2,12 @@ import type { NextRequest } from "next/server";
 
 import { z } from "zod";
 
-import { auth } from "@minecraft/auth/server";
+// import { auth } from "@minecraft/auth/server";
+import { search } from "@minecraft/corpus";
 
 import { normalize } from "./_utils/normalize";
+import { simulate } from "./_utils/simulate";
+import { texture } from "./_utils/texture";
 import { translate } from "./_utils/translate";
 
 const Query = z.object({
@@ -12,11 +15,11 @@ const Query = z.object({
 });
 
 export async function POST(request: NextRequest) {
-  const session = await auth.api.getSession({ headers: request.headers });
+  // const session = await auth.api.getSession({ headers: request.headers });
 
-  if (!session) {
-    return Response.json({ error: "Unauthorized" }, { status: 401 });
-  }
+  // if (!session) {
+  //   return Response.json({ error: "Unauthorized" }, { status: 401 });
+  // }
 
   const parsed = Query.safeParse(await request.json().catch(() => null));
 
@@ -25,6 +28,18 @@ export async function POST(request: NextRequest) {
   }
 
   const english = await translate(parsed.data.query);
+  const [first] = await search(english, { limit: 1 });
 
-  return Response.json({ english });
+  if (!first) {
+    return Response.json({ error: "Not Found" }, { status: 404 });
+  }
+
+  const stream = simulate(await texture(first.id));
+
+  return new Response(stream, {
+    headers: {
+      "Content-Type": "text/plain; charset=utf-8",
+      "Cache-Control": "no-cache, no-transform",
+    },
+  });
 }
