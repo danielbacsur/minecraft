@@ -1,2 +1,5 @@
 [tool.uv.workspace]
-members = ["datasets/minecraft-skins-20k-1024k-captioned"]
+members = [
+  "datasets/minecraft-skins-20k-1024k-captioned",
+  "packages/minecraft-resources",
+]
