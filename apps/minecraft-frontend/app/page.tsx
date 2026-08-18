@@ -7,6 +7,7 @@ import * as THREE from "three";
 import { Backdrop, HORIZON } from "./_components/scene/backdrop";
 import { CAMERA, CameraControls, FOCUS } from "./_components/scene/camera";
 import { Character, DEFAULT_SKIN } from "./_components/scene/character";
+import { Ground } from "./_components/scene/ground";
 import { Environment } from "./_components/scene/environment";
 
 export default function Page() {
@@ -25,6 +26,7 @@ export default function Page() {
         <fogExp2 attach="fog" args={[HORIZON, 0.016]} />
 
         <Backdrop />
+        <Ground />
         <Environment />
 
         <Suspense fallback={null}>
