@@ -1,9 +1,11 @@
 "use client";
 
+import { Suspense } from "react";
 import { Canvas } from "@react-three/fiber";
 import * as THREE from "three";
 
 import { Backdrop, HORIZON } from "./_components/scene/backdrop";
+import { Character, DEFAULT_SKIN } from "./_components/scene/character";
 import { Environment } from "./_components/scene/environment";
 
 export default function Page() {
@@ -22,6 +24,11 @@ export default function Page() {
 
         <Backdrop />
         <Environment />
+
+        <Suspense fallback={null}>
+          <Character skin={DEFAULT_SKIN} />
+        </Suspense>
+
       </Canvas>
     </div>
   );
