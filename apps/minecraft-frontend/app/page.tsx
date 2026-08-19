@@ -9,6 +9,7 @@ import { CAMERA, CameraControls, FOCUS } from "./_components/scene/camera";
 import { Character, DEFAULT_SKIN } from "./_components/scene/character";
 import { Ground } from "./_components/scene/ground";
 import { Environment } from "./_components/scene/environment";
+import { World } from "./_components/scene/world";
 
 export default function Page() {
   return (
@@ -28,6 +29,10 @@ export default function Page() {
         <Backdrop />
         <Ground />
         <Environment />
+
+        <Suspense fallback={null}>
+          <World />
+        </Suspense>
 
         <Suspense fallback={null}>
           <Character skin={DEFAULT_SKIN} />
