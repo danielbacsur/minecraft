@@ -6,6 +6,7 @@ import * as THREE from "three";
 
 import { normal, quads, type Quad } from "./quads";
 import type { Placement } from "./scatter";
+import { shadow } from "./shadow";
 import { tint } from "./tint";
 
 const TEXTURES = "/resources/client/minecraft/textures";
@@ -85,6 +86,7 @@ export function Field({ block, at }: { block: string; at: readonly Placement[] }
     groups.map(([texture]) => `${TEXTURES}/${texture}.png`),
     (loaded) => [loaded].flat().forEach(pixelate),
   );
+  const cast = shadow(at, faces);
 
   return (
     <>
@@ -99,6 +101,12 @@ export function Field({ block, at }: { block: string; at: readonly Placement[] }
           />
         </mesh>
       ))}
+
+      {cast.index!.count > 0 && (
+        <mesh geometry={cast} renderOrder={2}>
+          <meshBasicMaterial color="#2f4a58" vertexColors transparent depthWrite={false} />
+        </mesh>
+      )}
     </>
   );
 }
