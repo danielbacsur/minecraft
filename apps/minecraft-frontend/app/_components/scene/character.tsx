@@ -112,11 +112,21 @@ function createPlayer(texture: THREE.Texture, slim: boolean) {
     overlayV: number,
     pivot: [number, number],
     place: [number, number, number],
+    join = false,
   ) => {
+    const centre = place[0] + pivot[0];
+
+    const part = (w: number, h: number, d: number, tu: number, tv: number, material: THREE.Material) => {
+      const inset = join ? Math.max(w / 2 - Math.abs(centre), 0) : 0;
+      const mesh = new THREE.Mesh(box(w - inset, h, d, tu, tv, width, 12, 4), material);
+      mesh.position.x = (Math.sign(centre) * inset) / 2;
+      return mesh;
+    };
+
     const joint = new THREE.Group();
     joint.add(
-      new THREE.Mesh(box(width, 12, 4, u, v), innerLimb),
-      new THREE.Mesh(box(width + 0.5, 12.5, 4.5, overlayU, overlayV, width, 12, 4), outerLimb),
+      part(width, 12, 4, u, v, innerLimb),
+      part(width + 0.5, 12.5, 4.5, overlayU, overlayV, outerLimb),
     );
     joint.position.set(pivot[0], pivot[1], 0);
 
@@ -130,8 +140,8 @@ function createPlayer(texture: THREE.Texture, slim: boolean) {
   const offsetX = slim ? 0.5 : 1;
   const rightArm = limb(arm, 40, 16, 40, 32, [-offsetX, -4], [-5, -2, 0]);
   const leftArm = limb(arm, 32, 48, 48, 48, [offsetX, -4], [5, -2, 0]);
-  limb(4, 0, 16, 0, 32, [0, -6], [-1.9, -12, -0.1]);
-  limb(4, 16, 48, 0, 48, [0, -6], [1.9, -12, -0.1]);
+  limb(4, 0, 16, 0, 32, [0, -6], [-2, -12, -0.1], true);
+  limb(4, 16, 48, 0, 48, [0, -6], [2, -12, -0.1], true);
 
   return {
     root,
