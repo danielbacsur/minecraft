@@ -9,12 +9,14 @@ import { CAMERA, CameraControls, FOCUS } from "./_components/scene/camera";
 import { Character, DEFAULT_SKIN } from "./_components/scene/character";
 import { Ground } from "./_components/scene/ground";
 import { Environment } from "./_components/scene/environment";
+import { DPR, PerformanceMonitor } from "./_components/scene/performance";
+import { World } from "./_components/scene/world";
 
 export default function Page() {
   return (
     <div className="relative h-dvh w-full touch-none overflow-hidden bg-[#e3edf2]">
       <Canvas
-        dpr={[1, 2]}
+        dpr={DPR}
         camera={CAMERA}
         gl={{
           antialias: true,
@@ -30,10 +32,15 @@ export default function Page() {
         <Environment />
 
         <Suspense fallback={null}>
+          <World />
+        </Suspense>
+
+        <Suspense fallback={null}>
           <Character skin={DEFAULT_SKIN} />
         </Suspense>
 
         <CameraControls />
+        <PerformanceMonitor />
       </Canvas>
     </div>
   );

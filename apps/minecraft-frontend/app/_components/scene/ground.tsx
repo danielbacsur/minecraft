@@ -8,14 +8,15 @@ export function Ground() {
       <Grid
         position={[0, -0.005, 0]}
         renderOrder={1}
+        args={[2.5, 2.5]}
         cellSize={1}
         cellThickness={0.5}
         cellColor="#c2d3dc"
         sectionSize={16}
         sectionThickness={1}
         sectionColor="#8aa7b8"
-        fadeDistance={60}
-        fadeStrength={1}
+        fadeDistance={120}
+        fadeStrength={2.5}
         infiniteGrid
       />
 
