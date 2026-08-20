@@ -1,233 +1,196 @@
 "use client";
 
-import { use, useEffect, useRef } from "react";
+import {
+  useEffect,
+  useImperativeHandle,
+  useRef,
+  useState,
+  type Ref,
+} from "react";
 import { useFrame } from "@react-three/fiber";
 import * as THREE from "three";
 
 const PIXEL = 0.9375 / 16;
 const FEET = 24;
 const SKIN = 64;
-const TPS = 20;
+const REST = Math.PI * 0.02;
+const REGIONS = [
+  [50, 16, 2, 4],
+  [54, 20, 2, 12],
+  [42, 48, 2, 4],
+  [46, 52, 2, 12],
+];
 
-export const DEFAULT_SKIN =
-  "/resources/client/minecraft/textures/entity/player/wide/steve.png";
+export type CharacterRef = { paint: (source: CanvasImageSource) => void };
 
-function unwrap(
-  box: THREE.BoxGeometry,
-  u: number,
-  v: number,
-  width: number,
-  height: number,
-  depth: number,
-) {
-  const face = (x1: number, y1: number, x2: number, y2: number) =>
-    [
-      [x1 / SKIN, 1 - y2 / SKIN],
-      [x2 / SKIN, 1 - y2 / SKIN],
-      [x2 / SKIN, 1 - y1 / SKIN],
-      [x1 / SKIN, 1 - y1 / SKIN],
-    ] as [number, number][];
+type Joint = {
+  w: number; h: number; d: number;
+  u: number; v: number; s: number; t: number;
+  x: number; y: number; i: number; j: number;
+  ref: Ref<THREE.Group>;
+}; // prettier-ignore
 
-  const top = face(u + depth, v, u + width + depth, v + depth);
-  const bottom = face(u + width + depth, v, u + width * 2 + depth, v + depth);
-  const left = face(u, v + depth, u + depth, v + depth + height);
-  const front = face(u + depth, v + depth, u + width + depth, v + depth + height);
-  const right = face(u + width + depth, v + depth, u + width + depth * 2, v + height + depth);
-  const back = face(u + width + depth * 2, v + depth, u + width * 2 + depth * 2, v + height + depth);
+export function Character({ ref }: { ref?: Ref<CharacterRef> }) {
+  const head = useRef<THREE.Group>(null);
+  const body = useRef<THREE.Group>(null);
+  const rightArm = useRef<THREE.Group>(null);
+  const leftArm = useRef<THREE.Group>(null);
+  const rightLeg = useRef<THREE.Group>(null);
+  const leftLeg = useRef<THREE.Group>(null);
+  const [slim, setSlim] = useState(false);
 
-  const ordered = [
-    [right[3], right[2], right[0], right[1]],
-    [left[3], left[2], left[0], left[1]],
-    [top[3], top[2], top[0], top[1]],
-    [bottom[0], bottom[1], bottom[3], bottom[2]],
-    [front[3], front[2], front[0], front[1]],
-    [back[3], back[2], back[0], back[1]],
-  ];
+  const canvas = document.createElement("canvas");
+  canvas.width = canvas.height = SKIN;
 
-  const attribute = box.attributes.uv as THREE.BufferAttribute;
-  attribute.set(new Float32Array(ordered.flat(2)));
-  attribute.needsUpdate = true;
-}
-
-function createPlayer(texture: THREE.Texture, slim: boolean) {
-  const shared = { map: texture, roughness: 0.78, metalness: 0, envMapIntensity: 1.15 };
-  const inner = new THREE.MeshStandardMaterial({ ...shared, side: THREE.FrontSide });
-  const outer = new THREE.MeshStandardMaterial({
-    ...shared,
-    side: THREE.DoubleSide,
-    transparent: true,
-    alphaTest: 1e-5,
-  });
-
-  const offset = (material: THREE.MeshStandardMaterial) => {
-    const clone = material.clone();
-    clone.polygonOffset = true;
-    clone.polygonOffsetFactor = 1;
-    clone.polygonOffsetUnits = 1;
-    return clone;
-  };
-
-  const innerLimb = offset(inner);
-  const outerLimb = offset(outer);
-
-  const geometries: THREE.BufferGeometry[] = [];
-  const materials = [inner, outer, innerLimb, outerLimb];
-
-  const box = (
-    width: number,
-    height: number,
-    depth: number,
-    u: number,
-    v: number,
-    uvWidth = width,
-    uvHeight = height,
-    uvDepth = depth,
-  ) => {
-    const geometry = new THREE.BoxGeometry(width, height, depth);
-    unwrap(geometry, u, v, uvWidth, uvHeight, uvDepth);
-    geometries.push(geometry);
-    return geometry;
-  };
-
-  const at = (mesh: THREE.Mesh, y: number) => {
-    mesh.position.y = y;
-    return mesh;
-  };
-
-  const root = new THREE.Group();
-  const arm = slim ? 3 : 4;
-
-  root.add(
-    at(new THREE.Mesh(box(8, 8, 8, 0, 0), inner), 4),
-    at(new THREE.Mesh(box(9, 9, 9, 32, 0, 8, 8, 8), outer), 4),
-    at(new THREE.Mesh(box(8, 12, 4, 16, 16), inner), -6),
-    at(new THREE.Mesh(box(8.5, 12.5, 4.5, 16, 32, 8, 12, 4), outer), -6),
-  );
-
-  const limb = (
-    width: number,
-    u: number,
-    v: number,
-    overlayU: number,
-    overlayV: number,
-    pivot: [number, number],
-    place: [number, number, number],
-    join = false,
-  ) => {
-    const centre = place[0] + pivot[0];
-
-    const part = (w: number, h: number, d: number, tu: number, tv: number, material: THREE.Material) => {
-      const inset = join ? Math.max(w / 2 - Math.abs(centre), 0) : 0;
-      const mesh = new THREE.Mesh(box(w - inset, h, d, tu, tv, width, 12, 4), material);
-      mesh.position.x = (Math.sign(centre) * inset) / 2;
-      return mesh;
-    };
-
-    const joint = new THREE.Group();
-    joint.add(
-      part(width, 12, 4, u, v, innerLimb),
-      part(width + 0.5, 12.5, 4.5, overlayU, overlayV, outerLimb),
-    );
-    joint.position.set(pivot[0], pivot[1], 0);
-
-    const group = new THREE.Group();
-    group.add(joint);
-    group.position.set(...place);
-    root.add(group);
-    return group;
-  };
-
-  const offsetX = slim ? 0.5 : 1;
-  const rightArm = limb(arm, 40, 16, 40, 32, [-offsetX, -4], [-5, -2, 0]);
-  const leftArm = limb(arm, 32, 48, 48, 48, [offsetX, -4], [5, -2, 0]);
-  limb(4, 0, 16, 0, 32, [0, -6], [-2, -12, -0.1], true);
-  limb(4, 16, 48, 0, 48, [0, -6], [2, -12, -0.1], true);
-
-  return {
-    root,
-    rightArm,
-    leftArm,
-    dispose: () => {
-      for (const geometry of geometries) geometry.dispose();
-      for (const material of materials) material.dispose();
-    },
-  };
-}
-
-function inferSlim(canvas: HTMLCanvasElement): boolean {
-  const scale = canvas.width / SKIN;
   const context = canvas.getContext("2d", { willReadFrequently: true })!;
 
-  const transparent = (x: number, y: number, w: number, h: number) => {
-    const { data } = context.getImageData(x * scale, y * scale, w * scale, h * scale);
-    for (let i = 3; i < data.length; i += 4) if (data[i] !== 255) return true;
-    return false;
+  const texture = new THREE.CanvasTexture(canvas);
+  texture.colorSpace = THREE.SRGBColorSpace;
+  texture.magFilter = THREE.NearestFilter;
+  texture.minFilter = THREE.NearestFilter;
+  texture.generateMipmaps = false;
+
+  const inner = new THREE.MeshStandardMaterial();
+  inner.map = texture;
+  inner.roughness = 0.78;
+  inner.envMapIntensity = 1.15;
+
+  const outer = inner.clone();
+  outer.side = THREE.DoubleSide;
+  outer.transparent = true;
+  outer.alphaTest = 1e-5;
+
+  const innerLimb = inner.clone();
+  innerLimb.polygonOffset = true;
+  innerLimb.polygonOffsetFactor = 1;
+  innerLimb.polygonOffsetUnits = 2;
+
+  const outerLimb = outer.clone();
+  outerLimb.polygonOffset = true;
+  outerLimb.polygonOffsetFactor = 1;
+  outerLimb.polygonOffsetUnits = 1;
+
+  const paint = (source: CanvasImageSource) => {
+    context.clearRect(0, 0, SKIN, SKIN);
+    context.drawImage(source, 0, 0, SKIN, SKIN);
+    texture.needsUpdate = true;
+
+    const getPixels = (x: number, y: number, w: number, h: number) =>
+      context.getImageData(x, y, w, h).data;
+
+    const hasAlpha = (pixels: Uint8ClampedArray) =>
+      pixels.some((value, i) => i % 4 === 3 && value > 0);
+
+    const hasTransparency = (pixels: Uint8ClampedArray) =>
+      pixels.some((value, i) => i % 4 === 3 && value < 255);
+
+    const isSolidBlack = (pixels: Uint8ClampedArray) =>
+      pixels.every((value, i) => value === (i % 4 === 3 ? 255 : 0));
+
+    const isSolidWhite = (pixels: Uint8ClampedArray) =>
+      pixels.every((value) => value === 255);
+
+    const regions = REGIONS.map(([x, y, w, h]) => getPixels(x, y, w, h));
+
+    // prettier-ignore
+    const isSlim = hasAlpha(getPixels(44, 20, 2, 12)) && (
+      regions.some(hasTransparency) ||
+      regions.every(isSolidBlack) ||
+      regions.every(isSolidWhite)
+    );
+
+    setSlim(isSlim);
   };
 
-  return (
-    transparent(50, 16, 2, 4) ||
-    transparent(54, 20, 2, 12) ||
-    transparent(42, 48, 2, 4) ||
-    transparent(46, 52, 2, 12)
-  );
-}
+  useImperativeHandle(ref, () => ({ paint }));
 
-type Skin = { texture: THREE.Texture; slim: boolean };
-
-const cache = new Map<string, Promise<Skin>>();
-
-function loadSkin(url: string): Promise<Skin> {
-  let skin = cache.get(url);
-  if (skin) return skin;
-
-  skin = new Promise<Skin>((resolve, reject) => {
+  useEffect(() => {
     const image = new Image();
-    image.crossOrigin = "anonymous";
+    image.onload = () => paint(image);
+    image.src = "/resources/client/minecraft/textures/entity/player/wide/steve.png"; // prettier-ignore
 
-    image.onload = () => {
-      const canvas = document.createElement("canvas");
-      canvas.width = image.width;
-      canvas.height = image.height;
-      canvas.getContext("2d", { willReadFrequently: true })!.drawImage(image, 0, 0);
-
-      const texture = new THREE.CanvasTexture(canvas);
-      texture.colorSpace = THREE.SRGBColorSpace;
-      texture.magFilter = THREE.NearestFilter;
-      texture.minFilter = THREE.NearestFilter;
-      texture.generateMipmaps = false;
-      texture.needsUpdate = true;
-
-      resolve({ texture, slim: inferSlim(canvas) });
+    return () => {
+      image.onload = null;
     };
+  }, [texture]);
 
-    image.onerror = () => reject(new Error(`could not load the skin at ${url}`));
-    image.src = url;
+  useEffect(
+    () => () => {
+      for (const resource of [texture, inner, outer, innerLimb, outerLimb])
+        resource.dispose();
+    },
+    [texture],
+  );
+
+  useFrame(({ clock }) => {
+    const time = clock.elapsedTime * 2;
+    rightArm.current!.rotation.z = Math.cos(time + Math.PI) * 0.03 - REST;
+    leftArm.current!.rotation.z = Math.cos(time) * 0.03 + REST;
   });
 
-  cache.set(url, skin);
-  return skin;
-}
+  const [arm, ax] = slim ? [3, 0.5] : [4, 1];
 
-export function Character({ skin: url }: { skin: string }) {
-  const skin = use(loadSkin(url));
-  const model = createPlayer(skin.texture, skin.slim);
-  const age = useRef(0);
-
-  useEffect(() => model.dispose, [model]);
-
-  useFrame((_, delta) => {
-    age.current += Math.min(delta, 0.1) * TPS;
-
-    const out = Math.cos(age.current * 0.09) * 0.05 + 0.05;
-    const forward = Math.sin(age.current * 0.067) * 0.05;
-
-    model.rightArm.rotation.set(forward, 0, -out);
-    model.leftArm.rotation.set(-forward, 0, out);
-  });
+  // prettier-ignore
+  const joints: Joint[] = [
+    { w: 8, h: 8, d: 8, u: 0, v: 0, s: 32, t: 0, x: 0, y: 0,  i: 0, j: 4, ref: head },
+    { w: 8, h: 12, d: 4, u: 16, v: 16, s: 16, t: 32, x: 0, y: 0, i: 0, j: -6, ref: body },
+    { w: arm, h: 12, d: 4, u: 40, v: 16, s: 40, t: 32, x: -5, y: -2, i: -ax, j: -4, ref: rightArm },
+    { w: arm, h: 12, d: 4, u: 32, v: 48, s: 48, t: 48, x: 5, y: -2, i: ax, j: -4, ref: leftArm },
+    { w: 4, h: 12, d: 4, u: 0, v: 16, s: 0, t: 32, x: -2, y: -12, i: 0, j: -6, ref: rightLeg },
+    { w: 4, h: 12, d: 4, u: 16, v: 48, s: 0, t: 48, x: 2, y: -12, i: 0, j: -6, ref: leftLeg },
+  ];
 
   return (
     <group position={[0, FEET * PIXEL, 0]} scale={PIXEL}>
-      <primitive object={model.root} />
+      {joints.map(({ w, h, d, u, v, s, t, x, y, i, j, ref }, key) => {
+        const inflate = j > 0 ? 1 : 0.5;
+        const centre = x + i;
+        const overhang = (w + inflate) / 2 - Math.abs(centre);
+        const clip = centre === 0 ? 0 : Math.max(0, overhang);
+
+        const geometry = (u: number, v: number) => {
+          const uv: number[] = [];
+
+          const face = (x1: number, y1: number, x2: number, y2: number) => {
+            uv.push(
+              x1 / SKIN, 1 - y1 / SKIN, x2 / SKIN, 1 - y1 / SKIN,
+              x1 / SKIN, 1 - y2 / SKIN, x2 / SKIN, 1 - y2 / SKIN,
+            ); // prettier-ignore
+          };
+
+          const [near, far] = [v + d, v + d + h];
+
+          face(u + w + d, near, u + w + d * 2, far);
+          face(u, near, u + d, far);
+          face(u + d, v, u + w + d, near);
+          face(u + w + d, near, u + w * 2 + d, v);
+          face(u + d, near, u + w + d, far);
+          face(u + w + d * 2, near, u + w * 2 + d * 2, far);
+
+          const box = new THREE.BoxGeometry(w, h, d);
+          box.setAttribute("uv", new THREE.Float32BufferAttribute(uv, 2));
+          return box;
+        };
+
+        const shell = geometry(s, t);
+        shell.scale((w + inflate - clip) / w, (h + inflate) / h, (d + inflate) / d); // prettier-ignore
+        shell.translate((Math.sign(centre) * clip) / 2, 0, 0);
+
+        return (
+          <group key={key} ref={ref} position={[x, y, 0]}>
+            <mesh
+              geometry={geometry(u, v)}
+              material={y ? innerLimb : inner}
+              position={[i, j, 0]}
+            />
+            <mesh
+              geometry={shell}
+              material={y ? outerLimb : outer}
+              position={[i, j, 0]}
+            />
+          </group>
+        );
+      })}
     </group>
   );
 }

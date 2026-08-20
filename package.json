@@ -18,17 +18,13 @@
   },
 
   "engines": {
-    "node": "^26"
+    "node": ">=24"
   },
 
   "devEngines": {
-    "runtime": {
-      "name": "node",
-      "version": "^26"
-    },
     "packageManager": {
       "name": "npm",
-      "version": "^12"
+      "version": "^11"
     }
   },
 
@@ -39,5 +35,9 @@
     "packages/minecraft-corpus",
     "packages/minecraft-postgres",
     "packages/minecraft-resources"
-  ]
+  ],
+
+  "allowScripts": {
+    "esbuild@0.25.12": true
+  }
 }
