@@ -9,6 +9,8 @@ const STEPS = 20;
 export function simulate(target: Buffer): ReadableStream<Uint8Array> {
   const encoder = new TextEncoder();
 
+  let cancelled = false;
+
   return new ReadableStream({
     async start(controller) {
       const enqueue = (frame: unknown) => {
@@ -39,24 +41,30 @@ export function simulate(target: Buffer): ReadableStream<Uint8Array> {
       let step = 0;
 
       for (let s = 0; s < STEPS; s++) {
+        if (cancelled) return;
+
         enqueue({
           step: step++,
           image: await render(s / (STEPS - 1), linear, alpha, null, inner),
         });
-
         await new Promise((resolve) => setTimeout(resolve, 100));
       }
 
       for (let s = 0; s < STEPS; s++) {
+        if (cancelled) return;
+
         enqueue({
           step: step++,
           image: await render(s / (STEPS - 1), linear, alpha, inner, outer),
         });
-
         await new Promise((resolve) => setTimeout(resolve, 100));
       }
 
       controller.close();
+    },
+
+    cancel() {
+      cancelled = true;
     },
   });
 }
