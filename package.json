@@ -39,5 +39,9 @@
     "packages/minecraft-corpus",
     "packages/minecraft-postgres",
     "packages/minecraft-resources"
-  ]
+  ],
+
+  "allowScripts": {
+    "esbuild@0.25.12": true
+  }
 }
