@@ -22,15 +22,9 @@
   },
 
   "devEngines": {
-    "runtime": {
-      "name": "node",
-      "version": "^26",
-      "onFail": "warn"
-    },
     "packageManager": {
       "name": "npm",
-      "version": "^12",
-      "onFail": "warn"
+      "version": "^11"
     }
   },
 
