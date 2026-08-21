@@ -1,0 +1,1 @@
+ALTER TABLE "auth"."users" ADD COLUMN "last_login_method" text;
