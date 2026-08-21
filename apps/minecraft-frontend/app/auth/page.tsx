@@ -11,11 +11,17 @@ const PROVIDERS = [
 ] as const;
 
 export default function Page() {
+  const [lastUsed, setLastUsed] = useState<string | null>(null);
   const [failed, setFailed] = useState(false);
 
   useEffect(() => {
+    setLastUsed(auth.getLastUsedLoginMethod());
     setFailed(new URLSearchParams(window.location.search).has("error"));
   }, []);
+
+  const ordered = [...PROVIDERS].sort(
+    (a, b) => Number(b.id === lastUsed) - Number(a.id === lastUsed),
+  );
 
   return (
     <main className="grid min-h-dvh place-items-center bg-[#e3edf2] px-4">
@@ -36,7 +42,7 @@ export default function Page() {
         )}
 
         <div className="mt-5 flex flex-col gap-2">
-          {PROVIDERS.map(({ id, label, Mark }) => (
+          {ordered.map(({ id, label, Mark }) => (
             <button
               key={id}
               type="button"
@@ -54,6 +60,12 @@ export default function Page() {
               </span>
 
               <span className="flex-1 text-left">Continue with {label}</span>
+
+              {id === lastUsed && (
+                <span className="rounded-full bg-white/60 px-2 py-1 text-[11px] tracking-[0.02em] text-[rgb(70_88_115/0.5)]">
+                  Last used
+                </span>
+              )}
             </button>
           ))}
         </div>
