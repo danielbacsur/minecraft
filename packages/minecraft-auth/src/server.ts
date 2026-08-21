@@ -1,7 +1,10 @@
+import { randomUUID } from "node:crypto";
+
 import { drizzleAdapter } from "@better-auth/drizzle-adapter";
 import { postgres, schema } from "@minecraft/postgres";
 import { betterAuth } from "better-auth";
 import { nextCookies, toNextJsHandler } from "better-auth/next-js";
+import { anonymous, lastLoginMethod } from "better-auth/plugins";
 
 export const auth = betterAuth({
   database: drizzleAdapter(postgres, {
@@ -36,7 +39,15 @@ export const auth = betterAuth({
     },
   },
 
-  plugins: [nextCookies()],
+  plugins: [
+    anonymous({
+      generateRandomEmail: () => `${randomUUID()}@anonymous.invalid`,
+    }),
+
+    lastLoginMethod({ storeInDatabase: true }),
+
+    nextCookies(),
+  ],
 });
 
 export const { GET, POST } = toNextJsHandler(auth);

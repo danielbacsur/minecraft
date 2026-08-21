@@ -18,6 +18,9 @@ export const users = auth.table("users", {
   emailVerified: boolean().default(false).notNull(),
   image: text(),
 
+  isAnonymous: boolean().default(false),
+  lastLoginMethod: text(),
+
   createdAt: timestamp().notNull().defaultNow(),
   updatedAt: timestamp().notNull().defaultNow().$onUpdate(() => new Date()),
 });
