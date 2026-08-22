@@ -1,5 +1,6 @@
 import type { NextRequest } from "next/server";
 
+import { isValidIP, normalizeIP } from "@better-auth/core/utils/ip";
 import { Ratelimit } from "@upstash/ratelimit";
 import { Redis } from "@upstash/redis";
 import { z } from "zod";
@@ -53,6 +54,16 @@ const perUser = new Ratelimit({
   prefix: "generate:user",
 });
 
+function ip(request: NextRequest) {
+  const hop =
+    request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ||
+    request.headers.get("x-real-ip")?.trim();
+
+  if (!hop || !isValidIP(hop)) return "unknown";
+
+  return normalizeIP(hop);
+}
+
 export const POST = withErrors(async (request: NextRequest) => {
   const session = await auth.api.getSession({ headers: request.headers });
 
@@ -64,7 +75,7 @@ export const POST = withErrors(async (request: NextRequest) => {
 
   const [overallLimit, perIpLimit, perUserLimit] = await Promise.all([
     overall.limit("all"),
-    perIp.limit(request.headers.get("x-forwarded-for") ?? "unknown"),
+    perIp.limit(ip(request)),
     perUser.limit(userId),
   ]);
 

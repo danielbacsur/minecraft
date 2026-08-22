@@ -9,6 +9,7 @@
   },
 
   "dependencies": {
+    "@better-auth/core": "1.6.26",
     "@minecraft/auth": "*",
     "@minecraft/corpus": "*",
     "@react-three/drei": "10.7.8",
