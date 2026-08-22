@@ -24,6 +24,7 @@ import {
 
 import { normalize } from "./_utils/normalize";
 import { simulate } from "./_utils/simulate";
+import { stream } from "./_utils/stream";
 import { texture } from "./_utils/texture";
 import { translate } from "./_utils/translate";
 
@@ -158,7 +159,7 @@ export const POST = withErrors(async (request: NextRequest) => {
     });
   }
 
-  return new Response(simulate(png), {
+  return new Response(stream(simulate(png)), {
     headers: {
       "Content-Type": "text/plain; charset=utf-8",
       "Cache-Control": "no-cache, no-transform",
