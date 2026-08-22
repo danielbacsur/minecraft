@@ -1,5 +1,7 @@
 import type { NextRequest } from "next/server";
 
+import { Ratelimit } from "@upstash/ratelimit";
+import { Redis } from "@upstash/redis";
 import { z } from "zod";
 
 import { auth } from "@minecraft/auth/server";
@@ -8,8 +10,10 @@ import { postgres, sql } from "@minecraft/postgres";
 
 import {
   BadRequest,
+  Capacity,
   NoMatch,
   QuotaExhausted,
+  RateLimited,
   SearchFailed,
   TextureMissing,
   TranslationFailed,
@@ -26,6 +30,29 @@ const Query = z.object({
   query: z.string().max(1000).transform(normalize).pipe(z.string().min(1)),
 });
 
+const redis = Redis.fromEnv();
+
+const overall = new Ratelimit({
+  redis,
+  limiter: Ratelimit.slidingWindow(300, "1 m"),
+  analytics: false,
+  prefix: "generate:all",
+});
+
+const perIp = new Ratelimit({
+  redis,
+  limiter: Ratelimit.slidingWindow(120, "1 m"),
+  analytics: false,
+  prefix: "generate:ip",
+});
+
+const perUser = new Ratelimit({
+  redis,
+  limiter: Ratelimit.slidingWindow(30, "1 m"),
+  analytics: false,
+  prefix: "generate:user",
+});
+
 export const POST = withErrors(async (request: NextRequest) => {
   const session = await auth.api.getSession({ headers: request.headers });
 
@@ -34,6 +61,34 @@ export const POST = withErrors(async (request: NextRequest) => {
   }
 
   const { id: userId, isAnonymous } = session.user;
+
+  const [overallLimit, perIpLimit, perUserLimit] = await Promise.all([
+    overall.limit("all"),
+    perIp.limit(request.headers.get("x-forwarded-for") ?? "unknown"),
+    perUser.limit(userId),
+  ]);
+
+  if (!overallLimit.success) {
+    throw new Capacity("Generation capacity is temporarily exhausted.");
+  }
+
+  if (!perIpLimit.success) {
+    throw new RateLimited("Request rate exceeded for this address.", {
+      retryAfter: Math.max(
+        1,
+        Math.ceil((perIpLimit.reset - Date.now()) / 1000),
+      ),
+    });
+  }
+
+  if (!perUserLimit.success) {
+    throw new RateLimited("Request rate exceeded for this account.", {
+      retryAfter: Math.max(
+        1,
+        Math.ceil((perUserLimit.reset - Date.now()) / 1000),
+      ),
+    });
+  }
 
   const body = Query.safeParse(await request.json().catch(() => null));
 
