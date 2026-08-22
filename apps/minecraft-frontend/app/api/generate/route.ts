@@ -4,10 +4,12 @@ import { z } from "zod";
 
 import { auth } from "@minecraft/auth/server";
 import { search } from "@minecraft/corpus";
+import { postgres, sql } from "@minecraft/postgres";
 
 import {
   BadRequest,
   NoMatch,
+  QuotaExhausted,
   SearchFailed,
   TextureMissing,
   TranslationFailed,
@@ -30,6 +32,8 @@ export const POST = withErrors(async (request: NextRequest) => {
   if (!session) {
     throw new Unauthenticated("Session could not be established.");
   }
+
+  const { id: userId, isAnonymous } = session.user;
 
   const body = Query.safeParse(await request.json().catch(() => null));
 
@@ -56,6 +60,37 @@ export const POST = withErrors(async (request: NextRequest) => {
       textureId: match.id,
     });
   });
+
+  const [, consumed] = await postgres.batch([
+    postgres.execute(
+      sql`SELECT pg_advisory_xact_lock(hashtextextended(${userId}::text, 0))`,
+    ),
+
+    postgres.execute(sql`
+      INSERT INTO app.generations (user_id, query, texture_id)
+      SELECT ${userId}::uuid, ${query}::text, ${match.id}::uuid
+      WHERE (
+        SELECT count(*) FROM app.generations
+        WHERE user_id = ${userId}::uuid
+          AND (
+            ${Boolean(isAnonymous)}::boolean
+            OR created_at >= greatest(
+                 date_trunc('day', now() AT TIME ZONE 'utc') AT TIME ZONE 'utc',
+                 (SELECT created_at AT TIME ZONE 'utc' FROM auth.users WHERE id = ${userId}::uuid)
+               )
+          )
+      ) < 3
+      RETURNING id
+    `),
+  ]);
+
+  const [generation] = consumed.rows;
+
+  if (!generation) {
+    throw new QuotaExhausted("Daily generation quota is already spent.", {
+      scope: isAnonymous ? "anonymous" : "free",
+    });
+  }
 
   return new Response(simulate(png), {
     headers: {
