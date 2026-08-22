@@ -1,8 +1,10 @@
 import {
   snakeCase,
+  bigint,
   text,
   timestamp,
   boolean,
+  integer,
   uuid,
   index,
 } from "drizzle-orm/pg-core";
@@ -82,3 +84,12 @@ export const verifications = auth.table("verifications", {
 }, (table) => [
   index().on(table.identifier)
 ]);
+
+// prettier-ignore
+export const rateLimits = auth.table("rate_limits", {
+  id: uuid().primaryKey().defaultRandom(),
+
+  key: text().notNull().unique(),
+  count: integer().notNull(),
+  lastRequest: bigint({ mode: "number" }).notNull(),
+});

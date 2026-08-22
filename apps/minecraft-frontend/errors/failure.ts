@@ -12,6 +12,7 @@ import {
   Internal,
   TranslationFailed,
   SearchFailed,
+  Capacity,
 } from "./errors";
 
 type Wire<E extends ApiError<object>> = {
@@ -32,6 +33,7 @@ export type Failure =
   | Wire<Internal>
   | Wire<TranslationFailed>
   | Wire<SearchFailed>
+  | Wire<Capacity>
   | { code: "NETWORK_FAILED"; message: string };
 
 export function failure(error: ApiError<object>): Failure {

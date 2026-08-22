@@ -71,3 +71,8 @@ export class SearchFailed extends ApiError {
   readonly code = "SEARCH_FAILED";
   readonly status = 502;
 }
+
+export class Capacity extends ApiError {
+  readonly code = "CAPACITY";
+  readonly status = 503;
+}

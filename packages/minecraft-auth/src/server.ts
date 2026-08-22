@@ -39,6 +39,13 @@ export const auth = betterAuth({
     },
   },
 
+  rateLimit: {
+    enabled: true,
+    storage: "database",
+    window: 60,
+    max: 100,
+  },
+
   plugins: [
     anonymous({
       generateRandomEmail: () => `${randomUUID()}@anonymous.invalid`,
