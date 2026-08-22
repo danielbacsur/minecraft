@@ -2,8 +2,18 @@ import type { NextRequest } from "next/server";
 
 import { z } from "zod";
 
-// import { auth } from "@minecraft/auth/server";
+import { auth } from "@minecraft/auth/server";
 import { search } from "@minecraft/corpus";
+
+import {
+  BadRequest,
+  NoMatch,
+  SearchFailed,
+  TextureMissing,
+  TranslationFailed,
+  Unauthenticated,
+  withErrors,
+} from "@/errors";
 
 import { normalize } from "./_utils/normalize";
 import { simulate } from "./_utils/simulate";
@@ -14,32 +24,43 @@ const Query = z.object({
   query: z.string().max(1000).transform(normalize).pipe(z.string().min(1)),
 });
 
-export async function POST(request: NextRequest) {
-  // const session = await auth.api.getSession({ headers: request.headers });
+export const POST = withErrors(async (request: NextRequest) => {
+  const session = await auth.api.getSession({ headers: request.headers });
 
-  // if (!session) {
-  //   return Response.json({ error: "Unauthorized" }, { status: 401 });
-  // }
-
-  const parsed = Query.safeParse(await request.json().catch(() => null));
-
-  if (!parsed.success) {
-    return Response.json({ error: "Bad Request" }, { status: 400 });
+  if (!session) {
+    throw new Unauthenticated("Session could not be established.");
   }
 
-  const english = await translate(parsed.data.query);
-  const [first] = await search(english, { limit: 1 });
+  const body = Query.safeParse(await request.json().catch(() => null));
 
-  if (!first) {
-    return Response.json({ error: "Not Found" }, { status: 404 });
+  if (!body.success) {
+    throw new BadRequest("Request body did not contain a usable query.");
   }
 
-  const stream = simulate(await texture(first.id));
+  const query = body.data.query;
 
-  return new Response(stream, {
+  const english = await translate(query).catch(() => {
+    throw new TranslationFailed("Prompt translation failed.");
+  });
+
+  const [match] = await search(english, { limit: 1 }).catch(() => {
+    throw new SearchFailed("Skin search failed.");
+  });
+
+  if (!match) {
+    throw new NoMatch("No skin matched the query.");
+  }
+
+  const png = await texture(match.id).catch(() => {
+    throw new TextureMissing("Texture could not be fetched from the corpus.", {
+      textureId: match.id,
+    });
+  });
+
+  return new Response(simulate(png), {
     headers: {
       "Content-Type": "text/plain; charset=utf-8",
       "Cache-Control": "no-cache, no-transform",
     },
   });
-}
+});
