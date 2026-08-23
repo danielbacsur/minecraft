@@ -110,6 +110,26 @@ export const POST = withErrors(async (request: NextRequest) => {
 
   const query = body.data.query;
 
+  const { rows } = await postgres.execute(sql`
+    SELECT (
+      SELECT count(*) FROM app.generations
+      WHERE user_id = ${userId}::uuid
+        AND (
+          ${Boolean(isAnonymous)}::boolean
+          OR created_at >= greatest(
+               date_trunc('day', now() AT TIME ZONE 'utc') AT TIME ZONE 'utc',
+               (SELECT created_at AT TIME ZONE 'utc' FROM auth.users WHERE id = ${userId}::uuid)
+             )
+        )
+    ) >= 3 AS exhausted
+  `);
+
+  if (rows[0].exhausted) {
+    throw new QuotaExhausted("Daily generation quota is already spent.", {
+      scope: isAnonymous ? "anonymous" : "free",
+    });
+  }
+
   const english = await translate(query).catch(() => {
     throw new TranslationFailed("Prompt translation failed.");
   });
@@ -154,9 +174,10 @@ export const POST = withErrors(async (request: NextRequest) => {
   const [generation] = consumed.rows;
 
   if (!generation) {
-    throw new QuotaExhausted("Daily generation quota is already spent.", {
-      scope: isAnonymous ? "anonymous" : "free",
-    });
+    throw new QuotaExhausted(
+      "Daily generation quota was spent by a concurrent request.",
+      { scope: isAnonymous ? "anonymous" : "free" },
+    );
   }
 
   return new Response(stream(simulate(png)), {
