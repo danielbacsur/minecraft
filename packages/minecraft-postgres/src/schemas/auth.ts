@@ -22,6 +22,7 @@ export const users = auth.table("users", {
 
   isAnonymous: boolean().default(false),
   lastLoginMethod: text(),
+  customerId: text().unique(),
 
   createdAt: timestamp().notNull().defaultNow(),
   updatedAt: timestamp().notNull().defaultNow().$onUpdate(() => new Date()),

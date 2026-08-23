@@ -1,10 +1,32 @@
 import { randomUUID } from "node:crypto";
 
 import { drizzleAdapter } from "@better-auth/drizzle-adapter";
-import { postgres, schema } from "@minecraft/postgres";
-import { betterAuth } from "better-auth";
+import { and, eq, postgres, schema } from "@minecraft/postgres";
+import { betterAuth, type BetterAuthOptions } from "better-auth";
 import { nextCookies, toNextJsHandler } from "better-auth/next-js";
-import { anonymous, lastLoginMethod } from "better-auth/plugins";
+import { anonymous, customSession, lastLoginMethod } from "better-auth/plugins";
+
+const options = {
+  user: {
+    additionalFields: {
+      customerId: { type: "string", required: false, input: false },
+    },
+  },
+
+  plugins: [
+    anonymous({
+      generateRandomEmail: () => `${randomUUID()}@anonymous.invalid`,
+      onLinkAccount: async ({ anonymousUser, newUser }) => {
+        await postgres
+          .update(schema.generations)
+          .set({ userId: newUser.user.id })
+          .where(eq(schema.generations.userId, anonymousUser.user.id));
+      },
+    }),
+
+    lastLoginMethod({ storeInDatabase: true }),
+  ],
+} satisfies BetterAuthOptions;
 
 export const auth = betterAuth({
   database: drizzleAdapter(postgres, {
@@ -33,6 +55,8 @@ export const auth = betterAuth({
     },
   },
 
+  user: options.user,
+
   advanced: {
     database: {
       generateId: "uuid",
@@ -47,11 +71,23 @@ export const auth = betterAuth({
   },
 
   plugins: [
-    anonymous({
-      generateRandomEmail: () => `${randomUUID()}@anonymous.invalid`,
-    }),
+    ...options.plugins,
 
-    lastLoginMethod({ storeInDatabase: true }),
+    customSession(async ({ session, user }) => {
+      if (user.isAnonymous) return { session, user, subscription: null };
+
+      const [subscription] = await postgres
+        .select()
+        .from(schema.subscriptions)
+        .where(
+          and(
+            eq(schema.subscriptions.userId, user.id),
+            eq(schema.subscriptions.status, "active"),
+          ),
+        );
+
+      return { session, user, subscription: subscription ?? null };
+    }, options),
 
     nextCookies(),
   ],

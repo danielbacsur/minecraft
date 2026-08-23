@@ -13,6 +13,7 @@ const config: NextConfig = {
     "@minecraft/auth",
     "@minecraft/corpus",
     "@minecraft/postgres",
+    "@minecraft/stripe",
   ],
 };
 

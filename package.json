@@ -34,7 +34,8 @@
     "packages/minecraft-auth",
     "packages/minecraft-corpus",
     "packages/minecraft-postgres",
-    "packages/minecraft-resources"
+    "packages/minecraft-resources",
+    "packages/minecraft-stripe"
   ],
 
   "allowScripts": {

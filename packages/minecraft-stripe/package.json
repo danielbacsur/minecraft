@@ -1,0 +1,24 @@
+{
+  "name": "@minecraft/stripe",
+  "version": "0.0.0",
+  "private": true,
+
+  "type": "module",
+
+  "exports": {
+    ".": "./src/index.ts"
+  },
+
+  "scripts": {
+    "dev": "stripe listen --forward-to http://localhost:3000/api/stripe/webhook"
+  },
+
+  "dependencies": {
+    "stripe": "22.5.0"
+  },
+
+  "devDependencies": {
+    "@types/node": "^20",
+    "typescript": "^5"
+  }
+}

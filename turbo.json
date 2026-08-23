@@ -26,6 +26,8 @@
         "MICROSOFT_CLIENT_SECRET",
         "POSTGRES_URL",
         "POSTGRES_URL_NON_POOLING",
+        "STRIPE_SECRET_KEY",
+        "STRIPE_WEBHOOK_SECRET",
         "VOYAGE_API_KEY"
       ]
     }
