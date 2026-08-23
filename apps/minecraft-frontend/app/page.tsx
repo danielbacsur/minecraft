@@ -1,9 +1,13 @@
 "use client";
 
-import { Suspense, useRef } from "react";
+import { Suspense, useRef, useState } from "react";
 import { Canvas } from "@react-three/fiber";
 import * as THREE from "three";
 
+import { auth } from "@minecraft/auth/react";
+
+import type { Failure } from "@/errors";
+import { generate } from "./_utils/generate";
 import { Prompt } from "./_components/prompt";
 import { Backdrop, HORIZON } from "./_components/scene/backdrop";
 import { CAMERA, CameraControls, FOCUS } from "./_components/scene/camera";
@@ -12,10 +16,61 @@ import { Ground } from "./_components/scene/ground";
 import { Environment } from "./_components/scene/environment";
 import { DPR, PerformanceMonitor } from "./_components/scene/performance";
 import { World } from "./_components/scene/world";
-import { generate } from "./_utils/generate";
+
+const COPY: Record<Failure["code"], string> = {
+  QUOTA_EXHAUSTED: "That is every skin you have for today.",
+  SUBSCRIPTION_REQUIRED: "Downloads are part of Unlimited.",
+  BAD_REQUEST: "Enter a description to make a skin.",
+  UNAUTHENTICATED: "Your session could not be started. Reload the page.",
+  NOT_FOUND: "That skin is not available.",
+  NO_MATCH: "No skin matched that description. Try different words.",
+  RATE_LIMITED: "Too many requests. Wait a moment before trying again.",
+  TEXTURE_MISSING: "That skin could not be loaded.",
+  RENDER_FAILED: "The skin could not be finished.",
+  INTERNAL: "Something went wrong. Try again.",
+  TRANSLATION_FAILED: "That description could not be read. Try again.",
+  SEARCH_FAILED: "Skin search is unavailable. Try again.",
+  CAPACITY: "The service is busy. Try again in a moment.",
+  NETWORK_FAILED: "The connection was lost. Try again.",
+};
 
 export default function Page() {
   const character = useRef<CharacterRef>(null);
+
+  const [failure, setFailure] = useState<Failure | null>(null);
+  const [last, setLast] = useState("");
+
+  async function run(prompt: string, retried: boolean): Promise<void> {
+    if (!character.current) return;
+
+    const result = await generate(prompt, character.current.paint);
+
+    if ("aborted" in result) return;
+
+    if (result.ok) {
+      setFailure(null);
+      return;
+    }
+
+    if (result.failure.code === "UNAUTHENTICATED" && !retried) {
+      await auth.signIn.anonymous().catch(() => {});
+      return run(prompt, true);
+    }
+
+    setFailure(result.failure);
+  }
+
+  function start(prompt: string) {
+    setLast(prompt);
+    setFailure(null);
+
+    run(prompt, false).catch(() =>
+      setFailure({
+        code: "INTERNAL",
+        message: "The generation request threw before completing.",
+      }),
+    );
+  }
 
   return (
     <div className="relative h-dvh w-full touch-none overflow-hidden bg-[#e3edf2]">
@@ -47,10 +102,21 @@ export default function Page() {
       </Canvas>
 
       <Prompt
-        onSubmit={({ query }) => {
-          if (!character.current) return;
-          generate(query, character.current.paint).catch(() => {});
-        }}
+        hint={
+          failure ? (
+            <>
+              {COPY[failure.code]}
+              <button
+                type="button"
+                onClick={() => start(last)}
+                className="underline underline-offset-4 hover:text-[rgb(70_88_115/0.95)]"
+              >
+                Try again
+              </button>
+            </>
+          ) : null
+        }
+        onSubmit={({ query }) => start(query)}
       />
     </div>
   );
