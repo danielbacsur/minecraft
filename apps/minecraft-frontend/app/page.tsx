@@ -8,6 +8,7 @@ import { auth } from "@minecraft/auth/react";
 
 import type { Failure } from "@/errors";
 import { generate } from "./_utils/generate";
+import { Paywall } from "./_components/paywall";
 import { Prompt } from "./_components/prompt";
 import { Backdrop, HORIZON } from "./_components/scene/backdrop";
 import { CAMERA, CameraControls, FOCUS } from "./_components/scene/camera";
@@ -17,9 +18,12 @@ import { Environment } from "./_components/scene/environment";
 import { DPR, PerformanceMonitor } from "./_components/scene/performance";
 import { World } from "./_components/scene/world";
 
-const COPY: Record<Failure["code"], string> = {
-  QUOTA_EXHAUSTED: "That is every skin you have for today.",
-  SUBSCRIPTION_REQUIRED: "Downloads are part of Unlimited.",
+type Hint = Exclude<
+  Failure["code"],
+  "QUOTA_EXHAUSTED" | "SUBSCRIPTION_REQUIRED"
+>;
+
+const COPY: Record<Hint, string> = {
   BAD_REQUEST: "Enter a description to make a skin.",
   UNAUTHENTICATED: "Your session could not be started. Reload the page.",
   NOT_FOUND: "That skin is not available.",
@@ -101,9 +105,17 @@ export default function Page() {
         <PerformanceMonitor />
       </Canvas>
 
+      {failure?.code === "QUOTA_EXHAUSTED" ? (
+        <Paywall scope={failure.scope} onDismiss={() => setFailure(null)} />
+      ) : failure?.code === "SUBSCRIPTION_REQUIRED" ? (
+        <Paywall scope="subscription" onDismiss={() => setFailure(null)} />
+      ) : null}
+
       <Prompt
         hint={
-          failure ? (
+          failure &&
+          failure.code !== "QUOTA_EXHAUSTED" &&
+          failure.code !== "SUBSCRIPTION_REQUIRED" ? (
             <>
               {COPY[failure.code]}
               <button

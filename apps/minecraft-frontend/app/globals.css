@@ -12,6 +12,37 @@
   --font-mono: var(--font-geist-mono);
 }
 
+@theme {
+  --animate-slide: slide 240ms ease-out;
+
+  @keyframes slide {
+    from {
+      opacity: 0;
+      transform: translateX(24px);
+    }
+  }
+}
+
+@utility glass {
+  border: 1px solid --alpha(var(--color-white) / 60%);
+  background-image: linear-gradient(
+    to bottom,
+    --alpha(var(--color-white) / 70%),
+    --alpha(var(--color-white) / 40%)
+  );
+  font-family: var(--font-minecraft);
+  backdrop-filter: blur(28px) saturate(1.8);
+}
+
+@utility glass-lit {
+  border-color: --alpha(var(--color-white) / 80%);
+  background-image: linear-gradient(
+    to bottom,
+    --alpha(var(--color-white) / 80%),
+    --alpha(var(--color-white) / 50%)
+  );
+}
+
 /* @media (prefers-color-scheme: dark) {
   :root {
     --background: #0a0a0a;
