@@ -12,7 +12,7 @@ import {
   Unauthenticated,
   withErrors,
 } from "@/errors";
-import { texture } from "../generate/_utils/texture";
+import { texture } from "@/utils/texture";
 
 export const GET = withErrors(async (request: NextRequest) => {
   const session = await auth.api.getSession({ headers: request.headers });
