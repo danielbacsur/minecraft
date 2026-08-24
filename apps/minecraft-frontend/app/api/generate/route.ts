@@ -9,6 +9,7 @@ import { auth } from "@minecraft/auth/server";
 import { search } from "@minecraft/corpus";
 import { postgres, sql } from "@minecraft/postgres";
 
+import { texture } from "@/utils/texture";
 import {
   BadRequest,
   Capacity,
@@ -25,7 +26,6 @@ import {
 import { normalize } from "./_utils/normalize";
 import { simulate } from "./_utils/simulate";
 import { stream } from "./_utils/stream";
-import { texture } from "./_utils/texture";
 import { translate } from "./_utils/translate";
 
 const Query = z.object({
@@ -188,6 +188,7 @@ export const POST = withErrors(async (request: NextRequest) => {
     headers: {
       "Content-Type": "text/plain; charset=utf-8",
       "Cache-Control": "no-cache, no-transform",
+      "X-Generation-Id": generation.id as string,
     },
   });
 });

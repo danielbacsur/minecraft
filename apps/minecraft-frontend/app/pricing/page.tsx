@@ -7,6 +7,8 @@ const ERRORS: Record<string, string> = {
   plan: "There is nothing to subscribe to right now. Try again later.",
   checkout: "We could not open the payment page. Nothing was charged.",
   portal: "We could not open your billing page. Try again in a moment.",
+  callback:
+    "Your payment went through. Unlimited can take a moment to show up here.",
 };
 
 export default async function Page({ searchParams }: PageProps<"/pricing">) {

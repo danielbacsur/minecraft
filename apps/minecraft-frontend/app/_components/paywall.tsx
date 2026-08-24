@@ -8,7 +8,7 @@ const COPY: Record<
 > = {
   anonymous: {
     title: "That skin is yours to keep looking at.",
-    body: "You have used your 3 free skins. Make a free account and you get 3 more every single day.",
+    body: "You have used your 3 free skins. Make a free account for 3 skins a day, saved to your account.",
     action: "Make a free account",
     href: "/auth",
     note: "One tap with Google, Discord or Microsoft. No email to type, no password to remember.",
