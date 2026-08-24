@@ -8,6 +8,7 @@ import { auth } from "@minecraft/auth/react";
 
 import type { Failure } from "@/errors";
 import { generate } from "./_utils/generate";
+import { Download } from "./_components/download";
 import { Paywall } from "./_components/paywall";
 import { Prompt } from "./_components/prompt";
 import { Backdrop, HORIZON } from "./_components/scene/backdrop";
@@ -39,10 +40,15 @@ const COPY: Record<Hint, string> = {
 };
 
 export default function Page() {
+  const { data: session } = auth.useSession();
+
+  const subscribed = session?.subscription?.status === "active";
+
   const character = useRef<CharacterRef>(null);
 
   const [failure, setFailure] = useState<Failure | null>(null);
   const [last, setLast] = useState("");
+  const [id, setId] = useState<string | null>(null);
 
   async function run(prompt: string, retried: boolean): Promise<void> {
     if (!character.current) return;
@@ -53,6 +59,7 @@ export default function Page() {
 
     if (result.ok) {
       setFailure(null);
+      setId(result.id);
       return;
     }
 
@@ -110,6 +117,8 @@ export default function Page() {
       ) : failure?.code === "SUBSCRIPTION_REQUIRED" ? (
         <Paywall scope="subscription" onDismiss={() => setFailure(null)} />
       ) : null}
+
+      <Download id={id} subscribed={subscribed} onFailure={setFailure} />
 
       <Prompt
         hint={

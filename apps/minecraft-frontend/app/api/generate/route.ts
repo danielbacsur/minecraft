@@ -188,6 +188,7 @@ export const POST = withErrors(async (request: NextRequest) => {
     headers: {
       "Content-Type": "text/plain; charset=utf-8",
       "Cache-Control": "no-cache, no-transform",
+      "X-Generation-Id": generation.id as string,
     },
   });
 });

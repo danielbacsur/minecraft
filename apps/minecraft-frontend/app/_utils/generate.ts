@@ -7,7 +7,9 @@ const OFFLINE: Failure = {
 };
 
 export type Result =
-  { ok: true } | { ok: false; failure: Failure } | { aborted: true };
+  | { ok: true; id: string }
+  | { ok: false; failure: Failure }
+  | { aborted: true };
 
 let inflight: AbortController | null = null;
 
@@ -32,6 +34,10 @@ export async function generate(
 
       return { ok: false, failure: failure ?? OFFLINE };
     }
+
+    const id = response.headers.get("x-generation-id");
+
+    if (!id) return { ok: false, failure: OFFLINE };
 
     const reader = response.body.getReader();
     const decoder = new TextDecoder();
@@ -66,7 +72,7 @@ export async function generate(
       }
     }
 
-    return { ok: true };
+    return { ok: true, id };
   } catch {
     if (signal.aborted) return { aborted: true };
 
