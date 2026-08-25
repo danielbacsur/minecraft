@@ -9,6 +9,7 @@ import { auth } from "@minecraft/auth/react";
 import type { Failure } from "@/errors";
 import { generate } from "./_utils/generate";
 import { Download } from "./_components/download";
+import { Legal } from "./_components/legal";
 import { Paywall } from "./_components/paywall";
 import { Prompt } from "./_components/prompt";
 import { Backdrop, HORIZON } from "./_components/scene/backdrop";
@@ -83,8 +84,24 @@ export default function Page() {
     );
   }
 
+  const hint =
+    failure &&
+    failure.code !== "QUOTA_EXHAUSTED" &&
+    failure.code !== "SUBSCRIPTION_REQUIRED" ? (
+      <>
+        {COPY[failure.code]}
+        <button
+          type="button"
+          onClick={() => start(last)}
+          className="underline underline-offset-4 hover:text-[rgb(70_88_115/0.95)]"
+        >
+          Try again
+        </button>
+      </>
+    ) : null;
+
   return (
-    <div className="relative h-dvh w-full touch-none overflow-hidden bg-[#e3edf2]">
+    <div className="relative h-dvh w-full touch-none overflow-hidden bg-[#e3edf2] font-sans">
       <Canvas
         dpr={DPR}
         camera={CAMERA}
@@ -120,25 +137,26 @@ export default function Page() {
 
       <Download id={id} subscribed={subscribed} onFailure={setFailure} />
 
-      <Prompt
-        hint={
-          failure &&
-          failure.code !== "QUOTA_EXHAUSTED" &&
-          failure.code !== "SUBSCRIPTION_REQUIRED" ? (
-            <>
-              {COPY[failure.code]}
-              <button
-                type="button"
-                onClick={() => start(last)}
-                className="underline underline-offset-4 hover:text-[rgb(70_88_115/0.95)]"
-              >
-                Try again
-              </button>
-            </>
-          ) : null
-        }
-        onSubmit={({ query }) => start(query)}
-      />
+      <div className="fixed inset-x-0 bottom-2.5 z-10 touch-auto px-9">
+        <div className="mb-2.5 grid">
+          <p
+            className={`col-start-1 row-start-1 text-center text-[11px] leading-[1.5] text-balance text-[rgb(70_88_115/0.4)] transition-opacity duration-200 ease-out [text-shadow:0_1px_0_rgb(255_255_255/0.7)] motion-reduce:transition-none ${hint ? "opacity-0" : "opacity-100"}`}
+          >
+            NOT AN OFFICIAL MINECRAFT PRODUCT. NOT APPROVED BY OR ASSOCIATED
+            WITH MOJANG OR MICROSOFT.
+          </p>
+
+          <p
+            className={`col-start-1 row-start-1 flex items-center justify-center gap-2 text-center font-(family-name:--font-minecraft) text-[13px] leading-relaxed text-[rgb(70_88_115/0.72)] transition-opacity duration-200 ease-out [text-shadow:0_1px_0_rgb(255_255_255/0.8)] motion-reduce:transition-none ${hint ? "opacity-100" : "opacity-0"}`}
+          >
+            {hint}
+          </p>
+        </div>
+
+        <Prompt onSubmit={({ query }) => start(query)} />
+
+        <Legal />
+      </div>
     </div>
   );
 }
