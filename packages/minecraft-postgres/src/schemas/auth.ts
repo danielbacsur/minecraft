@@ -1,12 +1,12 @@
 import {
-  snakeCase,
   bigint,
+  boolean,
+  index,
+  integer,
+  snakeCase,
   text,
   timestamp,
-  boolean,
-  integer,
   uuid,
-  index,
 } from "drizzle-orm/pg-core";
 
 export const auth = snakeCase.schema("auth");

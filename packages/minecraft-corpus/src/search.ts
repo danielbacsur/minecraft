@@ -1,6 +1,6 @@
 import { postgres, schema, sql } from "@minecraft/postgres";
 
-import { embedQuery, embedMultimodalQuery, rerank } from "./voyage";
+import { embedMultimodalQuery, embedQuery, rerank } from "./voyage";
 
 type Candidate = {
   id: string;

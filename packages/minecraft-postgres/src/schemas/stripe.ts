@@ -1,7 +1,7 @@
 import {
-  snakeCase,
   boolean,
   index,
+  snakeCase,
   text,
   timestamp,
   uuid,

@@ -21,7 +21,8 @@ const ACROSS: [number, number][] = [
 ];
 
 function footprints(faces: Quad[]) {
-  if (!faces.length || faces.some((face) => Math.abs(normal(face)[1]) > 1e-6)) return [];
+  if (!faces.length || faces.some((face) => Math.abs(normal(face)[1]) > 1e-6))
+    return [];
 
   const lines = new Map<string, [number, number, number, number]>();
 
@@ -75,7 +76,10 @@ export function shadow(at: readonly Placement[], faces: Quad[]) {
   }
 
   const geometry = new THREE.BufferGeometry();
-  geometry.setAttribute("position", new THREE.Float32BufferAttribute(position, 3));
+  geometry.setAttribute(
+    "position",
+    new THREE.Float32BufferAttribute(position, 3),
+  );
   geometry.setAttribute("color", new THREE.Float32BufferAttribute(colour, 4));
   geometry.setIndex(index);
 

@@ -1,18 +1,18 @@
-import {
+import type {
   ApiError,
   BadRequest,
-  Unauthenticated,
-  QuotaExhausted,
-  SubscriptionRequired,
-  NotFound,
-  NoMatch,
-  RateLimited,
-  TextureMissing,
-  RenderFailed,
-  Internal,
-  TranslationFailed,
-  SearchFailed,
   Capacity,
+  Internal,
+  NoMatch,
+  NotFound,
+  QuotaExhausted,
+  RateLimited,
+  RenderFailed,
+  SearchFailed,
+  SubscriptionRequired,
+  TextureMissing,
+  TranslationFailed,
+  Unauthenticated,
 } from "./errors";
 
 type Wire<E extends ApiError<object>> = {

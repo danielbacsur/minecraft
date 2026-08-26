@@ -1,9 +1,9 @@
 import { sql } from "drizzle-orm";
 import {
-  snakeCase,
   customType,
   index,
   jsonb,
+  snakeCase,
   text,
   uuid,
   vector,

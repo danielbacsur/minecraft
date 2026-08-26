@@ -1,13 +1,14 @@
 "use client";
 
 import { Suspense, useRef, useState } from "react";
+
 import { Canvas } from "@react-three/fiber";
 import * as THREE from "three";
 
 import { auth } from "@minecraft/auth/react";
 
 import type { Failure } from "@/errors";
-import { generate } from "./_utils/generate";
+
 import { Download } from "./_components/download";
 import { Legal } from "./_components/legal";
 import { Paywall } from "./_components/paywall";
@@ -15,10 +16,11 @@ import { Prompt } from "./_components/prompt";
 import { Backdrop, HORIZON } from "./_components/scene/backdrop";
 import { CAMERA, CameraControls, FOCUS } from "./_components/scene/camera";
 import { Character, type CharacterRef } from "./_components/scene/character";
-import { Ground } from "./_components/scene/ground";
 import { Environment } from "./_components/scene/environment";
+import { Ground } from "./_components/scene/ground";
 import { DPR, PerformanceMonitor } from "./_components/scene/performance";
 import { World } from "./_components/scene/world";
+import { generate } from "./_utils/generate";
 
 type Hint = Exclude<
   Failure["code"],

@@ -1,10 +1,11 @@
 import { randomUUID } from "node:crypto";
 
 import { drizzleAdapter } from "@better-auth/drizzle-adapter";
-import { and, eq, postgres, schema } from "@minecraft/postgres";
 import { betterAuth, type BetterAuthOptions } from "better-auth";
 import { nextCookies, toNextJsHandler } from "better-auth/next-js";
 import { anonymous, customSession, lastLoginMethod } from "better-auth/plugins";
+
+import { and, eq, postgres, schema } from "@minecraft/postgres";
 
 const options = {
   user: {

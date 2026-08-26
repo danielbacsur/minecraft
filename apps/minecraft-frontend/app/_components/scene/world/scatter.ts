@@ -36,7 +36,8 @@ function mulberry32(seed: number): () => number {
 }
 
 function chunkRandom(x: number, z: number, salt: number) {
-  let h = Math.imul(x | 0, 0x27d4eb2d) ^ Math.imul(z | 0, 0x85ebca6b) ^ SEED ^ salt;
+  let h =
+    Math.imul(x | 0, 0x27d4eb2d) ^ Math.imul(z | 0, 0x85ebca6b) ^ SEED ^ salt;
   h ^= h >>> 15;
 
   return mulberry32(Math.imul(h, 0xc2b2ae35));
@@ -54,7 +55,10 @@ function offset(x: number, z: number): [number, number] {
 }
 
 export function scatter(patch: Partial<Patch> = {}): Placement[] {
-  const { salt, chance, tries, spread, keep, clearing, radius } = { ...DEFAULTS, ...patch };
+  const { salt, chance, tries, spread, keep, clearing, radius } = {
+    ...DEFAULTS,
+    ...patch,
+  };
   const chunks = Math.ceil(radius / CHUNK);
   const taken = new Set<number>();
   const at: Placement[] = [];
@@ -68,8 +72,12 @@ export function scatter(patch: Partial<Patch> = {}): Placement[] {
       const originZ = cz * CHUNK + Math.floor(random() * CHUNK);
 
       for (let i = 0; i < tries; i++) {
-        const dx = Math.floor(random() * (spread + 1)) - Math.floor(random() * (spread + 1));
-        const dz = Math.floor(random() * (spread + 1)) - Math.floor(random() * (spread + 1));
+        const dx =
+          Math.floor(random() * (spread + 1)) -
+          Math.floor(random() * (spread + 1));
+        const dz =
+          Math.floor(random() * (spread + 1)) -
+          Math.floor(random() * (spread + 1));
         if (random() > keep) continue;
 
         const x = originX + dx;

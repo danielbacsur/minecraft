@@ -1,6 +1,7 @@
 "use client";
 
 import { use } from "react";
+
 import { useTexture } from "@react-three/drei";
 import * as THREE from "three";
 
@@ -37,9 +38,13 @@ function build(at: readonly Placement[], faces: Quad[], colour: THREE.Color) {
   const uv = new Float32Array(count * 8);
   const index = new Uint32Array(count * 6);
 
-  const shaded = faces.map((face) => (face.shade ? normal(face) : ([0, 1, 0] as const)));
+  const shaded = faces.map((face) =>
+    face.shade ? normal(face) : ([0, 1, 0] as const),
+  );
   const tints = faces.map((face) =>
-    face.tinted ? ([colour.r, colour.g, colour.b] as const) : ([1, 1, 1] as const),
+    face.tinted
+      ? ([colour.r, colour.g, colour.b] as const)
+      : ([1, 1, 1] as const),
   );
 
   let quad = 0;
@@ -79,7 +84,13 @@ function pixelate(map: THREE.Texture) {
   map.needsUpdate = true;
 }
 
-export function Field({ block, at }: { block: string; at: readonly Placement[] }) {
+export function Field({
+  block,
+  at,
+}: {
+  block: string;
+  at: readonly Placement[];
+}) {
   const [faces, colour] = use(load(block));
   const groups = group(faces);
   const maps = useTexture(
@@ -104,7 +115,12 @@ export function Field({ block, at }: { block: string; at: readonly Placement[] }
 
       {cast.index!.count > 0 && (
         <mesh geometry={cast} renderOrder={2}>
-          <meshBasicMaterial color="#2f4a58" vertexColors transparent depthWrite={false} />
+          <meshBasicMaterial
+            color="#2f4a58"
+            vertexColors
+            transparent
+            depthWrite={false}
+          />
         </mesh>
       )}
     </>

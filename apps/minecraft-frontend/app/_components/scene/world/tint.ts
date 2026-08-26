@@ -7,7 +7,9 @@ const cache = new Map<string, Promise<THREE.Color>>();
 
 async function sample(map: string) {
   const [biome, colormap] = await Promise.all([
-    fetch(BIOME).then((r) => r.json() as Promise<{ temperature: number; downfall: number }>),
+    fetch(BIOME).then(
+      (r) => r.json() as Promise<{ temperature: number; downfall: number }>,
+    ),
     fetch(`${COLORMAPS}/${map}.png`)
       .then((r) => r.blob())
       .then(createImageBitmap),
@@ -17,7 +19,10 @@ async function sample(map: string) {
   const temperature = clamp(biome.temperature);
   const humidity = clamp(biome.downfall) * temperature;
 
-  const context = new OffscreenCanvas(colormap.width, colormap.height).getContext("2d")!;
+  const context = new OffscreenCanvas(
+    colormap.width,
+    colormap.height,
+  ).getContext("2d")!;
   context.drawImage(colormap, 0, 0);
 
   const [red, green, blue] = context.getImageData(
@@ -27,7 +32,12 @@ async function sample(map: string) {
     1,
   ).data;
 
-  return new THREE.Color().setRGB(red / 255, green / 255, blue / 255, THREE.SRGBColorSpace);
+  return new THREE.Color().setRGB(
+    red / 255,
+    green / 255,
+    blue / 255,
+    THREE.SRGBColorSpace,
+  );
 }
 
 export function tint(map = "grass"): Promise<THREE.Color> {
