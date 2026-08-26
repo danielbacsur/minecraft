@@ -2,6 +2,8 @@
 
 import { useEffect, useState } from "react";
 
+import Link from "next/link";
+
 import { auth } from "@minecraft/auth/react";
 
 const PROVIDERS = [
@@ -9,6 +11,8 @@ const PROVIDERS = [
   { id: "discord", label: "Discord", Mark: Discord },
   { id: "microsoft", label: "Microsoft", Mark: Microsoft },
 ] as const;
+
+const LINK = "underline underline-offset-4 hover:text-[rgb(70_88_115/0.7)]";
 
 export default function Page() {
   const [lastUsed, setLastUsed] = useState<string | null>(null);
@@ -24,24 +28,25 @@ export default function Page() {
   );
 
   return (
-    <main className="grid min-h-dvh place-items-center bg-[#e3edf2] px-4">
-      <div className="glass w-full max-w-105 rounded-3xl p-6 shadow-[0_8px_32px_rgb(70_90_120/0.14),inset_0_1px_0_rgb(255_255_255/0.95),inset_0_-1px_0_rgb(255_255_255/0.45)] sm:p-8">
-        <h1 className="text-[18px] tracking-[0.01em] text-[rgb(70_88_115/0.78)]">
+    <main className="grid min-h-dvh place-items-center bg-[#e3edf2] px-6 py-16 font-sans">
+      <div className="w-full max-w-88">
+        <h1 className="text-center font-(family-name:--font-minecraft) text-[16px] tracking-[0.01em] text-[rgb(70_88_115/0.7)]">
           Sign in to keep making skins
         </h1>
 
-        <p className="mt-2 text-[14px] leading-normal text-[rgb(70_88_115/0.55)]">
+        <p className="mt-2 text-center text-[13px] leading-relaxed text-[rgb(70_88_115/0.5)]">
           A free account gives you three new skins every day.
         </p>
 
         {failed && (
-          <p className="mt-4 rounded-[14px] border border-white/60 bg-white/50 px-3 py-2 text-[13px] leading-normal text-[rgb(70_88_115/0.7)]">
-            That sign-in did not go through. Try again, or pick a different
-            account below.
+          <p className="mt-5 text-center text-[13px] leading-relaxed text-[rgb(70_88_115/0.7)]">
+            That sign-in did not go through. Try another account below, or
+            &mdash; for a Microsoft child account &mdash; ask a parent to allow
+            other apps at account.live.com/mk.
           </p>
         )}
 
-        <div className="mt-5 flex flex-col gap-2">
+        <div className="mt-7 flex flex-col gap-2">
           {ordered.map(({ id, label, Mark }) => (
             <button
               key={id}
@@ -53,7 +58,7 @@ export default function Page() {
                   errorCallbackURL: "/auth",
                 })
               }
-              className="glass hover:glass-lit flex h-13 items-center gap-3 rounded-[18px] px-4 text-[15px] text-[rgb(70_88_115/0.78)] shadow-[inset_0_1px_0_rgb(255_255_255/0.95),inset_0_-1px_0_rgb(255_255_255/0.45)] transition-[background-color,border-color,transform] duration-150 ease-out active:translate-y-0.5 motion-reduce:transition-none"
+              className="glass hover:glass-lit flex h-13 items-center gap-3 rounded-[18px] px-4 text-[15px] text-[rgb(70_88_115/0.85)] shadow-[inset_0_1px_0_rgb(255_255_255/0.95),inset_0_-1px_0_rgb(255_255_255/0.45)] transition-[background-color,border-color,transform] duration-150 ease-out active:translate-y-0.5 motion-reduce:transition-none"
             >
               <span className="flex w-8 shrink-0 justify-center text-[rgb(70_88_115/0.5)]">
                 <Mark />
@@ -62,7 +67,7 @@ export default function Page() {
               <span className="flex-1 text-left">Continue with {label}</span>
 
               {id === lastUsed && (
-                <span className="rounded-full bg-white/60 px-2 py-1 text-[11px] tracking-[0.02em] text-[rgb(70_88_115/0.5)]">
+                <span className="text-[11px] tracking-[0.02em] text-[rgb(70_88_115/0.4)]">
                   Last used
                 </span>
               )}
@@ -70,11 +75,16 @@ export default function Page() {
           ))}
         </div>
 
-        <p className="mt-5 border-t border-[rgb(120_140_160/0.12)] pt-4 text-[13px] leading-[1.6] text-[rgb(70_88_115/0.55)]">
-          Using a Microsoft child account? Microsoft keeps those from signing in
-          to other apps until a parent allows it at account.live.com/mk. Google
-          and Discord work exactly the same here, so pick whichever you already
-          have.
+        <p className="mt-5 text-center text-[12px] leading-relaxed text-[rgb(70_88_115/0.42)]">
+          By continuing you agree to our{" "}
+          <Link href="/terms" className={LINK}>
+            Terms
+          </Link>{" "}
+          and{" "}
+          <Link href="/privacy" className={LINK}>
+            Privacy Policy
+          </Link>
+          .
         </p>
       </div>
     </main>
