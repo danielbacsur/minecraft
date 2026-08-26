@@ -22,18 +22,18 @@ type Wire<E extends ApiError<object>> = {
 
 export type Failure =
   | Wire<BadRequest>
-  | Wire<Unauthenticated>
-  | Wire<QuotaExhausted>
-  | Wire<SubscriptionRequired>
-  | Wire<NotFound>
-  | Wire<NoMatch>
-  | Wire<RateLimited>
-  | Wire<TextureMissing>
-  | Wire<RenderFailed>
-  | Wire<Internal>
-  | Wire<TranslationFailed>
-  | Wire<SearchFailed>
   | Wire<Capacity>
+  | Wire<Internal>
+  | Wire<NoMatch>
+  | Wire<NotFound>
+  | Wire<QuotaExhausted>
+  | Wire<RateLimited>
+  | Wire<RenderFailed>
+  | Wire<SearchFailed>
+  | Wire<SubscriptionRequired>
+  | Wire<TextureMissing>
+  | Wire<TranslationFailed>
+  | Wire<Unauthenticated>
   | { code: "NETWORK_FAILED"; message: string };
 
 export function failure(error: ApiError<object>): Failure {

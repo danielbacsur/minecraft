@@ -1,5 +1,6 @@
 .env
 .next
 .turbo
-node_modules
 next-env.d.ts
+node_modules
+tsconfig.tsbuildinfo

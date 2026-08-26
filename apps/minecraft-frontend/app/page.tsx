@@ -29,17 +29,17 @@ type Hint = Exclude<
 
 const COPY: Record<Hint, string> = {
   BAD_REQUEST: "Enter a description to make a skin.",
-  UNAUTHENTICATED: "Your session could not be started. Reload the page.",
-  NOT_FOUND: "That skin is not available.",
-  NO_MATCH: "No skin matched that description. Try different words.",
-  RATE_LIMITED: "Too many requests. Wait a moment before trying again.",
-  TEXTURE_MISSING: "That skin could not be loaded.",
-  RENDER_FAILED: "The skin could not be finished.",
-  INTERNAL: "Something went wrong. Try again.",
-  TRANSLATION_FAILED: "That description could not be read. Try again.",
-  SEARCH_FAILED: "Skin search is unavailable. Try again.",
   CAPACITY: "The service is busy. Try again in a moment.",
+  INTERNAL: "Something went wrong. Try again.",
   NETWORK_FAILED: "The connection was lost. Try again.",
+  NO_MATCH: "No skin matched that description. Try different words.",
+  NOT_FOUND: "That skin is not available.",
+  RATE_LIMITED: "Too many requests. Wait a moment before trying again.",
+  RENDER_FAILED: "The skin could not be finished.",
+  SEARCH_FAILED: "Skin search is unavailable. Try again.",
+  TEXTURE_MISSING: "That skin could not be loaded.",
+  TRANSLATION_FAILED: "That description could not be read. Try again.",
+  UNAUTHENTICATED: "Your session could not be started. Reload the page.",
 };
 
 export default function Page() {
