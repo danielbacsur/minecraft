@@ -11,14 +11,14 @@
   },
 
   "dependencies": {
-    "@better-auth/drizzle-adapter": "1.6.26",
+    "@better-auth/drizzle-adapter": "1.7.2",
     "@minecraft/postgres": "*",
-    "better-auth": "1.6.26"
+    "better-auth": "1.7.2"
   },
 
   "devDependencies": {
-    "@types/node": "^24",
-    "typescript": "^5"
+    "@types/node": "^26",
+    "typescript": "^7"
   },
 
   "peerDependencies": {
