@@ -97,6 +97,7 @@ function untilMidnight() {
 function Cross() {
   return (
     <svg
+      aria-hidden="true"
       width="10"
       height="10"
       viewBox="0 0 7 7"

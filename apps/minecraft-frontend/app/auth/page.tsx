@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useSyncExternalStore } from "react";
 
 import Link from "next/link";
 
@@ -14,14 +14,20 @@ const PROVIDERS = [
 
 const LINK = "underline underline-offset-4 hover:text-[rgb(70_88_115/0.7)]";
 
-export default function Page() {
-  const [lastUsed, setLastUsed] = useState<string | null>(null);
-  const [failed, setFailed] = useState(false);
+const settled = () => () => {};
 
-  useEffect(() => {
-    setLastUsed(auth.getLastUsedLoginMethod());
-    setFailed(new URLSearchParams(window.location.search).has("error"));
-  }, []);
+export default function Page() {
+  const lastUsed = useSyncExternalStore(
+    settled,
+    () => auth.getLastUsedLoginMethod(),
+    () => null,
+  );
+
+  const failed = useSyncExternalStore(
+    settled,
+    () => new URLSearchParams(window.location.search).has("error"),
+    () => false,
+  );
 
   const ordered = [...PROVIDERS].sort(
     (a, b) => Number(b.id === lastUsed) - Number(a.id === lastUsed),
@@ -58,7 +64,7 @@ export default function Page() {
                   errorCallbackURL: "/auth",
                 })
               }
-              className="glass hover:glass-lit flex h-13 items-center gap-3 rounded-[18px] px-4 text-[15px] text-[rgb(70_88_115/0.85)] shadow-[inset_0_1px_0_rgb(255_255_255/0.95),inset_0_-1px_0_rgb(255_255_255/0.45)] transition-[background-color,border-color,transform] duration-150 ease-out active:translate-y-0.5 motion-reduce:transition-none"
+              className="flex h-13 items-center gap-3 rounded-[18px] glass px-4 text-[15px] text-[rgb(70_88_115/0.85)] shadow-[inset_0_1px_0_rgb(255_255_255/0.95),inset_0_-1px_0_rgb(255_255_255/0.45)] transition-[background-color,border-color,transform] duration-150 ease-out hover:glass-lit active:translate-y-0.5 motion-reduce:transition-none"
             >
               <span className="flex w-8 shrink-0 justify-center text-[rgb(70_88_115/0.5)]">
                 <Mark />
@@ -94,6 +100,7 @@ export default function Page() {
 function Google() {
   return (
     <svg
+      aria-hidden="true"
       width="16"
       height="16"
       viewBox="0 0 8 8"
@@ -113,6 +120,7 @@ function Google() {
 function Discord() {
   return (
     <svg
+      aria-hidden="true"
       width="16"
       height="16"
       viewBox="0 0 8 8"
@@ -134,6 +142,7 @@ function Discord() {
 function Microsoft() {
   return (
     <svg
+      aria-hidden="true"
       width="16"
       height="16"
       viewBox="0 0 7 7"

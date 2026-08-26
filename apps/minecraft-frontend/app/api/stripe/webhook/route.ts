@@ -1,7 +1,7 @@
 import type { NextRequest } from "next/server";
 
 import { eq, postgres, schema } from "@minecraft/postgres";
-import { stripe, toRow } from "@minecraft/stripe";
+import { stripe, toRow, type Stripe } from "@minecraft/stripe";
 
 import { BadRequest, withErrors } from "@/errors";
 
@@ -13,7 +13,7 @@ export const POST = withErrors(async (request: NextRequest) => {
     throw new BadRequest("Missing Stripe signature header.");
   }
 
-  let event;
+  let event: Stripe.Event;
 
   try {
     event = stripe.webhooks.constructEvent(

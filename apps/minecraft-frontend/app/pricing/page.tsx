@@ -93,6 +93,7 @@ export default async function Page({ searchParams }: PageProps<"/pricing">) {
 function Tick() {
   return (
     <svg
+      aria-hidden="true"
       width="12"
       height="12"
       viewBox="0 0 7 7"

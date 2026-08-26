@@ -44,6 +44,7 @@ export function Prompt({
 function Bubble() {
   return (
     <svg
+      aria-hidden="true"
       width="18"
       height="18"
       viewBox="0 0 9 9"
@@ -58,6 +59,7 @@ function Bubble() {
 function Enter() {
   return (
     <svg
+      aria-hidden="true"
       width="16"
       height="16"
       viewBox="0 0 8 8"

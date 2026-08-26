@@ -67,6 +67,7 @@ export function Download({
 function Lock() {
   return (
     <svg
+      aria-hidden="true"
       width="14"
       height="14"
       viewBox="0 0 7 7"

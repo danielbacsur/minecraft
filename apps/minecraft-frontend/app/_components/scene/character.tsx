@@ -113,6 +113,7 @@ export function Character({ ref }: { ref?: Ref<CharacterRef> }) {
     return () => {
       image.onload = null;
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- the compiler caches these for the component's lifetime
   }, [texture]);
 
   useEffect(
@@ -120,6 +121,7 @@ export function Character({ ref }: { ref?: Ref<CharacterRef> }) {
       for (const resource of [texture, inner, outer, innerLimb, outerLimb])
         resource.dispose();
     },
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- the compiler caches these for the component's lifetime
     [texture],
   );
 
