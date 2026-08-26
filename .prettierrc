@@ -1,0 +1,34 @@
+{
+  "plugins": [
+    "@ianvs/prettier-plugin-sort-imports",
+    "prettier-plugin-tailwindcss"
+  ],
+  "tailwindStylesheet": "./apps/minecraft-frontend/app/globals.css",
+  "importOrderTypeScriptVersion": "5.9.3",
+  "importOrderSafeSideEffects": ["^dotenv/config$", "\\.css$"],
+  "importOrder": [
+    "^dotenv/config$",
+    "",
+    "^react(-dom)?(/.*)?$",
+    "",
+    "^next(/.*)?$",
+    "",
+    "<THIRD_PARTY_MODULES>",
+    "",
+    "^@minecraft/",
+    "",
+    "^@/",
+    "",
+    "^\\.(?!.*\\.css$)",
+    "",
+    "^.+\\.css$"
+  ],
+  "overrides": [
+    {
+      "files": "package.json",
+      "options": {
+        "parser": "json"
+      }
+    }
+  ]
+}

@@ -68,7 +68,7 @@ export default async function Page({ searchParams }: PageProps<"/pricing">) {
         >
           <button
             type="submit"
-            className="glass hover:glass-lit flex h-13 w-full items-center justify-center rounded-[18px] px-4 text-[15px] text-[rgb(70_88_115/0.85)] shadow-[inset_0_1px_0_rgb(255_255_255/0.95),inset_0_-1px_0_rgb(255_255_255/0.45)] transition-[background-color,border-color,transform] duration-150 ease-out active:translate-y-0.5 motion-reduce:transition-none"
+            className="flex h-13 w-full items-center justify-center rounded-[18px] glass px-4 text-[15px] text-[rgb(70_88_115/0.85)] shadow-[inset_0_1px_0_rgb(255_255_255/0.95),inset_0_-1px_0_rgb(255_255_255/0.45)] transition-[background-color,border-color,transform] duration-150 ease-out hover:glass-lit active:translate-y-0.5 motion-reduce:transition-none"
           >
             {subscribed ? "Manage billing" : "Go Unlimited"}
           </button>
@@ -93,6 +93,7 @@ export default async function Page({ searchParams }: PageProps<"/pricing">) {
 function Tick() {
   return (
     <svg
+      aria-hidden="true"
       width="12"
       height="12"
       viewBox="0 0 7 7"

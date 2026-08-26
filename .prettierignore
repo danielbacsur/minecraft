@@ -1,0 +1,9 @@
+.next
+.turbo
+.venv
+apps/minecraft-frontend/public/resources
+apps/minecraft-frontend/textures
+datasets
+node_modules
+packages/minecraft-postgres/migrations
+packages/minecraft-resources

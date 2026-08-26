@@ -1,5 +1,7 @@
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type -- {} means "no required keys" here, which `object` does not
 type Details<D> = {} extends D ? [details?: never] : [details: D];
 
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type -- the default is "no details", matching the Details type above
 export abstract class ApiError<D extends object = {}> extends Error {
   abstract readonly code: string;
   abstract readonly status: number;

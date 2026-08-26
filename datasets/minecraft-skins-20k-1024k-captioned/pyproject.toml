@@ -13,13 +13,13 @@ dependencies = [
 ]
 
 [project.scripts]
-download = "minecraft_skins_20k_1024k_captioned.download:download"
-normalize = "minecraft_skins_20k_1024k_captioned.normalize:normalize"
-render = "minecraft_skins_20k_1024k_captioned.render:render"
 caption = "minecraft_skins_20k_1024k_captioned.caption:caption"
+download = "minecraft_skins_20k_1024k_captioned.download:download"
 embed = "minecraft_skins_20k_1024k_captioned.embed:embed"
-push = "minecraft_skins_20k_1024k_captioned.push:push"
 index = "minecraft_skins_20k_1024k_captioned.index:index"
+normalize = "minecraft_skins_20k_1024k_captioned.normalize:normalize"
+push = "minecraft_skins_20k_1024k_captioned.push:push"
+render = "minecraft_skins_20k_1024k_captioned.render:render"
 sync = "minecraft_skins_20k_1024k_captioned.sync:sync"
 
 [build-system]

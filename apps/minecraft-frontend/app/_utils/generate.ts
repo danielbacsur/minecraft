@@ -1,5 +1,5 @@
-import type { Failure } from "@/errors";
 import type { Line } from "@/app/api/generate/_utils/stream";
+import type { Failure } from "@/errors";
 
 const OFFLINE: Failure = {
   code: "NETWORK_FAILED",

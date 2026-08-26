@@ -1,8 +1,8 @@
 import type { NextRequest } from "next/server";
 
 import { auth } from "@minecraft/auth/server";
-import { stripe } from "@minecraft/stripe";
 import { eq, postgres, schema } from "@minecraft/postgres";
+import { stripe } from "@minecraft/stripe";
 
 import { withErrors } from "@/errors";
 

@@ -1,13 +1,14 @@
 "use client";
 
 import { Suspense, useRef, useState } from "react";
+
 import { Canvas } from "@react-three/fiber";
 import * as THREE from "three";
 
 import { auth } from "@minecraft/auth/react";
 
 import type { Failure } from "@/errors";
-import { generate } from "./_utils/generate";
+
 import { Download } from "./_components/download";
 import { Legal } from "./_components/legal";
 import { Paywall } from "./_components/paywall";
@@ -15,10 +16,11 @@ import { Prompt } from "./_components/prompt";
 import { Backdrop, HORIZON } from "./_components/scene/backdrop";
 import { CAMERA, CameraControls, FOCUS } from "./_components/scene/camera";
 import { Character, type CharacterRef } from "./_components/scene/character";
-import { Ground } from "./_components/scene/ground";
 import { Environment } from "./_components/scene/environment";
+import { Ground } from "./_components/scene/ground";
 import { DPR, PerformanceMonitor } from "./_components/scene/performance";
 import { World } from "./_components/scene/world";
+import { generate } from "./_utils/generate";
 
 type Hint = Exclude<
   Failure["code"],
@@ -27,17 +29,17 @@ type Hint = Exclude<
 
 const COPY: Record<Hint, string> = {
   BAD_REQUEST: "Enter a description to make a skin.",
-  UNAUTHENTICATED: "Your session could not be started. Reload the page.",
-  NOT_FOUND: "That skin is not available.",
-  NO_MATCH: "No skin matched that description. Try different words.",
-  RATE_LIMITED: "Too many requests. Wait a moment before trying again.",
-  TEXTURE_MISSING: "That skin could not be loaded.",
-  RENDER_FAILED: "The skin could not be finished.",
-  INTERNAL: "Something went wrong. Try again.",
-  TRANSLATION_FAILED: "That description could not be read. Try again.",
-  SEARCH_FAILED: "Skin search is unavailable. Try again.",
   CAPACITY: "The service is busy. Try again in a moment.",
+  INTERNAL: "Something went wrong. Try again.",
   NETWORK_FAILED: "The connection was lost. Try again.",
+  NO_MATCH: "No skin matched that description. Try different words.",
+  NOT_FOUND: "That skin is not available.",
+  RATE_LIMITED: "Too many requests. Wait a moment before trying again.",
+  RENDER_FAILED: "The skin could not be finished.",
+  SEARCH_FAILED: "Skin search is unavailable. Try again.",
+  TEXTURE_MISSING: "That skin could not be loaded.",
+  TRANSLATION_FAILED: "That description could not be read. Try again.",
+  UNAUTHENTICATED: "Your session could not be started. Reload the page.",
 };
 
 export default function Page() {

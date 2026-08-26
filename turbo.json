@@ -2,11 +2,6 @@
   "$schema": "https://turborepo.dev/schema.json",
 
   "tasks": {
-    "dev": {
-      "cache": false,
-      "persistent": true
-    },
-
     "build": {
       "dependsOn": ["^build"],
       "inputs": ["$TURBO_DEFAULT$", ".env*"],
@@ -30,6 +25,13 @@
         "STRIPE_WEBHOOK_SECRET",
         "VOYAGE_API_KEY"
       ]
-    }
+    },
+
+    "dev": {
+      "cache": false,
+      "persistent": true
+    },
+
+    "lint": {}
   }
 }

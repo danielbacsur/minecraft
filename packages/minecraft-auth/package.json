@@ -6,8 +6,8 @@
   "type": "module",
 
   "exports": {
-    "./server": "./src/server.ts",
-    "./react": "./src/react.ts"
+    "./react": "./src/react.ts",
+    "./server": "./src/server.ts"
   },
 
   "dependencies": {
@@ -17,7 +17,7 @@
   },
 
   "devDependencies": {
-    "@types/node": "^20",
+    "@types/node": "^24",
     "typescript": "^5"
   },
 

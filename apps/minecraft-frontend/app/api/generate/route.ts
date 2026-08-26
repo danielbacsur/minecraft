@@ -9,7 +9,6 @@ import { auth } from "@minecraft/auth/server";
 import { search } from "@minecraft/corpus";
 import { postgres, sql } from "@minecraft/postgres";
 
-import { texture } from "@/utils/texture";
 import {
   BadRequest,
   Capacity,
@@ -22,6 +21,7 @@ import {
   Unauthenticated,
   withErrors,
 } from "@/errors";
+import { texture } from "@/utils/texture";
 
 import { normalize } from "./_utils/normalize";
 import { simulate } from "./_utils/simulate";
