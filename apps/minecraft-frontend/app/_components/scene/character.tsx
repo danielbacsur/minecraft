@@ -31,15 +31,7 @@ type Joint = {
   ref: Ref<THREE.Group>;
 }; // prettier-ignore
 
-export function Character({ ref }: { ref?: Ref<CharacterRef> }) {
-  const head = useRef<THREE.Group>(null);
-  const body = useRef<THREE.Group>(null);
-  const rightArm = useRef<THREE.Group>(null);
-  const leftArm = useRef<THREE.Group>(null);
-  const rightLeg = useRef<THREE.Group>(null);
-  const leftLeg = useRef<THREE.Group>(null);
-  const [slim, setSlim] = useState(false);
-
+function getState({ onSlim }: { onSlim: (slim: boolean) => void }) {
   const canvas = document.createElement("canvas");
   canvas.width = canvas.height = SKIN;
 
@@ -100,10 +92,26 @@ export function Character({ ref }: { ref?: Ref<CharacterRef> }) {
       regions.every(isSolidWhite)
     );
 
-    setSlim(isSlim);
+    onSlim(isSlim);
   };
 
-  useImperativeHandle(ref, () => ({ paint }));
+  return { paint, texture, inner, outer, innerLimb, outerLimb };
+}
+
+export function Character({ ref }: { ref?: Ref<CharacterRef> }) {
+  const head = useRef<THREE.Group>(null);
+  const body = useRef<THREE.Group>(null);
+  const rightArm = useRef<THREE.Group>(null);
+  const leftArm = useRef<THREE.Group>(null);
+  const rightLeg = useRef<THREE.Group>(null);
+  const leftLeg = useRef<THREE.Group>(null);
+
+  const [slim, setSlim] = useState(false);
+  const [state] = useState(() => getState({ onSlim: setSlim }));
+
+  const { paint, texture, inner, outer, innerLimb, outerLimb } = state;
+
+  useImperativeHandle(ref, () => ({ paint }), [paint]);
 
   useEffect(() => {
     const image = new Image();
@@ -113,16 +121,14 @@ export function Character({ ref }: { ref?: Ref<CharacterRef> }) {
     return () => {
       image.onload = null;
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps -- the compiler caches these for the component's lifetime
-  }, [texture]);
+  }, [paint]);
 
   useEffect(
     () => () => {
       for (const resource of [texture, inner, outer, innerLimb, outerLimb])
         resource.dispose();
     },
-    // eslint-disable-next-line react-hooks/exhaustive-deps -- the compiler caches these for the component's lifetime
-    [texture],
+    [texture, inner, outer, innerLimb, outerLimb],
   );
 
   useFrame(({ clock }) => {
