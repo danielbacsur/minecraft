@@ -6,6 +6,7 @@
       "dependsOn": ["^build"],
       "inputs": ["$TURBO_DEFAULT$", ".env*"],
       "outputs": [".next/**", "!.next/cache/**", "!.next/dev/**"],
+
       "env": [
         "BETTER_AUTH_SECRET",
         "DISCORD_CLIENT_ID",
@@ -17,11 +18,33 @@
         "KV_REST_API_URL",
         "MICROSOFT_CLIENT_ID",
         "MICROSOFT_CLIENT_SECRET",
+        "OAUTH_PRODUCTION_URL",
+        "OAUTH_PROXY_SECRET",
         "POSTGRES_URL",
         "POSTGRES_URL_NON_POOLING",
         "STRIPE_SECRET_KEY",
         "STRIPE_WEBHOOK_SECRET",
         "VOYAGE_API_KEY"
+      ],
+
+      "passThroughEnv": [
+        "DATABASE_URL",
+        "DATABASE_URL_UNPOOLED",
+        "KV_REST_API_READ_ONLY_TOKEN",
+        "KV_URL",
+        "NEON_PROJECT_ID",
+        "PGDATABASE",
+        "PGHOST",
+        "PGHOST_UNPOOLED",
+        "PGPASSWORD",
+        "PGUSER",
+        "POSTGRES_DATABASE",
+        "POSTGRES_HOST",
+        "POSTGRES_PASSWORD",
+        "POSTGRES_PRISMA_URL",
+        "POSTGRES_URL_NO_SSL",
+        "POSTGRES_USER",
+        "REDIS_URL"
       ]
     },
 
