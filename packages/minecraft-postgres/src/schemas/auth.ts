@@ -6,6 +6,7 @@ import {
   snakeCase,
   text,
   timestamp,
+  uniqueIndex,
   uuid,
 } from "drizzle-orm/pg-core";
 
@@ -52,6 +53,7 @@ export const accounts = auth.table("accounts", {
 
   userId: uuid().notNull().references(() => users.id, { onDelete: "cascade" }),
 
+  issuer: text().notNull(),
   accountId: text().notNull(),
   providerId: text().notNull(),
 
@@ -69,7 +71,8 @@ export const accounts = auth.table("accounts", {
   createdAt: timestamp().notNull().defaultNow(),
   updatedAt: timestamp().notNull().defaultNow().$onUpdate(() => new Date()),
 }, (table) => [
-  index().on(table.userId)
+  index().on(table.userId),
+  uniqueIndex().on(table.issuer, table.accountId)
 ]);
 
 // prettier-ignore

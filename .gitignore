@@ -1,5 +1,6 @@
-.env
+.env*
 .ruff_cache
 .turbo
 .venv
+.vercel
 node_modules
