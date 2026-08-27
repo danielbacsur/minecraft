@@ -3,7 +3,7 @@ from pathlib import Path
 from datasets import Image, load_dataset
 
 
-TEXTURES = Path(__file__).parents[5] / "apps/minecraft-frontend/app/api/generate/_textures"  # fmt: skip
+TEXTURES = Path(__file__).parents[5] / "apps/minecraft-frontend/textures"
 
 
 def sync() -> None:
