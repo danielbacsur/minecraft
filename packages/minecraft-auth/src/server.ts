@@ -3,7 +3,12 @@ import { randomUUID } from "node:crypto";
 import { drizzleAdapter } from "@better-auth/drizzle-adapter";
 import { betterAuth, type BetterAuthOptions } from "better-auth";
 import { nextCookies, toNextJsHandler } from "better-auth/next-js";
-import { anonymous, customSession, lastLoginMethod } from "better-auth/plugins";
+import {
+  anonymous,
+  customSession,
+  lastLoginMethod,
+  oAuthProxy,
+} from "better-auth/plugins";
 
 import { and, eq, postgres, schema } from "@minecraft/postgres";
 
@@ -35,6 +40,16 @@ export const auth = betterAuth({
     provider: "pg",
     schema,
   }),
+
+  baseURL: {
+    allowedHosts: [
+      "*.vercel.app",
+      "localhost:3000",
+      "minecraft.danielbacsur.dev",
+    ],
+
+    protocol: process.env.NODE_ENV === "development" ? "http" : "https",
+  },
 
   socialProviders: {
     discord: {
@@ -89,6 +104,11 @@ export const auth = betterAuth({
 
       return { session, user, subscription: subscription ?? null };
     }, options),
+
+    oAuthProxy({
+      productionURL: process.env.OAUTH_PRODUCTION_URL,
+      secret: process.env.OAUTH_PROXY_SECRET,
+    }),
 
     nextCookies(),
   ],
