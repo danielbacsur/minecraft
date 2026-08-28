@@ -13,7 +13,9 @@ const ERRORS: Record<string, string> = {
 
 const LINK = "underline underline-offset-4 hover:text-[rgb(70_88_115/0.7)]";
 
-export default async function Page({ searchParams }: PageProps<"/pricing">) {
+export default async function Page({
+  searchParams,
+}: PageProps<"/[locale]/pricing">) {
   const { error } = await searchParams;
 
   const failure = typeof error === "string" ? ERRORS[error] : undefined;

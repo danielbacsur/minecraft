@@ -8,19 +8,21 @@ export function Document({
   children: ReactNode;
 }) {
   return (
-    <main className="mx-auto w-full max-w-152 px-5 py-14 sm:py-20">
-      <header className="text-center">
-        <h1 className="font-(family-name:--font-minecraft) text-[22px] leading-snug tracking-[0.01em] text-[rgb(70_88_115/0.85)] sm:text-[26px]">
-          {title}
-        </h1>
+    <main className="min-h-dvh bg-[#e3edf2] px-5 py-14 font-sans sm:py-20">
+      <div className="mx-auto w-full max-w-152">
+        <header className="text-center">
+          <h1 className="font-(family-name:--font-minecraft) text-[22px] leading-snug tracking-[0.01em] text-[rgb(70_88_115/0.85)] sm:text-[26px]">
+            {title}
+          </h1>
 
-        <p className="mt-2.5 font-(family-name:--font-minecraft) text-[13px] text-[rgb(70_88_115/0.45)]">
-          Last updated 25 August 2026
-        </p>
-      </header>
+          <p className="mt-2.5 font-(family-name:--font-minecraft) text-[13px] text-[rgb(70_88_115/0.45)]">
+            Last updated 25 August 2026
+          </p>
+        </header>
 
-      <div className="mt-11 flex flex-col gap-6 text-justify text-[15px] leading-[1.8] text-[rgb(70_88_115/0.78)]">
-        {children}
+        <div className="mt-11 flex flex-col gap-6 text-justify text-[15px] leading-[1.8] text-[rgb(70_88_115/0.78)]">
+          {children}
+        </div>
       </div>
     </main>
   );

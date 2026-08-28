@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 
-import { Document, Mail, Section } from "@/app/_components/document";
+import { Document, Mail, Section } from "../_components/document";
 
 export const metadata: Metadata = {
   title: "Privacy Policy",

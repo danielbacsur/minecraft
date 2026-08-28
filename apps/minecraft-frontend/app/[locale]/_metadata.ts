@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 
+import { locales } from "@/utils/i18n";
+
 export const metadata: Metadata = {
   title: {
     default: "Minecraft Skin Generator",
@@ -9,3 +11,7 @@ export const metadata: Metadata = {
   description:
     "Describe any Minecraft skin and get it in seconds. A knight, a robot, a ninja cat \u2014 type what you imagine and wear it in game.",
 };
+
+export function generateStaticParams() {
+  return locales.map((locale) => ({ locale }));
+}
