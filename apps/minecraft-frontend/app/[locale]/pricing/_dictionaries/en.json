@@ -1,0 +1,43 @@
+{
+  "page": {
+    "metadata": {
+      "title": "Pricing",
+      "description": "Minecraft Skin Generator Unlimited subscription pricing."
+    },
+
+    "errors": {
+      "plan": "There is nothing to subscribe to right now. Try again later.",
+      "checkout": "We could not open the payment page. Nothing was charged.",
+      "portal": "We could not open your billing page. Try again in a moment.",
+      "callback": "Your payment went through. Unlimited can take a moment to show up here."
+    },
+
+    "subscription": {
+      "title": {
+        "subscribed": "You are on Unlimited",
+        "available": "Unlimited"
+      },
+
+      "price": "{price}",
+      "period": "per month",
+
+      "features": [
+        "Unlimited generations and downloads",
+        "Our highest quality generation model"
+      ],
+
+      "button": {
+        "subscribed": "Manage billing",
+        "available": "Go Unlimited"
+      },
+
+      "note": "Prices are in US dollars. You will see your own currency and any tax before you pay."
+    },
+
+    "agreement": {
+      "text": "By subscribing you agree to our {terms} and {privacy}.",
+      "terms": "Terms",
+      "privacy": "Privacy Policy"
+    }
+  }
+}

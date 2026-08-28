@@ -1,51 +1,44 @@
 "use client";
 
+import type { Locale } from "@/utils/i18n";
+
 type Scope = "anonymous" | "free" | "subscription";
 
-const COPY: Record<
-  Scope,
-  { title: string; body: string; action: string; href: string; note: string }
-> = {
-  anonymous: {
-    title: "That skin is yours to keep looking at.",
-    body: "You have used your 3 free skins. Make a free account for 3 skins a day, saved to your account.",
-    action: "Make a free account",
-    href: "/auth",
-    note: "One tap with Google, Discord or Microsoft. No email to type, no password to remember.",
-  },
+type Offer = {
+  title: string;
+  body: string;
+  action: string;
+  note: string;
+};
 
-  free: {
-    title: "That is 3 skins today.",
-    body: "3 more tomorrow, {when}. Or go unlimited for $4.99 a month and download every skin you make straight into Minecraft.",
-    action: "Go Unlimited",
-    href: "/pricing",
-    note: "Waiting is fine too. Your skins are still here in the morning.",
-  },
-
-  subscription: {
-    title: "Downloads are part of Unlimited.",
-    body: "Your skin is right there, and it stays there. Putting the file into Minecraft comes with Unlimited — $4.99 a month, as many skins as you like, every one of them downloadable.",
-    action: "Go Unlimited",
-    href: "/pricing",
-    note: "Everything you have made stays here either way. Ask a grown-up first — it is a real payment.",
-  },
+const PATHS: Record<Scope, string> = {
+  anonymous: "/auth",
+  free: "/pricing",
+  subscription: "/pricing",
 };
 
 export function Paywall({
+  copy,
+  locale,
   scope,
   onDismiss,
 }: {
+  copy: { close: string; reset: { soon: string; later: string } } & Record<
+    Scope,
+    Offer
+  >;
+  locale: Locale;
   scope: Scope;
   onDismiss: () => void;
 }) {
-  const { title, body, action, href, note } = COPY[scope];
+  const { title, body, action, note } = copy[scope];
 
   return (
     <div className="fixed inset-x-4 bottom-26 z-10 touch-auto sm:inset-x-auto sm:top-1/2 sm:right-8 sm:bottom-auto sm:w-85 sm:-translate-y-1/2">
       <aside className="relative flex animate-slide flex-col gap-3 rounded-[20px] glass p-5 text-[rgb(70_88_115/0.78)] shadow-[0_8px_32px_rgb(70_90_120/0.14),inset_0_1px_0_rgb(255_255_255/0.95),inset_0_-1px_0_rgb(255_255_255/0.45)] motion-reduce:animate-none sm:rounded-3xl sm:p-6">
         <button
           type="button"
-          aria-label="Close"
+          aria-label={copy.close}
           onClick={onDismiss}
           className="absolute top-3 right-3 grid size-8 place-items-center rounded-full text-[rgb(70_88_115/0.45)] transition-colors duration-100 ease-out hover:text-[rgb(70_88_115/0.85)] motion-reduce:transition-none"
         >
@@ -56,12 +49,16 @@ export function Paywall({
           {title}
         </h2>
 
-        <p className="text-[14px] leading-relaxed">
-          {body.replace("{when}", untilMidnight())}
-        </p>
+        {scope === "free" && (
+          <p className="text-[14px] leading-relaxed">
+            {resetLine(locale, copy.reset)}
+          </p>
+        )}
+
+        <p className="text-[14px] leading-relaxed">{body}</p>
 
         <a
-          href={href}
+          href={PATHS[scope]}
           className="mt-1 grid h-11 place-items-center rounded-[14px] border border-white/70 bg-linear-to-b from-white/85 to-white/55 text-[15px] text-[rgb(70_88_115/0.95)] shadow-[inset_0_1px_0_rgb(255_255_255/1)] transition-[background-color,transform] duration-100 ease-out hover:from-white/95 hover:to-white/65 active:translate-y-0.5 motion-reduce:transition-none"
         >
           {action}
@@ -75,7 +72,7 @@ export function Paywall({
   );
 }
 
-function untilMidnight() {
+function resetLine(locale: Locale, reset: { soon: string; later: string }) {
   const now = new Date();
 
   const midnight = Date.UTC(
@@ -86,11 +83,14 @@ function untilMidnight() {
 
   const hours = Math.round((midnight - now.getTime()) / 3_600_000);
 
-  if (hours < 1) return "in under an hour";
+  if (hours < 1) return reset.soon;
 
-  return new Intl.RelativeTimeFormat("en", { numeric: "auto" }).format(
-    hours,
-    "hour",
+  return reset.later.replace(
+    "{when}",
+    new Intl.RelativeTimeFormat(locale, { numeric: "auto" }).format(
+      hours,
+      "hour",
+    ),
   );
 }
 

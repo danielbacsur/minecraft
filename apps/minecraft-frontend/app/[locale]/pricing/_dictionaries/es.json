@@ -1,0 +1,43 @@
+{
+  "page": {
+    "metadata": {
+      "title": "Precios",
+      "description": "Precio de la suscripción Unlimited del generador de skins de Minecraft."
+    },
+
+    "errors": {
+      "plan": "Ahora mismo no hay ninguna suscripción disponible. Inténtalo más tarde.",
+      "checkout": "No pudimos abrir la página de pago. No se cobró nada.",
+      "portal": "No pudimos abrir tu página de facturación. Inténtalo de nuevo en un momento.",
+      "callback": "Tu pago se completó. Unlimited puede tardar un momento en aparecer aquí."
+    },
+
+    "subscription": {
+      "title": {
+        "subscribed": "Tienes Unlimited",
+        "available": "Unlimited"
+      },
+
+      "price": "{price}",
+      "period": "al mes",
+
+      "features": [
+        "Generaciones y descargas ilimitadas",
+        "Nuestro modelo de generación de mayor calidad"
+      ],
+
+      "button": {
+        "subscribed": "Administrar facturación",
+        "available": "Pásate a Unlimited"
+      },
+
+      "note": "Los precios están en dólares estadounidenses. Verás tu moneda y los impuestos antes de pagar."
+    },
+
+    "agreement": {
+      "text": "Al suscribirte, aceptas nuestros {terms} y nuestra {privacy}.",
+      "terms": "Términos",
+      "privacy": "Política de privacidad"
+    }
+  }
+}

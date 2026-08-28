@@ -1,7 +1,10 @@
 import { Geist, Geist_Mono } from "next/font/google";
 import localFont from "next/font/local";
+import { notFound } from "next/navigation";
 
-import "./globals.css";
+import { hasLocale } from "@/utils/i18n";
+
+import "../globals.css";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -14,14 +17,20 @@ const geistMono = Geist_Mono({
 });
 
 const minecraft = localFont({
-  src: "./minecraft.woff2",
+  src: "../minecraft.woff2",
   variable: "--font-minecraft",
 });
 
-export default function Layout({ children }: LayoutProps<"/">) {
+export default async function Layout({
+  children,
+  params,
+}: LayoutProps<"/[locale]">) {
+  const { locale } = await params;
+  if (!hasLocale(locale)) notFound();
+
   return (
     <html
-      lang="en"
+      lang={locale}
       className={`${geistSans.variable} ${geistMono.variable} ${minecraft.variable} antialiased`}
     >
       <body>{children}</body>
@@ -29,4 +38,4 @@ export default function Layout({ children }: LayoutProps<"/">) {
   );
 }
 
-export { metadata } from "./metadata";
+export * from "./_metadata";

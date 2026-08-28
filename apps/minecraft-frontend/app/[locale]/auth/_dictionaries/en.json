@@ -1,0 +1,26 @@
+{
+  "page": {
+    "metadata": {
+      "title": "Sign in",
+      "description": "Sign in to keep making Minecraft skins."
+    },
+
+    "title": "Sign in to keep making skins",
+    "subtitle": "A free account gives you three new skins every day.",
+    "failure": "That sign-in did not go through. Try another account below, or — for a Microsoft child account — ask a parent to allow other apps at account.live.com/mk.",
+
+    "continueWith": {
+      "google": "Continue with Google",
+      "discord": "Continue with Discord",
+      "microsoft": "Continue with Microsoft"
+    },
+
+    "lastUsed": "Last used",
+
+    "agreement": {
+      "text": "By continuing you agree to our {terms} and {privacy}.",
+      "terms": "Terms",
+      "privacy": "Privacy Policy"
+    }
+  }
+}

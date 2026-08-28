@@ -1,0 +1,76 @@
+{
+  "layout": {
+    "metadata": {
+      "title": "Minecraft Skin Generator",
+      "description": "Describe any Minecraft skin and get it in seconds. A knight, a robot, a ninja cat — type what you imagine and wear it in game."
+    }
+  },
+
+  "page": {
+    "errors": {
+      "BAD_REQUEST": "Enter a description to make a skin.",
+      "CAPACITY": "The service is busy. Try again in a moment.",
+      "INTERNAL": "Something went wrong. Try again.",
+      "NETWORK_FAILED": "The connection was lost. Try again.",
+      "NO_MATCH": "No skin matched that description. Try different words.",
+      "NOT_FOUND": "That skin is not available.",
+      "RATE_LIMITED": "Too many requests. Wait a moment before trying again.",
+      "RENDER_FAILED": "The skin could not be finished.",
+      "SEARCH_FAILED": "Skin search is unavailable. Try again.",
+      "TEXTURE_MISSING": "That skin could not be loaded.",
+      "TRANSLATION_FAILED": "That description could not be read. Try again.",
+      "UNAUTHENTICATED": "Your session could not be started. Reload the page."
+    },
+
+    "retry": "Try again",
+    "disclaimer": "Not an official Minecraft product. Not approved by or associated with Mojang or Microsoft.",
+
+    "prompt": {
+      "label": "Describe your skin",
+      "placeholder": "Type a prompt...",
+      "submit": "Submit prompt"
+    },
+
+    "download": {
+      "subscribedTitle": "Download the 64x64 .png",
+      "lockedTitle": "Downloads are part of Unlimited.",
+      "label": "Download skin"
+    },
+
+    "legal": {
+      "terms": "Terms",
+      "privacy": "Privacy",
+      "contact": "Contact"
+    },
+
+    "paywall": {
+      "close": "Close",
+
+      "reset": {
+        "soon": "Your next 3 skins arrive in less than an hour.",
+        "later": "Your next 3 skins arrive {when}."
+      },
+
+      "anonymous": {
+        "title": "That skin is yours to keep looking at.",
+        "body": "You have used your 3 free skins. Make a free account for 3 skins a day, saved to your account.",
+        "action": "Make a free account",
+        "note": "One tap with Google, Discord or Microsoft. No email to type, no password to remember."
+      },
+
+      "free": {
+        "title": "That is 3 skins today.",
+        "body": "Or go Unlimited: as many skins as you like, and every one of them ready to download for Minecraft.",
+        "action": "Go Unlimited",
+        "note": "Waiting is fine too. Your skins are still here in the morning."
+      },
+
+      "subscription": {
+        "title": "Downloads are part of Unlimited.",
+        "body": "Your skin is right there, and it stays there. Downloading the file for Minecraft comes with Unlimited — as many skins as you like, and every one of them yours to keep.",
+        "action": "Go Unlimited",
+        "note": "Everything you have made stays here either way. Ask a grown-up first — it is a real payment."
+      }
+    }
+  }
+}

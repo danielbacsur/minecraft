@@ -1,12 +1,4 @@
-import type { Metadata } from "next";
-
-import { Document, Mail, Section } from "@/app/_components/legal";
-
-export const metadata: Metadata = {
-  title: "Privacy Policy",
-  description:
-    "How Daniel Bacsur LLC processes personal data on minecraft.danielbacsur.dev.",
-};
+import { Document, Mail, Section } from "../_components/document";
 
 export default function Page() {
   return (
@@ -149,3 +141,5 @@ export default function Page() {
     </Document>
   );
 }
+
+export * from "./_metadata";

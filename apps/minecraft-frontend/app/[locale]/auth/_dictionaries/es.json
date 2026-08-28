@@ -1,0 +1,26 @@
+{
+  "page": {
+    "metadata": {
+      "title": "Iniciar sesión",
+      "description": "Inicia sesión para seguir creando skins de Minecraft."
+    },
+
+    "title": "Inicia sesión para seguir creando skins",
+    "subtitle": "Una cuenta gratis te da tres skins nuevas cada día.",
+    "failure": "No se pudo iniciar sesión. Prueba con otra de las cuentas de abajo o, si usas una cuenta infantil de Microsoft, pídele a un adulto que permita otras aplicaciones en account.live.com/mk.",
+
+    "continueWith": {
+      "google": "Continuar con Google",
+      "discord": "Continuar con Discord",
+      "microsoft": "Continuar con Microsoft"
+    },
+
+    "lastUsed": "Última vez",
+
+    "agreement": {
+      "text": "Al continuar, aceptas nuestros {terms} y nuestra {privacy}.",
+      "terms": "Términos",
+      "privacy": "Política de privacidad"
+    }
+  }
+}

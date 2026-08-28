@@ -8,41 +8,34 @@ import * as THREE from "three";
 import { auth } from "@minecraft/auth/react";
 
 import type { Failure } from "@/errors";
+import type { Locale } from "@/utils/i18n";
 
-import { Download } from "./_components/download";
-import { Legal } from "./_components/legal";
-import { Paywall } from "./_components/paywall";
-import { Prompt } from "./_components/prompt";
-import { Backdrop, HORIZON } from "./_components/scene/backdrop";
-import { CAMERA, CameraControls, FOCUS } from "./_components/scene/camera";
-import { Character, type CharacterRef } from "./_components/scene/character";
-import { Environment } from "./_components/scene/environment";
-import { Ground } from "./_components/scene/ground";
-import { DPR, PerformanceMonitor } from "./_components/scene/performance";
-import { World } from "./_components/scene/world";
-import { generate } from "./_utils/generate";
+import type { Dictionary } from "../_dictionaries";
+import { generate } from "../_utils/generate";
+import { Download } from "./download";
+import { Legal } from "./legal";
+import { Paywall } from "./paywall";
+import { Prompt } from "./prompt";
+import { Backdrop, HORIZON } from "./scene/backdrop";
+import { CAMERA, CameraControls, FOCUS } from "./scene/camera";
+import { Character, type CharacterRef } from "./scene/character";
+import { Environment } from "./scene/environment";
+import { Ground } from "./scene/ground";
+import { DPR, PerformanceMonitor } from "./scene/performance";
+import { World } from "./scene/world";
 
 type Hint = Exclude<
   Failure["code"],
   "QUOTA_EXHAUSTED" | "SUBSCRIPTION_REQUIRED"
 >;
 
-const COPY: Record<Hint, string> = {
-  BAD_REQUEST: "Enter a description to make a skin.",
-  CAPACITY: "The service is busy. Try again in a moment.",
-  INTERNAL: "Something went wrong. Try again.",
-  NETWORK_FAILED: "The connection was lost. Try again.",
-  NO_MATCH: "No skin matched that description. Try different words.",
-  NOT_FOUND: "That skin is not available.",
-  RATE_LIMITED: "Too many requests. Wait a moment before trying again.",
-  RENDER_FAILED: "The skin could not be finished.",
-  SEARCH_FAILED: "Skin search is unavailable. Try again.",
-  TEXTURE_MISSING: "That skin could not be loaded.",
-  TRANSLATION_FAILED: "That description could not be read. Try again.",
-  UNAUTHENTICATED: "Your session could not be started. Reload the page.",
-};
-
-export default function Page() {
+export function Client({
+  dictionary,
+  locale,
+}: {
+  dictionary: Dictionary["page"];
+  locale: Locale;
+}) {
   const { data: session } = auth.useSession();
 
   const subscribed = session?.subscription?.status === "active";
@@ -91,13 +84,13 @@ export default function Page() {
     failure.code !== "QUOTA_EXHAUSTED" &&
     failure.code !== "SUBSCRIPTION_REQUIRED" ? (
       <>
-        {COPY[failure.code]}
+        {dictionary.errors[failure.code as Hint]}
         <button
           type="button"
           onClick={() => start(last)}
           className="underline underline-offset-4 hover:text-[rgb(70_88_115/0.95)]"
         >
-          Try again
+          {dictionary.retry}
         </button>
       </>
     ) : null;
@@ -132,20 +125,34 @@ export default function Page() {
       </Canvas>
 
       {failure?.code === "QUOTA_EXHAUSTED" ? (
-        <Paywall scope={failure.scope} onDismiss={() => setFailure(null)} />
+        <Paywall
+          copy={dictionary.paywall}
+          locale={locale}
+          scope={failure.scope}
+          onDismiss={() => setFailure(null)}
+        />
       ) : failure?.code === "SUBSCRIPTION_REQUIRED" ? (
-        <Paywall scope="subscription" onDismiss={() => setFailure(null)} />
+        <Paywall
+          copy={dictionary.paywall}
+          locale={locale}
+          scope="subscription"
+          onDismiss={() => setFailure(null)}
+        />
       ) : null}
 
-      <Download id={id} subscribed={subscribed} onFailure={setFailure} />
+      <Download
+        copy={dictionary.download}
+        id={id}
+        subscribed={subscribed}
+        onFailure={setFailure}
+      />
 
       <div className="fixed inset-x-0 bottom-2.5 z-10 touch-auto px-9">
         <div className="mb-2.5 grid">
           <p
             className={`col-start-1 row-start-1 text-center text-[11px] leading-[1.5] text-balance text-[rgb(70_88_115/0.4)] transition-opacity duration-200 ease-out [text-shadow:0_1px_0_rgb(255_255_255/0.7)] motion-reduce:transition-none ${hint ? "opacity-0" : "opacity-100"}`}
           >
-            NOT AN OFFICIAL MINECRAFT PRODUCT. NOT APPROVED BY OR ASSOCIATED
-            WITH MOJANG OR MICROSOFT.
+            {dictionary.disclaimer}
           </p>
 
           <p
@@ -155,9 +162,12 @@ export default function Page() {
           </p>
         </div>
 
-        <Prompt onSubmit={({ query }) => start(query)} />
+        <Prompt
+          copy={dictionary.prompt}
+          onSubmit={({ query }) => start(query)}
+        />
 
-        <Legal />
+        <Legal copy={dictionary.legal} />
       </div>
     </div>
   );

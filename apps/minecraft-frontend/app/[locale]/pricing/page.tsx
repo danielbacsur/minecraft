@@ -1,0 +1,120 @@
+import { headers } from "next/headers";
+import { notFound } from "next/navigation";
+
+import { auth } from "@minecraft/auth/server";
+
+import { hasLocale } from "@/utils/i18n";
+
+import { Agreement } from "../_components/agreement";
+import { getPriceByLocale } from "../_utils/price";
+import { getDictionary } from "./_dictionaries";
+
+export default async function Page({
+  params,
+  searchParams,
+}: PageProps<"/[locale]/pricing">) {
+  const { locale } = await params;
+  if (!hasLocale(locale)) notFound();
+
+  const dictionary = await getDictionary(locale);
+  const page = dictionary.page;
+
+  const amount = await getPriceByLocale(locale);
+
+  const { error } = await searchParams;
+  const failure =
+    typeof error === "string"
+      ? page.errors[error as keyof typeof page.errors]
+      : amount
+        ? undefined
+        : page.errors.plan;
+
+  const session = await auth.api.getSession({
+    headers: await headers(),
+  });
+
+  const subscribed = Boolean(session?.subscription);
+  const subscription = page.subscription;
+  const state = subscribed ? "subscribed" : "available";
+
+  return (
+    <main className="grid min-h-dvh place-items-center bg-[#e3edf2] px-6 py-16 font-sans">
+      <div className="w-full max-w-88 text-center">
+        <h1 className="font-(family-name:--font-minecraft) text-[16px] tracking-[0.01em] text-[rgb(70_88_115/0.55)]">
+          {subscription.title[state]}
+        </h1>
+
+        {amount && (
+          <p className="mt-6 font-(family-name:--font-minecraft) text-[52px] leading-none text-[rgb(70_88_115/0.85)]">
+            {subscription.price.replace("{price}", amount)}
+          </p>
+        )}
+
+        {subscription.period && (
+          <p className="mt-2.5 font-(family-name:--font-minecraft) text-[13px] tracking-[0.02em] text-[rgb(70_88_115/0.35)]">
+            {subscription.period}
+          </p>
+        )}
+
+        <ul className="mx-auto mt-8 flex w-fit flex-col gap-3.5 text-left text-[15px] leading-none text-[rgb(70_88_115/0.72)]">
+          {subscription.features.map((feature) => (
+            <li key={feature} className="flex items-center gap-3.5">
+              <span className="text-[rgb(104_152_112)]">
+                <Tick />
+              </span>
+              {feature}
+            </li>
+          ))}
+        </ul>
+
+        {failure && (
+          <p className="mt-7 text-[13px] leading-relaxed text-[rgb(70_88_115/0.7)]">
+            {failure}
+          </p>
+        )}
+
+        <form
+          action={subscribed ? "/api/stripe/portal" : "/api/stripe/checkout"}
+          method="post"
+          className="mt-9"
+        >
+          <button
+            type="submit"
+            className="flex h-13 w-full items-center justify-center rounded-[18px] glass px-4 text-[15px] text-[rgb(70_88_115/0.85)] shadow-[inset_0_1px_0_rgb(255_255_255/0.95),inset_0_-1px_0_rgb(255_255_255/0.45)] transition-[background-color,border-color,transform] duration-150 ease-out hover:glass-lit active:translate-y-0.5 motion-reduce:transition-none"
+          >
+            {subscription.button[state]}
+          </button>
+        </form>
+
+        {amount && (
+          <p className="mt-4 text-[12px] leading-relaxed text-[rgb(70_88_115/0.42)]">
+            {subscription.note}
+          </p>
+        )}
+
+        <Agreement
+          copy={page.agreement}
+          className="mt-2 text-[12px] leading-relaxed text-[rgb(70_88_115/0.42)]"
+        />
+      </div>
+    </main>
+  );
+}
+
+function Tick() {
+  return (
+    <svg
+      aria-hidden="true"
+      width="12"
+      height="12"
+      viewBox="0 0 7 7"
+      fill="currentColor"
+      shapeRendering="crispEdges"
+    >
+      <path d="M0 3h1v1H0zM1 4h1v1H1zM2 5h1v1H2z" />
+      <path d="M3 4h1v1H3zM4 3h1v1H4zM5 2h1v1H5zM6 1h1v1H6z" />
+    </svg>
+  );
+}
+
+export * from "./_metadata";
