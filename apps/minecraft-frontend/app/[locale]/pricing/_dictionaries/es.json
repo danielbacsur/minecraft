@@ -18,7 +18,7 @@
         "available": "Unlimited"
       },
 
-      "price": "4,99 US$",
+      "price": "{price}",
       "period": "al mes",
 
       "features": [
@@ -29,7 +29,9 @@
       "button": {
         "subscribed": "Administrar facturación",
         "available": "Pásate a Unlimited"
-      }
+      },
+
+      "note": "Los precios están en dólares estadounidenses. Verás tu moneda y los impuestos antes de pagar."
     },
 
     "agreement": {

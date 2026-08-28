@@ -18,7 +18,7 @@
         "available": "Unlimited"
       },
 
-      "price": "$4.99",
+      "price": "{price}",
       "period": "per month",
 
       "features": [
@@ -29,7 +29,9 @@
       "button": {
         "subscribed": "Manage billing",
         "available": "Go Unlimited"
-      }
+      },
+
+      "note": "Prices are in US dollars. You will see your own currency and any tax before you pay."
     },
 
     "agreement": {

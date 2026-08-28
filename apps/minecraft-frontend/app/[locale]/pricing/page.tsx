@@ -6,6 +6,7 @@ import { auth } from "@minecraft/auth/server";
 import { hasLocale } from "@/utils/i18n";
 
 import { Agreement } from "../_components/agreement";
+import { getPriceByLocale } from "../_utils/price";
 import { getDictionary } from "./_dictionaries";
 
 export default async function Page({
@@ -18,11 +19,15 @@ export default async function Page({
   const dictionary = await getDictionary(locale);
   const page = dictionary.page;
 
+  const amount = await getPriceByLocale(locale);
+
   const { error } = await searchParams;
   const failure =
     typeof error === "string"
       ? page.errors[error as keyof typeof page.errors]
-      : undefined;
+      : amount
+        ? undefined
+        : page.errors.plan;
 
   const session = await auth.api.getSession({
     headers: await headers(),
@@ -39,13 +44,17 @@ export default async function Page({
           {subscription.title[state]}
         </h1>
 
-        <p className="mt-6 font-(family-name:--font-minecraft) text-[52px] leading-none text-[rgb(70_88_115/0.85)]">
-          {subscription.price}
-        </p>
+        {amount && (
+          <p className="mt-6 font-(family-name:--font-minecraft) text-[52px] leading-none text-[rgb(70_88_115/0.85)]">
+            {subscription.price.replace("{price}", amount)}
+          </p>
+        )}
 
-        <p className="mt-2.5 font-(family-name:--font-minecraft) text-[13px] tracking-[0.02em] text-[rgb(70_88_115/0.35)]">
-          {subscription.period}
-        </p>
+        {subscription.period && (
+          <p className="mt-2.5 font-(family-name:--font-minecraft) text-[13px] tracking-[0.02em] text-[rgb(70_88_115/0.35)]">
+            {subscription.period}
+          </p>
+        )}
 
         <ul className="mx-auto mt-8 flex w-fit flex-col gap-3.5 text-left text-[15px] leading-none text-[rgb(70_88_115/0.72)]">
           {subscription.features.map((feature) => (
@@ -77,9 +86,15 @@ export default async function Page({
           </button>
         </form>
 
+        {amount && (
+          <p className="mt-4 text-[12px] leading-relaxed text-[rgb(70_88_115/0.42)]">
+            {subscription.note}
+          </p>
+        )}
+
         <Agreement
           copy={page.agreement}
-          className="mt-4 text-[12px] leading-relaxed text-[rgb(70_88_115/0.42)]"
+          className="mt-2 text-[12px] leading-relaxed text-[rgb(70_88_115/0.42)]"
         />
       </div>
     </main>
