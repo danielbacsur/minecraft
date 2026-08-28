@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 
-import { Document, Mail, Section } from "@/app/_components/legal";
+import { Document, Mail, Section } from "@/app/_components/document";
 
 export const metadata: Metadata = {
   title: "Terms of Service",
