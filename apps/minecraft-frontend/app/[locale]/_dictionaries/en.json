@@ -1,0 +1,74 @@
+{
+  "layout": {
+    "metadata": {
+      "title": "Minecraft Skin Generator",
+      "description": "Describe any Minecraft skin and get it in seconds. A knight, a robot, a ninja cat — type what you imagine and wear it in game."
+    }
+  },
+
+  "page": {
+    "errors": {
+      "BAD_REQUEST": "Enter a description to make a skin.",
+      "CAPACITY": "The service is busy. Try again in a moment.",
+      "INTERNAL": "Something went wrong. Try again.",
+      "NETWORK_FAILED": "The connection was lost. Try again.",
+      "NO_MATCH": "No skin matched that description. Try different words.",
+      "NOT_FOUND": "That skin is not available.",
+      "RATE_LIMITED": "Too many requests. Wait a moment before trying again.",
+      "RENDER_FAILED": "The skin could not be finished.",
+      "SEARCH_FAILED": "Skin search is unavailable. Try again.",
+      "TEXTURE_MISSING": "That skin could not be loaded.",
+      "TRANSLATION_FAILED": "That description could not be read. Try again.",
+      "UNAUTHENTICATED": "Your session could not be started. Reload the page."
+    },
+
+    "retry": "Try again",
+    "disclaimer": "NOT AN OFFICIAL MINECRAFT PRODUCT. NOT APPROVED BY OR ASSOCIATED WITH MOJANG OR MICROSOFT.",
+
+    "prompt": {
+      "label": "Describe your skin",
+      "placeholder": "Type a prompt...",
+      "submit": "Submit prompt"
+    },
+
+    "download": {
+      "subscribedTitle": "Download the 64x64 .png",
+      "lockedTitle": "Downloads are part of Unlimited, $4.99 a month",
+      "label": "Download skin"
+    },
+
+    "legal": {
+      "terms": "Terms",
+      "privacy": "Privacy",
+      "contact": "Contact"
+    },
+
+    "paywall": {
+      "close": "Close",
+      "underHour": "in under an hour",
+      "anonymous": {
+        "title": "That skin is yours to keep looking at.",
+        "body": "You have used your 3 free skins. Make a free account for 3 skins a day, saved to your account.",
+        "action": "Make a free account",
+        "path": "/auth",
+        "note": "One tap with Google, Discord or Microsoft. No email to type, no password to remember."
+      },
+
+      "free": {
+        "title": "That is 3 skins today.",
+        "body": "3 more tomorrow, {when}. Or go unlimited for $4.99 a month and download every skin you make straight into Minecraft.",
+        "action": "Go Unlimited",
+        "path": "/pricing",
+        "note": "Waiting is fine too. Your skins are still here in the morning."
+      },
+
+      "subscription": {
+        "title": "Downloads are part of Unlimited.",
+        "body": "Your skin is right there, and it stays there. Putting the file into Minecraft comes with Unlimited — $4.99 a month, as many skins as you like, every one of them downloadable.",
+        "action": "Go Unlimited",
+        "path": "/pricing",
+        "note": "Everything you have made stays here either way. Ask a grown-up first — it is a real payment."
+      }
+    }
+  }
+}

@@ -1,17 +1,28 @@
 import type { Metadata } from "next";
+import { notFound } from "next/navigation";
 
-import { locales } from "@/utils/i18n";
+import { hasLocale, locales } from "@/utils/i18n";
 
-export const metadata: Metadata = {
-  title: {
-    default: "Minecraft Skin Generator",
-    template: "%s — Minecraft Skin Generator",
-  },
-
-  description:
-    "Describe any Minecraft skin and get it in seconds. A knight, a robot, a ninja cat \u2014 type what you imagine and wear it in game.",
-};
+import { getDictionary } from "./_dictionaries";
 
 export function generateStaticParams() {
   return locales.map((locale) => ({ locale }));
+}
+
+export async function generateMetadata({
+  params,
+}: LayoutProps<"/[locale]">): Promise<Metadata> {
+  const { locale } = await params;
+  if (!hasLocale(locale)) notFound();
+
+  const dictionary = await getDictionary(locale);
+  const metadata = dictionary.layout.metadata;
+
+  return {
+    title: {
+      default: metadata.title,
+      template: `%s — ${metadata.title}`,
+    },
+    description: metadata.description,
+  };
 }

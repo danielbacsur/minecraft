@@ -1,15 +1,17 @@
+import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
 import { hasLocale } from "@/utils/i18n";
 
-import { Client } from "./_components/client";
 import { getDictionary } from "./_dictionaries";
 
-export default async function Page({ params }: PageProps<"/[locale]">) {
+export async function generateMetadata({
+  params,
+}: PageProps<"/[locale]/pricing">): Promise<Metadata> {
   const { locale } = await params;
   if (!hasLocale(locale)) notFound();
 
   const dictionary = await getDictionary(locale);
 
-  return <Client dictionary={dictionary.page} locale={locale} />;
+  return dictionary.page.metadata;
 }

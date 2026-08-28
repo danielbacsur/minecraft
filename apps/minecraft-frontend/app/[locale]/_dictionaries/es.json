@@ -1,0 +1,74 @@
+{
+  "layout": {
+    "metadata": {
+      "title": "Generador de skins de Minecraft",
+      "description": "Describe cualquier skin de Minecraft y consíguela en segundos. Un caballero, un robot o un gato ninja: escribe lo que imaginas y úsalo en el juego."
+    }
+  },
+
+  "page": {
+    "errors": {
+      "BAD_REQUEST": "Escribe una descripción para crear una skin.",
+      "CAPACITY": "El servicio está ocupado. Inténtalo de nuevo en un momento.",
+      "INTERNAL": "Algo salió mal. Inténtalo de nuevo.",
+      "NETWORK_FAILED": "Se perdió la conexión. Inténtalo de nuevo.",
+      "NO_MATCH": "Ninguna skin coincide con esa descripción. Prueba con otras palabras.",
+      "NOT_FOUND": "Esa skin no está disponible.",
+      "RATE_LIMITED": "Demasiadas solicitudes. Espera un momento antes de intentarlo de nuevo.",
+      "RENDER_FAILED": "No se pudo terminar la skin.",
+      "SEARCH_FAILED": "La búsqueda de skins no está disponible. Inténtalo de nuevo.",
+      "TEXTURE_MISSING": "No se pudo cargar esa skin.",
+      "TRANSLATION_FAILED": "No se pudo interpretar esa descripción. Inténtalo de nuevo.",
+      "UNAUTHENTICATED": "No se pudo iniciar tu sesión. Recarga la página."
+    },
+
+    "retry": "Intentar de nuevo",
+    "disclaimer": "NO ES UN PRODUCTO OFICIAL DE MINECRAFT. NO ESTÁ APROBADO NI ASOCIADO CON MOJANG O MICROSOFT.",
+
+    "prompt": {
+      "label": "Describe tu skin",
+      "placeholder": "Escribe una descripción...",
+      "submit": "Enviar descripción"
+    },
+
+    "download": {
+      "subscribedTitle": "Descargar el archivo .png de 64x64",
+      "lockedTitle": "Las descargas forman parte de Unlimited por 4,99 US$ al mes",
+      "label": "Descargar skin"
+    },
+
+    "legal": {
+      "terms": "Términos",
+      "privacy": "Privacidad",
+      "contact": "Contacto"
+    },
+
+    "paywall": {
+      "close": "Cerrar",
+      "underHour": "en menos de una hora",
+      "anonymous": {
+        "title": "Puedes seguir viendo esa skin.",
+        "body": "Has usado tus 3 skins gratis. Crea una cuenta gratuita para obtener 3 skins al día y guardarlas en tu cuenta.",
+        "action": "Crear una cuenta gratis",
+        "path": "/auth",
+        "note": "Un toque con Google, Discord o Microsoft. Sin escribir un correo ni recordar una contraseña."
+      },
+
+      "free": {
+        "title": "Ya has creado 3 skins hoy.",
+        "body": "Tendrás 3 más mañana, {when}. O consigue Unlimited por 4,99 US$ al mes y descarga directamente en Minecraft todas las skins que crees.",
+        "action": "Conseguir Unlimited",
+        "path": "/pricing",
+        "note": "También puedes esperar. Tus skins seguirán aquí mañana."
+      },
+
+      "subscription": {
+        "title": "Las descargas forman parte de Unlimited.",
+        "body": "Tu skin está ahí y no se irá. Descargarla para usarla en Minecraft forma parte de Unlimited: 4,99 US$ al mes, todas las skins que quieras y todas descargables.",
+        "action": "Conseguir Unlimited",
+        "path": "/pricing",
+        "note": "Todo lo que has creado seguirá aquí. Pregunta primero a un adulto: es un pago real."
+      }
+    }
+  }
+}

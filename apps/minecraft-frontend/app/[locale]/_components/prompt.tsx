@@ -1,8 +1,10 @@
 "use client";
 
 export function Prompt({
+  copy,
   onSubmit,
 }: {
+  copy: { label: string; placeholder: string; submit: string };
   onSubmit: (fields: { query: string }) => void;
 }) {
   return (
@@ -18,13 +20,13 @@ export function Prompt({
       </span>
 
       <label className="sr-only" htmlFor="query">
-        Describe your skin
+        {copy.label}
       </label>
 
       <input
         id="query"
         name="query"
-        placeholder="Type a prompt..."
+        placeholder={copy.placeholder}
         autoComplete="off"
         maxLength={1000}
         className="min-w-0 flex-1 bg-transparent px-5 text-[16px] tracking-[0.01em] text-[rgb(70_88_115/0.78)] outline-none placeholder:text-[rgb(70_88_115/0.45)]"
@@ -32,7 +34,7 @@ export function Prompt({
 
       <button
         type="submit"
-        aria-label="Submit prompt"
+        aria-label={copy.submit}
         className="mr-2.5 grid size-11 shrink-0 place-items-center rounded-full text-[rgb(70_88_115/0.5)] transition-[color,transform] duration-100 ease-out hover:text-[rgb(70_88_115/0.85)] active:translate-y-0.5 motion-reduce:transition-none"
       >
         <Enter />

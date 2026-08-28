@@ -1,44 +1,52 @@
 import { headers } from "next/headers";
 import Link from "next/link";
+import { notFound } from "next/navigation";
 
 import { auth } from "@minecraft/auth/server";
 
-const ERRORS: Record<string, string> = {
-  plan: "There is nothing to subscribe to right now. Try again later.",
-  checkout: "We could not open the payment page. Nothing was charged.",
-  portal: "We could not open your billing page. Try again in a moment.",
-  callback:
-    "Your payment went through. Unlimited can take a moment to show up here.",
-};
+import { hasLocale } from "@/utils/i18n";
+
+import { getDictionary } from "./_dictionaries";
 
 const LINK = "underline underline-offset-4 hover:text-[rgb(70_88_115/0.7)]";
 
 export default async function Page({
+  params,
   searchParams,
 }: PageProps<"/[locale]/pricing">) {
-  const { error } = await searchParams;
+  const { locale } = await params;
+  if (!hasLocale(locale)) notFound();
 
-  const failure = typeof error === "string" ? ERRORS[error] : undefined;
+  const dictionary = await getDictionary(locale);
+  const page = dictionary.page;
+
+  const { error } = await searchParams;
+  const failure =
+    typeof error === "string"
+      ? page.errors[error as keyof typeof page.errors]
+      : undefined;
 
   const session = await auth.api.getSession({
-    headers: new Headers(await headers()),
+    headers: await headers(),
   });
 
   const subscribed = Boolean(session?.subscription);
+  const subscription = page.subscription;
+  const state = subscribed ? "subscribed" : "available";
 
   return (
     <main className="grid min-h-dvh place-items-center bg-[#e3edf2] px-6 py-16 font-sans">
       <div className="w-full max-w-88 text-center">
         <h1 className="font-(family-name:--font-minecraft) text-[16px] tracking-[0.01em] text-[rgb(70_88_115/0.55)]">
-          {subscribed ? "You are on Unlimited" : "Unlimited"}
+          {subscription.title[state]}
         </h1>
 
         <p className="mt-6 font-(family-name:--font-minecraft) text-[52px] leading-none text-[rgb(70_88_115/0.85)]">
-          $4.99
+          {subscription.price}
         </p>
 
         <p className="mt-2.5 font-(family-name:--font-minecraft) text-[13px] tracking-[0.02em] text-[rgb(70_88_115/0.35)]">
-          per month
+          {subscription.period}
         </p>
 
         <ul className="mx-auto mt-8 flex w-fit flex-col gap-3.5 text-left text-[15px] leading-none text-[rgb(70_88_115/0.72)]">
@@ -46,14 +54,14 @@ export default async function Page({
             <span className="text-[rgb(104_152_112)]">
               <Tick />
             </span>
-            Unlimited generations and downloads
+            {subscription.features[0]}
           </li>
 
           <li className="flex items-center gap-3.5 [word-spacing:1px]">
             <span className="text-[rgb(104_152_112)]">
               <Tick />
             </span>
-            Our highest quality generation model
+            {subscription.features[1]}
           </li>
         </ul>
 
@@ -72,18 +80,18 @@ export default async function Page({
             type="submit"
             className="flex h-13 w-full items-center justify-center rounded-[18px] glass px-4 text-[15px] text-[rgb(70_88_115/0.85)] shadow-[inset_0_1px_0_rgb(255_255_255/0.95),inset_0_-1px_0_rgb(255_255_255/0.45)] transition-[background-color,border-color,transform] duration-150 ease-out hover:glass-lit active:translate-y-0.5 motion-reduce:transition-none"
           >
-            {subscribed ? "Manage billing" : "Go Unlimited"}
+            {subscription.button[state]}
           </button>
         </form>
 
         <p className="mt-4 text-[12px] leading-relaxed text-[rgb(70_88_115/0.42)]">
-          By subscribing you agree to our{" "}
+          {page.agreement.before}{" "}
           <Link href="/terms" className={LINK}>
-            Terms
+            {page.agreement.terms}
           </Link>{" "}
-          and{" "}
+          {page.agreement.and}{" "}
           <Link href="/privacy" className={LINK}>
-            Privacy Policy
+            {page.agreement.privacy}
           </Link>
           .
         </p>
@@ -107,3 +115,5 @@ function Tick() {
     </svg>
   );
 }
+
+export * from "./_metadata";

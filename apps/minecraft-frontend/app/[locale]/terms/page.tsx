@@ -1,13 +1,6 @@
-import type { Metadata } from "next";
 import Link from "next/link";
 
 import { Document, Mail, Section } from "../_components/document";
-
-export const metadata: Metadata = {
-  title: "Terms of Service",
-  description:
-    "The agreement between you and Daniel Bacsur LLC governing use of minecraft.danielbacsur.dev.",
-};
 
 export default function Page() {
   return (
@@ -257,3 +250,5 @@ export default function Page() {
     </Document>
   );
 }
+
+export * from "./_metadata";
