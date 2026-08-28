@@ -2,38 +2,38 @@
   "layout": {
     "metadata": {
       "title": "Generador de skins de Minecraft",
-      "description": "Describe cualquier skin de Minecraft y consíguela en segundos. Un caballero, un robot o un gato ninja: escribe lo que imaginas y úsalo en el juego."
+      "description": "Describe cualquier skin de Minecraft y consíguela en segundos. Un caballero, un robot o un gato ninja: escribe lo que imaginas y póntela en el juego."
     }
   },
 
   "page": {
     "errors": {
-      "BAD_REQUEST": "Escribe una descripción para crear una skin.",
-      "CAPACITY": "El servicio está ocupado. Inténtalo de nuevo en un momento.",
+      "BAD_REQUEST": "Escribe tu idea para crear una skin.",
+      "CAPACITY": "Hay mucha gente ahora mismo. Inténtalo de nuevo en un momento.",
       "INTERNAL": "Algo salió mal. Inténtalo de nuevo.",
       "NETWORK_FAILED": "Se perdió la conexión. Inténtalo de nuevo.",
-      "NO_MATCH": "Ninguna skin coincide con esa descripción. Prueba con otras palabras.",
+      "NO_MATCH": "No encontramos ninguna skin así. Prueba con otras palabras.",
       "NOT_FOUND": "Esa skin no está disponible.",
-      "RATE_LIMITED": "Demasiadas solicitudes. Espera un momento antes de intentarlo de nuevo.",
+      "RATE_LIMITED": "Demasiadas skins seguidas. Espera un momento antes de volver a intentarlo.",
       "RENDER_FAILED": "No se pudo terminar la skin.",
-      "SEARCH_FAILED": "La búsqueda de skins no está disponible. Inténtalo de nuevo.",
+      "SEARCH_FAILED": "La búsqueda de skins no funciona ahora mismo. Inténtalo de nuevo.",
       "TEXTURE_MISSING": "No se pudo cargar esa skin.",
-      "TRANSLATION_FAILED": "No se pudo interpretar esa descripción. Inténtalo de nuevo.",
+      "TRANSLATION_FAILED": "No se pudo entender esa descripción. Inténtalo de nuevo.",
       "UNAUTHENTICATED": "No se pudo iniciar tu sesión. Recarga la página."
     },
 
-    "retry": "Intentar de nuevo",
-    "disclaimer": "NO ES UN PRODUCTO OFICIAL DE MINECRAFT. NO ESTÁ APROBADO NI ASOCIADO CON MOJANG O MICROSOFT.",
+    "retry": "Reintentar",
+    "disclaimer": "No es un producto oficial de Minecraft. No está aprobado por Mojang ni Microsoft, ni asociado con ellos.",
 
     "prompt": {
       "label": "Describe tu skin",
-      "placeholder": "Escribe una descripción...",
-      "submit": "Enviar descripción"
+      "placeholder": "Escribe tu idea...",
+      "submit": "Enviar la descripción"
     },
 
     "download": {
       "subscribedTitle": "Descargar el archivo .png de 64x64",
-      "lockedTitle": "Las descargas forman parte de Unlimited por 4,99 US$ al mes",
+      "lockedTitle": "Las descargas forman parte de Unlimited.",
       "label": "Descargar skin"
     },
 
@@ -45,29 +45,31 @@
 
     "paywall": {
       "close": "Cerrar",
-      "underHour": "en menos de una hora",
+
+      "reset": {
+        "soon": "Tus próximas 3 skins llegan en menos de una hora.",
+        "later": "Tus próximas 3 skins llegan {when}."
+      },
+
       "anonymous": {
-        "title": "Puedes seguir viendo esa skin.",
-        "body": "Has usado tus 3 skins gratis. Crea una cuenta gratuita para obtener 3 skins al día y guardarlas en tu cuenta.",
+        "title": "Esa skin es tuya y puedes seguir mirándola.",
+        "body": "Ya usaste tus 3 skins gratis. Crea una cuenta gratis y tendrás 3 skins al día, guardadas en tu cuenta.",
         "action": "Crear una cuenta gratis",
-        "path": "/auth",
-        "note": "Un toque con Google, Discord o Microsoft. Sin escribir un correo ni recordar una contraseña."
+        "note": "Un toque con Google, Discord o Microsoft. Sin correo que escribir ni contraseña que recordar."
       },
 
       "free": {
-        "title": "Ya has creado 3 skins hoy.",
-        "body": "Tendrás 3 más mañana, {when}. O consigue Unlimited por 4,99 US$ al mes y descarga directamente en Minecraft todas las skins que crees.",
-        "action": "Conseguir Unlimited",
-        "path": "/pricing",
-        "note": "También puedes esperar. Tus skins seguirán aquí mañana."
+        "title": "Ya van 3 skins hoy.",
+        "body": "O pásate a Unlimited: todas las skins que quieras, y todas se pueden descargar para Minecraft.",
+        "action": "Pásate a Unlimited",
+        "note": "Esperar también está bien. Tus skins seguirán aquí por la mañana."
       },
 
       "subscription": {
         "title": "Las descargas forman parte de Unlimited.",
-        "body": "Tu skin está ahí y no se irá. Descargarla para usarla en Minecraft forma parte de Unlimited: 4,99 US$ al mes, todas las skins que quieras y todas descargables.",
-        "action": "Conseguir Unlimited",
-        "path": "/pricing",
-        "note": "Todo lo que has creado seguirá aquí. Pregunta primero a un adulto: es un pago real."
+        "body": "Tu skin está ahí y ahí se queda. Llevar el archivo a Minecraft viene con Unlimited: todas las skins que quieras, y todas se pueden descargar.",
+        "action": "Pásate a Unlimited",
+        "note": "Todo lo que creaste se queda aquí de todos modos. Pregúntale primero a un adulto: es un pago de verdad."
       }
     }
   }

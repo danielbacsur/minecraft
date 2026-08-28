@@ -6,20 +6,20 @@
     },
 
     "title": "Inicia sesión para seguir creando skins",
-    "subtitle": "Una cuenta gratuita te da tres skins nuevas cada día.",
-    "failure": "No se pudo iniciar sesión. Prueba con otra cuenta o, si es una cuenta infantil de Microsoft, pide a un adulto que permita otras aplicaciones en account.live.com/mk.",
+    "subtitle": "Una cuenta gratis te da tres skins nuevas cada día.",
+    "failure": "No se pudo iniciar sesión. Prueba con otra de las cuentas de abajo o, si usas una cuenta infantil de Microsoft, pídele a un adulto que permita otras aplicaciones en account.live.com/mk.",
+
     "continueWith": {
       "google": "Continuar con Google",
       "discord": "Continuar con Discord",
       "microsoft": "Continuar con Microsoft"
     },
 
-    "lastUsed": "Último usado",
+    "lastUsed": "Última vez",
 
     "agreement": {
-      "before": "Al continuar, aceptas nuestros",
+      "text": "Al continuar, aceptas nuestros {terms} y nuestra {privacy}.",
       "terms": "Términos",
-      "and": "y la",
       "privacy": "Política de privacidad"
     }
   }

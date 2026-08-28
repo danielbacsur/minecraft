@@ -1,14 +1,12 @@
 import { headers } from "next/headers";
-import Link from "next/link";
 import { notFound } from "next/navigation";
 
 import { auth } from "@minecraft/auth/server";
 
 import { hasLocale } from "@/utils/i18n";
 
+import { Agreement } from "../_components/agreement";
 import { getDictionary } from "./_dictionaries";
-
-const LINK = "underline underline-offset-4 hover:text-[rgb(70_88_115/0.7)]";
 
 export default async function Page({
   params,
@@ -50,19 +48,14 @@ export default async function Page({
         </p>
 
         <ul className="mx-auto mt-8 flex w-fit flex-col gap-3.5 text-left text-[15px] leading-none text-[rgb(70_88_115/0.72)]">
-          <li className="flex items-center gap-3.5">
-            <span className="text-[rgb(104_152_112)]">
-              <Tick />
-            </span>
-            {subscription.features[0]}
-          </li>
-
-          <li className="flex items-center gap-3.5 [word-spacing:1px]">
-            <span className="text-[rgb(104_152_112)]">
-              <Tick />
-            </span>
-            {subscription.features[1]}
-          </li>
+          {subscription.features.map((feature) => (
+            <li key={feature} className="flex items-center gap-3.5">
+              <span className="text-[rgb(104_152_112)]">
+                <Tick />
+              </span>
+              {feature}
+            </li>
+          ))}
         </ul>
 
         {failure && (
@@ -84,17 +77,10 @@ export default async function Page({
           </button>
         </form>
 
-        <p className="mt-4 text-[12px] leading-relaxed text-[rgb(70_88_115/0.42)]">
-          {page.agreement.before}{" "}
-          <Link href="/terms" className={LINK}>
-            {page.agreement.terms}
-          </Link>{" "}
-          {page.agreement.and}{" "}
-          <Link href="/privacy" className={LINK}>
-            {page.agreement.privacy}
-          </Link>
-          .
-        </p>
+        <Agreement
+          copy={page.agreement}
+          className="mt-4 text-[12px] leading-relaxed text-[rgb(70_88_115/0.42)]"
+        />
       </div>
     </main>
   );

@@ -6,10 +6,10 @@
     },
 
     "errors": {
-      "plan": "No hay ninguna suscripción disponible en este momento. Inténtalo más tarde.",
-      "checkout": "No pudimos abrir la página de pago. No se realizó ningún cobro.",
+      "plan": "Ahora mismo no hay ninguna suscripción disponible. Inténtalo más tarde.",
+      "checkout": "No pudimos abrir la página de pago. No se cobró nada.",
       "portal": "No pudimos abrir tu página de facturación. Inténtalo de nuevo en un momento.",
-      "callback": "El pago se ha completado. Unlimited puede tardar un momento en aparecer aquí."
+      "callback": "Tu pago se completó. Unlimited puede tardar un momento en aparecer aquí."
     },
 
     "subscription": {
@@ -27,15 +27,14 @@
       ],
 
       "button": {
-        "subscribed": "Gestionar facturación",
-        "available": "Conseguir Unlimited"
+        "subscribed": "Administrar facturación",
+        "available": "Pásate a Unlimited"
       }
     },
 
     "agreement": {
-      "before": "Al suscribirte, aceptas nuestros",
+      "text": "Al suscribirte, aceptas nuestros {terms} y nuestra {privacy}.",
       "terms": "Términos",
-      "and": "y la",
       "privacy": "Política de privacidad"
     }
   }

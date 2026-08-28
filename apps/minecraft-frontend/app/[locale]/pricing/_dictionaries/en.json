@@ -33,9 +33,8 @@
     },
 
     "agreement": {
-      "before": "By subscribing you agree to our",
+      "text": "By subscribing you agree to our {terms} and {privacy}.",
       "terms": "Terms",
-      "and": "and",
       "privacy": "Privacy Policy"
     }
   }

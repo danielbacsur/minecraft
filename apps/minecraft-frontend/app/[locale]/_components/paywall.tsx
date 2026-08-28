@@ -8,8 +8,13 @@ type Offer = {
   title: string;
   body: string;
   action: string;
-  path: string;
   note: string;
+};
+
+const PATHS: Record<Scope, string> = {
+  anonymous: "/auth",
+  free: "/pricing",
+  subscription: "/pricing",
 };
 
 export function Paywall({
@@ -18,12 +23,15 @@ export function Paywall({
   scope,
   onDismiss,
 }: {
-  copy: { close: string; underHour: string } & Record<Scope, Offer>;
+  copy: { close: string; reset: { soon: string; later: string } } & Record<
+    Scope,
+    Offer
+  >;
   locale: Locale;
   scope: Scope;
   onDismiss: () => void;
 }) {
-  const { title, body, action, path, note } = copy[scope];
+  const { title, body, action, note } = copy[scope];
 
   return (
     <div className="fixed inset-x-4 bottom-26 z-10 touch-auto sm:inset-x-auto sm:top-1/2 sm:right-8 sm:bottom-auto sm:w-85 sm:-translate-y-1/2">
@@ -41,12 +49,16 @@ export function Paywall({
           {title}
         </h2>
 
-        <p className="text-[14px] leading-relaxed">
-          {body.replace("{when}", untilMidnight(locale, copy.underHour))}
-        </p>
+        {scope === "free" && (
+          <p className="text-[14px] leading-relaxed">
+            {resetLine(locale, copy.reset)}
+          </p>
+        )}
+
+        <p className="text-[14px] leading-relaxed">{body}</p>
 
         <a
-          href={path}
+          href={PATHS[scope]}
           className="mt-1 grid h-11 place-items-center rounded-[14px] border border-white/70 bg-linear-to-b from-white/85 to-white/55 text-[15px] text-[rgb(70_88_115/0.95)] shadow-[inset_0_1px_0_rgb(255_255_255/1)] transition-[background-color,transform] duration-100 ease-out hover:from-white/95 hover:to-white/65 active:translate-y-0.5 motion-reduce:transition-none"
         >
           {action}
@@ -60,7 +72,7 @@ export function Paywall({
   );
 }
 
-function untilMidnight(locale: Locale, underHour: string) {
+function resetLine(locale: Locale, reset: { soon: string; later: string }) {
   const now = new Date();
 
   const midnight = Date.UTC(
@@ -71,11 +83,14 @@ function untilMidnight(locale: Locale, underHour: string) {
 
   const hours = Math.round((midnight - now.getTime()) / 3_600_000);
 
-  if (hours < 1) return underHour;
+  if (hours < 1) return reset.soon;
 
-  return new Intl.RelativeTimeFormat(locale, { numeric: "auto" }).format(
-    hours,
-    "hour",
+  return reset.later.replace(
+    "{when}",
+    new Intl.RelativeTimeFormat(locale, { numeric: "auto" }).format(
+      hours,
+      "hour",
+    ),
   );
 }
 

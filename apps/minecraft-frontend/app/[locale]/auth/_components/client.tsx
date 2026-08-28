@@ -2,19 +2,16 @@
 
 import { useSyncExternalStore } from "react";
 
-import Link from "next/link";
-
 import { auth } from "@minecraft/auth/react";
 
 import type { Dictionary } from "../_dictionaries";
+import { Agreement } from "../../_components/agreement";
 
 const PROVIDERS = [
   { id: "google", Mark: Google },
   { id: "discord", Mark: Discord },
   { id: "microsoft", Mark: Microsoft },
 ] as const;
-
-const LINK = "underline underline-offset-4 hover:text-[rgb(70_88_115/0.7)]";
 
 const settled = () => () => {};
 
@@ -70,12 +67,12 @@ export function Client({ dictionary }: { dictionary: Dictionary["page"] }) {
                 <Mark />
               </span>
 
-              <span className="flex-1 text-left">
+              <span className="min-w-0 flex-1 truncate text-left">
                 {dictionary.continueWith[id]}
               </span>
 
               {id === lastUsed && (
-                <span className="text-[11px] tracking-[0.02em] text-[rgb(70_88_115/0.4)]">
+                <span className="shrink-0 text-[11px] tracking-[0.02em] text-[rgb(70_88_115/0.4)]">
                   {dictionary.lastUsed}
                 </span>
               )}
@@ -83,17 +80,10 @@ export function Client({ dictionary }: { dictionary: Dictionary["page"] }) {
           ))}
         </div>
 
-        <p className="mt-5 text-center text-[12px] leading-relaxed text-[rgb(70_88_115/0.42)]">
-          {dictionary.agreement.before}{" "}
-          <Link href="/terms" className={LINK}>
-            {dictionary.agreement.terms}
-          </Link>{" "}
-          {dictionary.agreement.and}{" "}
-          <Link href="/privacy" className={LINK}>
-            {dictionary.agreement.privacy}
-          </Link>
-          .
-        </p>
+        <Agreement
+          copy={dictionary.agreement}
+          className="mt-5 text-center text-[12px] leading-relaxed text-[rgb(70_88_115/0.42)]"
+        />
       </div>
     </main>
   );
