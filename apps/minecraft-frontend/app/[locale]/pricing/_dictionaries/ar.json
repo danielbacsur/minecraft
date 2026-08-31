@@ -2,7 +2,7 @@
   "page": {
     "metadata": {
       "title": "الأسعار",
-      "description": "أسعار اشتراك Unlimited في صانع أزياء Minecraft."
+      "description": "أسعار اشتراك Unlimited في صانع سكنات Minecraft."
     },
 
     "errors": {
@@ -20,7 +20,7 @@
 
       "price": "{price}",
       "period": "شهريًا",
-      "features": ["أزياء وتنزيلات بلا حدود", "أفضل نماذجنا لصنع الأزياء"],
+      "features": ["سكنات وتنزيلات بلا حدود", "أفضل نماذجنا لصنع السكنات"],
 
       "button": {
         "subscribed": "إدارة الفوترة",
