@@ -1,0 +1,26 @@
+{
+  "page": {
+    "metadata": {
+      "title": "ログイン",
+      "description": "ログインすると、Minecraft のスキンを作り続けられます。"
+    },
+
+    "title": "ログインして、スキンを作り続けましょう",
+    "subtitle": "無料のアカウントなら、毎日3枚ずつ新しいスキンが作れます。",
+    "failure": "ログインできませんでした。下にある別のアカウントで試してみてください。Microsoft の子ども用アカウントの場合は、おうちの人に account.live.com/mk でほかのアプリを許可してもらってください。",
+
+    "continueWith": {
+      "google": "Google で続ける",
+      "discord": "Discord で続ける",
+      "microsoft": "Microsoft で続ける"
+    },
+
+    "lastUsed": "前回",
+
+    "agreement": {
+      "text": "続けると、{terms}と{privacy}に同意したことになります。",
+      "terms": "利用規約",
+      "privacy": "プライバシーポリシー"
+    }
+  }
+}

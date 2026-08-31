@@ -1,0 +1,76 @@
+{
+  "layout": {
+    "metadata": {
+      "title": "Minecraft 皮肤生成器",
+      "description": "写下你想要的 Minecraft 皮肤，几秒钟就能拿到。骑士、机器人、忍者猫——想到什么就打出来，进游戏就能穿上。"
+    }
+  },
+
+  "page": {
+    "errors": {
+      "BAD_REQUEST": "先写一句话，才能做皮肤。",
+      "CAPACITY": "现在有点忙，过一会儿再试试。",
+      "INTERNAL": "出了点问题，再试一次。",
+      "NETWORK_FAILED": "网络断开了，再试一次。",
+      "NO_MATCH": "没找到这样的皮肤，换个说法试试。",
+      "NOT_FOUND": "这个皮肤现在用不了。",
+      "RATE_LIMITED": "太快啦，等一会儿再试。",
+      "RENDER_FAILED": "这个皮肤没能做完。",
+      "SEARCH_FAILED": "现在搜不了皮肤，再试一次。",
+      "TEXTURE_MISSING": "这个皮肤加载不出来。",
+      "TRANSLATION_FAILED": "没看懂你写的，再试一次。",
+      "UNAUTHENTICATED": "你的登录状态出了点问题，刷新一下页面。"
+    },
+
+    "retry": "再试一次",
+    "disclaimer": "这不是 Minecraft 官方产品，未获 Mojang 或 Microsoft 认可，也与它们没有关联。",
+
+    "prompt": {
+      "label": "描述你想要的皮肤",
+      "placeholder": "写下你的想法……",
+      "submit": "提交你的皮肤描述"
+    },
+
+    "download": {
+      "subscribedTitle": "下载 64×64 的 .png 文件",
+      "lockedTitle": "下载是 Unlimited 才有的功能。",
+      "label": "下载皮肤"
+    },
+
+    "legal": {
+      "terms": "条款",
+      "privacy": "隐私",
+      "contact": "联系我们"
+    },
+
+    "paywall": {
+      "close": "关闭",
+
+      "reset": {
+        "soon": "不到一个小时，你的三个新皮肤就来了。",
+        "later": "{when}，你的三个新皮肤就来了。"
+      },
+
+      "anonymous": {
+        "title": "这个皮肤留给你，想看多久都行。",
+        "body": "三个免费皮肤都用完了。注册一个免费账号吧，每天都有三个，做好的皮肤也都帮你存着。",
+        "action": "注册免费账号",
+        "note": "用 Google、Discord 或 Microsoft 点一下就好。不用填邮箱，也不用记密码。"
+      },
+
+      "free": {
+        "title": "今天的三个皮肤用完啦。",
+        "body": "也可以开通 Unlimited：想做多少就做多少，每一个都能下载下来，用在 Minecraft 里。",
+        "action": "开通 Unlimited",
+        "note": "等一等也没关系。明天早上，你的皮肤都还在这里。"
+      },
+
+      "subscription": {
+        "title": "下载是 Unlimited 才有的功能。",
+        "body": "你的皮肤就在这里，而且会一直在。想把这个文件放进 Minecraft，就要开通 Unlimited——想做多少就做多少，每一个都能下载下来。",
+        "action": "开通 Unlimited",
+        "note": "不管怎样，你做过的皮肤都会留在这里。记得先问问家里的大人——这是要真的花钱的。"
+      }
+    }
+  }
+}

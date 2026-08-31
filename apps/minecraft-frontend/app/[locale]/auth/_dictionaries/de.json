@@ -1,0 +1,26 @@
+{
+  "page": {
+    "metadata": {
+      "title": "Anmelden",
+      "description": "Melde dich an, um weiter Minecraft-Skins zu machen."
+    },
+
+    "title": "Melde dich an, um weiter Skins zu machen",
+    "subtitle": "Mit einem kostenlosen Konto bekommst du jeden Tag drei neue Skins.",
+    "failure": "Mit der Anmeldung hat es nicht geklappt. Probier es unten mit einem anderen Konto. Bei einem Microsoft-Kinderkonto müssen deine Eltern unter account.live.com/mk erst andere Apps erlauben.",
+
+    "continueWith": {
+      "google": "Weiter mit Google",
+      "discord": "Weiter mit Discord",
+      "microsoft": "Weiter mit Microsoft"
+    },
+
+    "lastUsed": "Zuletzt",
+
+    "agreement": {
+      "text": "Wenn du weitermachst, akzeptierst du unsere {terms} und unsere {privacy}.",
+      "terms": "Nutzungsbedingungen",
+      "privacy": "Datenschutzerklärung"
+    }
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "page": {
+    "metadata": {
+      "title": "登录",
+      "description": "登录后继续做 Minecraft 皮肤。"
+    },
+
+    "title": "登录后继续做皮肤",
+    "subtitle": "免费账号每天送你三个新皮肤。",
+    "failure": "这次登录没有成功。可以在下面换一个账号试试。如果用的是 Microsoft 儿童账户，请让家里的大人打开 account.live.com/mk，允许使用其他应用。",
+
+    "continueWith": {
+      "google": "使用 Google 继续",
+      "discord": "使用 Discord 继续",
+      "microsoft": "使用 Microsoft 继续"
+    },
+
+    "lastUsed": "上次使用",
+
+    "agreement": {
+      "text": "继续就表示你同意我们的{terms}和{privacy}。",
+      "terms": "服务条款",
+      "privacy": "隐私政策"
+    }
+  }
+}
