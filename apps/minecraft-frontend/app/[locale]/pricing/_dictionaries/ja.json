@@ -1,0 +1,43 @@
+{
+  "page": {
+    "metadata": {
+      "title": "料金",
+      "description": "Minecraft スキンメーカーの Unlimited プランの料金です。"
+    },
+
+    "errors": {
+      "plan": "今は申し込めるプランがありません。あとでもう一度やってみてください。",
+      "checkout": "お支払いのページを開けませんでした。お金はかかっていません。",
+      "portal": "お支払い情報のページを開けませんでした。少ししてからもう一度やってみてください。",
+      "callback": "お支払いが完了しました。Unlimited がここに出てくるまで、少し時間がかかることがあります。"
+    },
+
+    "subscription": {
+      "title": {
+        "subscribed": "Unlimited を使っています",
+        "available": "Unlimited"
+      },
+
+      "price": "月額{price}",
+      "period": "",
+
+      "features": [
+        "スキン作りもダウンロードも無制限",
+        "いちばん高品質な生成モデル"
+      ],
+
+      "button": {
+        "subscribed": "お支払いを管理",
+        "available": "Unlimited にする"
+      },
+
+      "note": "価格は米ドルです。お支払いの前に、お使いの通貨と税金が表示されます。"
+    },
+
+    "agreement": {
+      "text": "申し込むと、{terms}と{privacy}に同意したことになります。",
+      "terms": "利用規約",
+      "privacy": "プライバシーポリシー"
+    }
+  }
+}

@@ -1,0 +1,76 @@
+{
+  "layout": {
+    "metadata": {
+      "title": "Minecraft-Skin-Generator",
+      "description": "Beschreib einen Minecraft-Skin und du hast ihn in Sekunden. Ein Ritter, ein Roboter, eine Ninja-Katze – schreib einfach, was du dir vorstellst, und zieh ihn im Spiel an."
+    }
+  },
+
+  "page": {
+    "errors": {
+      "BAD_REQUEST": "Schreib zuerst, wie dein Skin aussehen soll.",
+      "CAPACITY": "Gerade ist viel los. Probier es gleich noch mal.",
+      "INTERNAL": "Da ist etwas schiefgelaufen. Probier es noch mal.",
+      "NETWORK_FAILED": "Die Verbindung ist weg. Probier es noch mal.",
+      "NO_MATCH": "Zu dieser Beschreibung passt kein Skin. Probier es mit anderen Wörtern.",
+      "NOT_FOUND": "Diesen Skin gibt es nicht.",
+      "RATE_LIMITED": "Das war ein bisschen zu schnell. Warte kurz und probier es dann noch mal.",
+      "RENDER_FAILED": "Der Skin ist nicht fertig geworden.",
+      "SEARCH_FAILED": "Die Skin-Suche geht gerade nicht. Probier es noch mal.",
+      "TEXTURE_MISSING": "Dieser Skin lässt sich nicht laden.",
+      "TRANSLATION_FAILED": "Diese Beschreibung konnten wir nicht lesen. Probier es noch mal.",
+      "UNAUTHENTICATED": "Der Start hat nicht geklappt. Lade die Seite neu."
+    },
+
+    "retry": "Noch mal",
+    "disclaimer": "Kein offizielles Minecraft-Produkt. Nicht von Mojang oder Microsoft genehmigt und nicht mit ihnen verbunden.",
+
+    "prompt": {
+      "label": "Beschreib, wie dein Skin aussehen soll",
+      "placeholder": "Schreib deine Idee ...",
+      "submit": "Beschreibung abschicken"
+    },
+
+    "download": {
+      "subscribedTitle": "64x64-PNG herunterladen",
+      "lockedTitle": "Downloads gehören zu Unlimited.",
+      "label": "Skin herunterladen"
+    },
+
+    "legal": {
+      "terms": "Bedingungen",
+      "privacy": "Datenschutz",
+      "contact": "Kontakt"
+    },
+
+    "paywall": {
+      "close": "Schließen",
+
+      "reset": {
+        "soon": "Deine nächsten 3 Skins kommen in weniger als einer Stunde.",
+        "later": "Deine nächsten 3 Skins kommen {when}."
+      },
+
+      "anonymous": {
+        "title": "Diesen Skin kannst du dir weiter ansehen.",
+        "body": "Deine 3 kostenlosen Skins sind aufgebraucht. Mit einem Konto bekommst du jeden Tag 3 neue – und die bleiben alle gespeichert.",
+        "action": "Kostenloses Konto erstellen",
+        "note": "Ein Klick mit Google, Discord oder Microsoft. Keine E-Mail zum Eintippen, kein Passwort zum Merken."
+      },
+
+      "free": {
+        "title": "Das waren 3 Skins für heute.",
+        "body": "Oder hol dir Unlimited: so viele Skins, wie du willst, und jeden davon kannst du direkt für Minecraft herunterladen.",
+        "action": "Unlimited holen",
+        "note": "Warten ist auch okay. Morgen früh sind deine Skins immer noch da."
+      },
+
+      "subscription": {
+        "title": "Downloads gehören zu Unlimited.",
+        "body": "Dein Skin ist da, und er bleibt da. Damit er auch in Minecraft landet, brauchst du Unlimited: so viele Skins, wie du willst, und jeden davon kannst du herunterladen.",
+        "action": "Unlimited holen",
+        "note": "Alles, was du gemacht hast, bleibt so oder so hier. Frag vorher einen Erwachsenen – es kostet echtes Geld."
+      }
+    }
+  }
+}

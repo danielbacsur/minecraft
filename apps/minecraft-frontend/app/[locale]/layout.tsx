@@ -31,6 +31,7 @@ export default async function Layout({
   return (
     <html
       lang={locale}
+      dir={locale === "ar" ? "rtl" : "ltr"}
       className={`${geistSans.variable} ${geistMono.variable} ${minecraft.variable} antialiased`}
     >
       <body>{children}</body>
