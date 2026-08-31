@@ -17,7 +17,7 @@ const geistMono = Geist_Mono({
 });
 
 const minecraft = localFont({
-  src: "../minecraft.woff2",
+  src: "../../fonts/minecraft.woff2",
   variable: "--font-minecraft",
 });
 
