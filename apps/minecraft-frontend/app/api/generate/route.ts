@@ -24,6 +24,7 @@ import {
 import { texture } from "@/utils/texture";
 
 import { normalize } from "./_utils/normalize";
+import { preprocess } from "./_utils/preprocess";
 import { simulate } from "./_utils/simulate";
 import { stream } from "./_utils/stream";
 import { translate } from "./_utils/translate";
@@ -133,11 +134,26 @@ export const POST = withErrors(async (request: NextRequest) => {
     }
   }
 
-  const english = await translate(query).catch(() => {
+  const translation = await translate(query).catch(() => {
     throw new TranslationFailed("Prompt translation failed.");
   });
 
-  const [match] = await search(english, { limit: 1 }).catch(() => {
+  const preprocessed = await preprocess(normalize(translation)).catch(() => {
+    throw new TranslationFailed("Prompt preprocessing failed.");
+  });
+
+  const text = [
+    preprocessed.names.join(", "),
+    preprocessed.appearance,
+    preprocessed.keywords.join(", "),
+  ]
+    .filter(Boolean)
+    .join("\n");
+
+  const [match] = await search(text, {
+    limit: 1,
+    names: preprocessed.names,
+  }).catch(() => {
     throw new SearchFailed("Skin search failed.");
   });
 

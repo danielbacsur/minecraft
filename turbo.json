@@ -8,6 +8,7 @@
       "outputs": [".next/**", "!.next/cache/**", "!.next/dev/**"],
 
       "env": [
+        "AI_GATEWAY_API_KEY",
         "BETTER_AUTH_SECRET",
         "DISCORD_CLIENT_ID",
         "DISCORD_CLIENT_SECRET",
