@@ -1,4 +1,4 @@
-import { Cache } from "./cache";
+import { Cache } from "@minecraft/cache";
 
 const cache = new Cache<string>("translate");
 

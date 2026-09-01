@@ -1,0 +1,20 @@
+{
+  "name": "@minecraft/cache",
+  "version": "0.0.0",
+  "private": true,
+
+  "type": "module",
+
+  "exports": {
+    ".": "./src/index.ts"
+  },
+
+  "dependencies": {
+    "@upstash/redis": "1.38.3"
+  },
+
+  "devDependencies": {
+    "@types/node": "^26",
+    "typescript": "^7"
+  }
+}
