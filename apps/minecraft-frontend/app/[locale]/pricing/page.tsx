@@ -40,18 +40,18 @@ export default async function Page({
   return (
     <main className="grid min-h-dvh place-items-center bg-[#e3edf2] px-6 py-16 font-sans">
       <div className="w-full max-w-88 text-center">
-        <h1 className="font-(family-name:--font-minecraft) text-[16px] tracking-[0.01em] text-[rgb(70_88_115/0.55)]">
+        <h1 className="text-[16px] tracking-[0.01em] text-[rgb(70_88_115/0.55)]">
           {subscription.title[state]}
         </h1>
 
         {amount && (
-          <p className="mt-6 font-(family-name:--font-minecraft) text-[52px] leading-none text-[rgb(70_88_115/0.85)]">
+          <p className="mt-6 text-[52px] leading-none text-[rgb(70_88_115/0.85)]">
             {subscription.price.replace("{price}", amount)}
           </p>
         )}
 
         {subscription.period && (
-          <p className="mt-2.5 font-(family-name:--font-minecraft) text-[13px] tracking-[0.02em] text-[rgb(70_88_115/0.35)]">
+          <p className="mt-2.5 text-[13px] tracking-[0.02em] text-[rgb(70_88_115/0.35)]">
             {subscription.period}
           </p>
         )}

@@ -156,7 +156,7 @@ export function Client({
           </p>
 
           <p
-            className={`col-start-1 row-start-1 flex items-center justify-center gap-2 text-center font-(family-name:--font-minecraft) text-[13px] leading-relaxed text-[rgb(70_88_115/0.72)] transition-opacity duration-200 ease-out [text-shadow:0_1px_0_rgb(255_255_255/0.8)] motion-reduce:transition-none ${hint ? "opacity-100" : "opacity-0"}`}
+            className={`col-start-1 row-start-1 flex items-center justify-center gap-2 text-center text-[13px] leading-relaxed text-[rgb(70_88_115/0.72)] transition-opacity duration-200 ease-out [text-shadow:0_1px_0_rgb(255_255_255/0.8)] motion-reduce:transition-none ${hint ? "opacity-100" : "opacity-0"}`}
           >
             {hint}
           </p>

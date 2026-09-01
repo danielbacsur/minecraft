@@ -1,8 +1,7 @@
 import { Geist, Geist_Mono } from "next/font/google";
-import localFont from "next/font/local";
 import { notFound } from "next/navigation";
 
-import { hasLocale } from "@/utils/i18n";
+import { direction, hasLocale } from "@/utils/i18n";
 
 import "../globals.css";
 
@@ -16,11 +15,6 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-const minecraft = localFont({
-  src: "../../fonts/minecraft.woff2",
-  variable: "--font-minecraft",
-});
-
 export default async function Layout({
   children,
   params,
@@ -31,8 +25,8 @@ export default async function Layout({
   return (
     <html
       lang={locale}
-      dir={locale === "ar" ? "rtl" : "ltr"}
-      className={`${geistSans.variable} ${geistMono.variable} ${minecraft.variable} antialiased`}
+      dir={direction(locale)}
+      className={`${geistSans.variable} ${geistMono.variable} antialiased`}
     >
       <body>{children}</body>
     </html>

@@ -9,7 +9,7 @@ export function Prompt({
 }) {
   return (
     <form
-      className="mx-auto flex h-18 w-full max-w-165 items-center rounded-3xl glass shadow-[0_8px_32px_rgb(70_90_120/0.14),inset_0_1px_0_rgb(255_255_255/0.95),inset_0_-1px_0_rgb(255_255_255/0.45)] transition-[background-color,border-color,box-shadow] duration-150 ease-out focus-within:shadow-[0_12px_40px_rgb(70_90_120/0.18),0_0_0_1px_rgb(150_180_220/0.18),inset_0_1px_0_rgb(255_255_255/1),inset_0_-1px_0_rgb(255_255_255/0.5)] hover:glass-lit motion-reduce:transition-none"
+      className="mx-auto flex h-18 w-full max-w-165 items-center rounded-full glass shadow-[0_8px_32px_rgb(70_90_120/0.14),inset_0_1px_0_rgb(255_255_255/0.95),inset_0_-1px_0_rgb(255_255_255/0.45)] transition-[background-color,border-color,box-shadow] duration-150 ease-out focus-within:shadow-[0_12px_40px_rgb(70_90_120/0.18),0_0_0_1px_rgb(150_180_220/0.18),inset_0_1px_0_rgb(255_255_255/1),inset_0_-1px_0_rgb(255_255_255/0.5)] hover:glass-lit motion-reduce:transition-none"
       action={(data: FormData) => {
         const query = String(data.get("query") ?? "").trim();
         if (query) onSubmit({ query });
