@@ -25,13 +25,11 @@
       "button": {
         "subscribed": "管理账单",
         "available": "开通无限版"
-      },
-
-      "note": "价格以美元计。付款前你会看到你自己的货币和税费。"
+      }
     },
 
     "agreement": {
-      "text": "订阅就表示你同意我们的{terms}和{privacy}。",
+      "text": "价格以美元计。付款前你会看到你自己的货币和税费。订阅就表示你同意我们的{terms}和{privacy}。",
       "terms": "服务条款",
       "privacy": "隐私政策"
     }

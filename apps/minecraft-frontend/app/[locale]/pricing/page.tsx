@@ -86,15 +86,9 @@ export default async function Page({
           </button>
         </form>
 
-        {amount && (
-          <p className="mt-4 text-[12px] leading-relaxed text-[rgb(70_88_115/0.42)]">
-            {subscription.note}
-          </p>
-        )}
-
         <Agreement
           copy={page.agreement}
-          className="mt-2 text-[12px] leading-relaxed text-[rgb(70_88_115/0.42)]"
+          className="mt-4 text-[12px] leading-relaxed text-[rgb(70_88_115/0.42)]"
         />
       </div>
     </main>

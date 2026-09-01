@@ -29,13 +29,11 @@
       "button": {
         "subscribed": "Abo verwalten",
         "available": "Unbegrenzt holen"
-      },
-
-      "note": "Die Preise sind in US-Dollar. Deine eigene Währung und die Steuer siehst du, bevor du bezahlst."
+      }
     },
 
     "agreement": {
-      "text": "Wenn du ein Abo abschließt, akzeptierst du unsere {terms} und unsere {privacy}.",
+      "text": "Die Preise sind in US-Dollar. Deine eigene Währung und die Steuer siehst du, bevor du bezahlst. Wenn du ein Abo abschließt, akzeptierst du unsere {terms} und unsere {privacy}.",
       "terms": "Nutzungsbedingungen",
       "privacy": "Datenschutzerklärung"
     }
