@@ -2,20 +2,20 @@
   "page": {
     "metadata": {
       "title": "요금제",
-      "description": "Minecraft 스킨 생성기 Unlimited 구독 요금 안내."
+      "description": "Minecraft 스킨 생성기의 요금제는 하나예요. 스킨을 원하는 만큼 만들고, 만든 스킨은 전부 다운로드할 수 있어요."
     },
 
     "errors": {
       "plan": "지금은 구독할 수 있는 게 없어요. 조금 뒤에 다시 와 주세요.",
       "checkout": "결제 페이지를 열지 못했어요. 결제된 금액은 없어요.",
       "portal": "결제 관리 페이지를 열지 못했어요. 조금 뒤에 다시 해 보세요.",
-      "callback": "결제가 끝났어요. Unlimited가 여기에 나타나기까지 조금 걸릴 수 있어요."
+      "callback": "결제가 끝났어요. 여기에 나타나기까지 조금 걸릴 수 있어요."
     },
 
     "subscription": {
       "title": {
-        "subscribed": "Unlimited를 쓰고 있어요",
-        "available": "Unlimited"
+        "subscribed": "무제한 요금제를 쓰고 있어요",
+        "available": "무제한 요금제"
       },
 
       "price": "{price}",
@@ -24,7 +24,7 @@
 
       "button": {
         "subscribed": "결제 관리",
-        "available": "Unlimited 시작하기"
+        "available": "무제한 요금제 시작하기"
       },
 
       "note": "가격은 미국 달러예요. 결제하기 전에 쓰는 통화와 세금을 볼 수 있어요."

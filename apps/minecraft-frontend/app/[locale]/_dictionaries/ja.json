@@ -28,12 +28,12 @@
     "prompt": {
       "label": "作りたいスキンを説明してください",
       "placeholder": "作りたいスキンを入力…",
-      "submit": "入力した説明でスキンを作る"
+      "submit": "スキンを作る"
     },
 
     "download": {
       "subscribedTitle": "64×64 の PNG をダウンロード",
-      "lockedTitle": "ダウンロードは Unlimited の機能です。",
+      "lockedTitle": "ダウンロードは無制限プランでできます。",
       "label": "スキンをダウンロード"
     },
 

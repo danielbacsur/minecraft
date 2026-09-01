@@ -28,12 +28,12 @@
     "prompt": {
       "label": "描述你想要的皮肤",
       "placeholder": "写下你的想法……",
-      "submit": "提交你的皮肤描述"
+      "submit": "生成皮肤"
     },
 
     "download": {
       "subscribedTitle": "下载 64×64 的 .png 文件",
-      "lockedTitle": "下载是 Unlimited 才有的功能。",
+      "lockedTitle": "开通无限版就能下载。",
       "label": "下载皮肤"
     },
 

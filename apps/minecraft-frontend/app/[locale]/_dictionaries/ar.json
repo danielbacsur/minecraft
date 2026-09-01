@@ -28,12 +28,12 @@
     "prompt": {
       "label": "صِف السكن الذي تريده",
       "placeholder": "اكتب وصفًا...",
-      "submit": "أرسل الوصف لصنع السكن"
+      "submit": "اصنع السكن"
     },
 
     "download": {
       "subscribedTitle": "تنزيل ملف PNG بحجم 64×64",
-      "lockedTitle": "التنزيلات متاحة مع Unlimited.",
+      "lockedTitle": "التنزيلات متاحة مع «غير محدود».",
       "label": "تنزيل السكن"
     },
 

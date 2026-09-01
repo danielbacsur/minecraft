@@ -2,20 +2,20 @@
   "page": {
     "metadata": {
       "title": "价格",
-      "description": "Minecraft 皮肤生成器 Unlimited 的订阅价格。"
+      "description": "Minecraft 皮肤生成器只有一种方案：想做多少皮肤就做多少，每一个都能下载。"
     },
 
     "errors": {
       "plan": "现在没有可以订阅的方案，过一会儿再试。",
       "checkout": "支付页面没能打开，没有扣任何费用。",
       "portal": "账单页面没能打开，过一会儿再试。",
-      "callback": "付款成功了。Unlimited 可能要过一会儿才会显示出来。"
+      "callback": "付款成功了。这里可能要过一会儿才会显示出来。"
     },
 
     "subscription": {
       "title": {
-        "subscribed": "你已经开通 Unlimited 了",
-        "available": "Unlimited"
+        "subscribed": "你已经开通无限版了",
+        "available": "无限版"
       },
 
       "price": "{price}",
@@ -24,7 +24,7 @@
 
       "button": {
         "subscribed": "管理账单",
-        "available": "开通 Unlimited"
+        "available": "开通无限版"
       },
 
       "note": "价格以美元计。付款前你会看到你自己的货币和税费。"

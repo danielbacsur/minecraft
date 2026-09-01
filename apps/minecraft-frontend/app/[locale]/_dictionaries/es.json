@@ -28,12 +28,12 @@
     "prompt": {
       "label": "Describe tu skin",
       "placeholder": "Escribe tu idea...",
-      "submit": "Enviar la descripción"
+      "submit": "Crear skin"
     },
 
     "download": {
       "subscribedTitle": "Descargar el archivo .png de 64x64",
-      "lockedTitle": "Las descargas forman parte de Unlimited.",
+      "lockedTitle": "Las descargas vienen con el plan Ilimitado.",
       "label": "Descargar skin"
     },
 

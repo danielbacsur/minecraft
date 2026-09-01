@@ -2,20 +2,20 @@
   "page": {
     "metadata": {
       "title": "الأسعار",
-      "description": "أسعار اشتراك Unlimited في صانع سكنات Minecraft."
+      "description": "باقة واحدة لصانع سكنات Minecraft: سكنات بقدر ما تحب، وكل واحدة منها جاهزة للتنزيل."
     },
 
     "errors": {
       "plan": "لا يوجد اشتراك متاح الآن. حاول لاحقًا.",
       "checkout": "لم نستطع فتح صفحة الدفع. لم نخصم منك شيئًا.",
       "portal": "لم نستطع فتح صفحة الفوترة. حاول بعد قليل.",
-      "callback": "تم الدفع بنجاح. قد يحتاج Unlimited إلى لحظات ليظهر هنا."
+      "callback": "تم الدفع بنجاح. قد يحتاج الأمر إلى لحظات ليظهر هنا."
     },
 
     "subscription": {
       "title": {
-        "subscribed": "أنت مشترك في Unlimited",
-        "available": "Unlimited"
+        "subscribed": "أنت مشترك في «غير محدود»",
+        "available": "غير محدود"
       },
 
       "price": "{price}",
@@ -24,7 +24,7 @@
 
       "button": {
         "subscribed": "إدارة الفوترة",
-        "available": "اشترك في Unlimited"
+        "available": "اشترك في «غير محدود»"
       },
 
       "note": "الأسعار بالدولار الأمريكي. سترى عملتك والضريبة قبل الدفع."

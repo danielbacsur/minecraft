@@ -28,12 +28,12 @@
     "prompt": {
       "label": "Describe your skin",
       "placeholder": "Type a prompt...",
-      "submit": "Submit prompt"
+      "submit": "Make skin"
     },
 
     "download": {
       "subscribedTitle": "Download the 64x64 .png",
-      "lockedTitle": "Downloads are part of Unlimited.",
+      "lockedTitle": "Downloads come with Unlimited.",
       "label": "Download skin"
     },
 
