@@ -1,17 +1,14 @@
-import { Geist, Geist_Mono } from "next/font/google";
+import { Geist } from "next/font/google";
 import { notFound } from "next/navigation";
 
 import { direction, hasLocale } from "@/utils/i18n";
+
+import { Studio } from "./_components/studio";
 
 import "../globals.css";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
   subsets: ["latin"],
 });
 
@@ -26,9 +23,11 @@ export default async function Layout({
     <html
       lang={locale}
       dir={direction(locale)}
-      className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+      className={`${geistSans.variable} antialiased`}
     >
-      <body>{children}</body>
+      <body className="bg-[#e3edf2]">
+        <Studio>{children}</Studio>
+      </body>
     </html>
   );
 }

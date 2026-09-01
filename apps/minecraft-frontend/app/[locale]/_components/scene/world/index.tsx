@@ -3,6 +3,8 @@
 import { Field } from "./field";
 import { scatter } from "./scatter";
 
+const AT = scatter();
+
 export function World() {
-  return <Field block="short_grass" at={scatter()} />;
+  return <Field block="short_grass" at={AT} />;
 }
