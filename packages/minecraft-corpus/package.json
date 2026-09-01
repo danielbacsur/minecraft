@@ -10,6 +10,7 @@
   },
 
   "dependencies": {
+    "@minecraft/cache": "*",
     "@minecraft/postgres": "*",
     "voyageai": "0.4.0"
   },
