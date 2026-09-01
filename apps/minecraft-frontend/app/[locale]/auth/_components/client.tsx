@@ -35,7 +35,7 @@ export function Client({ dictionary }: { dictionary: Dictionary["page"] }) {
   return (
     <main className="grid min-h-dvh place-items-center bg-[#e3edf2] px-6 py-16 font-sans">
       <div className="w-full max-w-88">
-        <h1 className="text-center font-(family-name:--font-minecraft) text-[16px] tracking-[0.01em] text-[rgb(70_88_115/0.7)]">
+        <h1 className="text-center text-[16px] tracking-[0.01em] text-[rgb(70_88_115/0.7)]">
           {dictionary.title}
         </h1>
 

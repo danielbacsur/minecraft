@@ -1,6 +1,6 @@
 "use client";
 
-import { use } from "react";
+import { use, useMemo } from "react";
 
 import { useTexture } from "@react-three/drei";
 import * as THREE from "three";
@@ -92,17 +92,23 @@ export function Field({
   at: readonly Placement[];
 }) {
   const [faces, colour] = use(load(block));
-  const groups = group(faces);
+  const groups = useMemo(() => group(faces), [faces]);
   const maps = useTexture(
     groups.map(([texture]) => `${TEXTURES}/${texture}.png`),
     (loaded) => [loaded].flat().forEach(pixelate),
   );
-  const cast = shadow(at, faces);
+
+  const geometries = useMemo(
+    () => groups.map(([, parts]) => build(at, parts, colour)),
+    [groups, at, colour],
+  );
+
+  const cast = useMemo(() => shadow(at, faces), [at, faces]);
 
   return (
     <>
-      {groups.map(([texture, parts], i) => (
-        <mesh key={texture} geometry={build(at, parts, colour)}>
+      {groups.map(([texture], i) => (
+        <mesh key={texture} geometry={geometries[i]}>
           <meshStandardMaterial
             map={maps[i]}
             vertexColors

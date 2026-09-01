@@ -21,6 +21,10 @@ export function hasLocale(locale: string): locale is Locale {
   return locales.some((supported) => supported === locale);
 }
 
+export function direction(locale: Locale) {
+  return new Intl.Locale(locale).getTextInfo().direction;
+}
+
 export function preferredLocale(request: NextRequest): Locale {
   const preferences = (request.headers.get("accept-language") ?? "")
     .split(",")

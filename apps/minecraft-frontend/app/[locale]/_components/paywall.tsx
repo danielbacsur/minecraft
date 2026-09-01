@@ -34,8 +34,8 @@ export function Paywall({
   const { title, body, action, note } = copy[scope];
 
   return (
-    <div className="fixed inset-x-4 bottom-26 z-10 touch-auto sm:inset-x-auto sm:top-1/2 sm:right-8 sm:bottom-auto sm:w-85 sm:-translate-y-1/2">
-      <aside className="relative flex animate-slide flex-col gap-3 rounded-[20px] glass p-5 text-[rgb(70_88_115/0.78)] shadow-[0_8px_32px_rgb(70_90_120/0.14),inset_0_1px_0_rgb(255_255_255/0.95),inset_0_-1px_0_rgb(255_255_255/0.45)] motion-reduce:animate-none sm:rounded-3xl sm:p-6">
+    <div className="pointer-events-auto fixed inset-x-4 bottom-26 z-10 touch-auto sm:inset-x-auto sm:top-1/2 sm:right-8 sm:bottom-auto sm:w-85 sm:-translate-y-1/2">
+      <aside className="animate-slide relative flex flex-col gap-3 rounded-[20px] glass p-5 text-[rgb(70_88_115/0.78)] shadow-[0_8px_32px_rgb(70_90_120/0.14),inset_0_1px_0_rgb(255_255_255/0.95),inset_0_-1px_0_rgb(255_255_255/0.45)] motion-reduce:animate-none sm:rounded-3xl sm:p-6">
         <button
           type="button"
           aria-label={copy.close}
