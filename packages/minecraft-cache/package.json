@@ -1,5 +1,5 @@
 {
-  "name": "@minecraft/postgres",
+  "name": "@minecraft/cache",
   "version": "0.0.0",
   "private": true,
 
@@ -9,18 +9,12 @@
     ".": "./src/index.ts"
   },
 
-  "scripts": {
-    "dev": "drizzle-kit studio"
-  },
-
   "dependencies": {
-    "@neondatabase/serverless": "1.1.0",
-    "drizzle-orm": "1.0.0-rc.4"
+    "@upstash/redis": "1.38.3"
   },
 
   "devDependencies": {
     "@types/node": "^26",
-    "drizzle-kit": "1.0.0-rc.4",
     "typescript": "^7"
   }
 }

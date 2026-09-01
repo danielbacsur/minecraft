@@ -1,6 +1,9 @@
+import { Cache } from "@minecraft/cache";
 import { postgres, schema, sql } from "@minecraft/postgres";
 
 import { embedMultimodalQuery, embedQuery, rerank } from "./voyage";
+
+const cache = new Cache<string[]>("search");
 
 type Candidate = {
   id: string;
@@ -13,9 +16,10 @@ export type SearchResult = {
 
 export type SearchOptions = {
   limit?: number;
+  names?: string[];
 };
 
-async function recall(text: string): Promise<Candidate[]> {
+async function recall(text: string, names: string): Promise<Candidate[]> {
   const [embedding, multimodalEmbedding] = await Promise.all([
     embedQuery(text).then((values) => `[${values.join(",")}]`),
     embedMultimodalQuery(text).then((values) => `[${values.join(",")}]`),
@@ -58,7 +62,7 @@ async function recall(text: string): Promise<Candidate[]> {
 
       _simple AS (
         SELECT string_agg(quote_literal(lexeme), ' | ')::tsquery AS _simple
-        FROM unnest(to_tsvector('simple', ${text}))
+        FROM unnest(to_tsvector('simple', ${names}))
       ),
 
       _english AS (
@@ -91,7 +95,7 @@ async function recall(text: string): Promise<Candidate[]> {
       ),
 
       _normalized AS (
-        SELECT regexp_replace(lower(immutable_unaccent(${text})), '[^a-z0-9 ]', '', 'g') AS _normalized
+        SELECT regexp_replace(lower(immutable_unaccent(${names})), '[^a-z0-9 ]', '', 'g') AS _normalized
       ),
 
       fuzzy AS (
@@ -153,18 +157,25 @@ export async function search(
   query: string,
   options: SearchOptions = {},
 ): Promise<SearchResult[]> {
-  const { limit = 1 } = options;
+  const { limit = 1, names = [] } = options;
 
   const trimmed = query.trim();
   if (!trimmed) return [];
 
-  const candidates = await recall(trimmed);
+  const key = JSON.stringify([trimmed, names, limit]);
+
+  const cached = await cache.get(key);
+  if (cached) return cached.map((id) => ({ id }));
+
+  const candidates = await recall(trimmed, names.join(", ") || trimmed);
   if (candidates.length === 0) return [];
 
   const documents = candidates.map((candidate) => candidate.document);
   const scores = await rerank(trimmed, documents);
 
-  return scores.slice(0, limit).map(({ index }) => ({
-    id: candidates[index].id,
-  }));
+  const results = scores.slice(0, limit).map(({ index }) => candidates[index].id); // prettier-ignore
+
+  await cache.set(key, results);
+
+  return results.map((id) => ({ id }));
 }

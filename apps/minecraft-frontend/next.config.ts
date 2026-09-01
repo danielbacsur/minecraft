@@ -11,6 +11,7 @@ const config: NextConfig = {
   reactCompiler: true,
   transpilePackages: [
     "@minecraft/auth",
+    "@minecraft/cache",
     "@minecraft/corpus",
     "@minecraft/postgres",
     "@minecraft/stripe",
