@@ -1,14 +1,40 @@
 import { headers } from "next/headers";
+import Link from "next/link";
 import { notFound } from "next/navigation";
 
 import { auth } from "@minecraft/auth/server";
 
-import { hasLocale } from "@/utils/i18n";
+import { hasLocale, type Locale } from "@/utils/i18n";
 
 import { Agreement } from "../_components/agreement";
 import { Back } from "../_components/nav";
 import { getPriceByLocale } from "../_utils/price";
 import { getDictionary } from "./_dictionaries";
+
+function reset(locale: Locale, copy: { soon: string; later: string }) {
+  const now = new Date();
+
+  const midnight = Date.UTC(
+    now.getUTCFullYear(),
+    now.getUTCMonth(),
+    now.getUTCDate() + 1,
+  );
+
+  const hours = Math.round((midnight - now.getTime()) / 3_600_000);
+
+  if (hours < 1) return copy.soon;
+
+  return copy.later.replace(
+    "{when}",
+    new Intl.RelativeTimeFormat(locale, { numeric: "auto" }).format(
+      hours,
+      "hour",
+    ),
+  );
+}
+
+const ACTION =
+  "flex h-13 w-full items-center justify-center rounded-full glass px-4 text-[15px] text-[rgb(70_88_115/0.85)] shadow-[inset_0_1px_0_rgb(255_255_255/0.95),inset_0_-1px_0_rgb(255_255_255/0.45)] transition-[background-color,border-color,transform] duration-150 ease-out hover:glass-lit active:translate-y-0.5 motion-reduce:transition-none";
 
 export default async function Page({
   params,
@@ -18,11 +44,20 @@ export default async function Page({
   if (!hasLocale(locale)) notFound();
 
   const dictionary = await getDictionary(locale);
+
   const page = dictionary.page;
 
   const amount = await getPriceByLocale(locale);
 
-  const { error } = await searchParams;
+  const { error, from } = await searchParams;
+
+  const reason =
+    from === "download"
+      ? page.reasons.download
+      : from === "quota"
+        ? reset(locale, page.reasons.quota)
+        : null;
+
   const failure =
     typeof error === "string"
       ? page.errors[error as keyof typeof page.errors]
@@ -34,6 +69,7 @@ export default async function Page({
     headers: await headers(),
   });
 
+  const registered = Boolean(session && !session.user.isAnonymous);
   const subscribed = Boolean(session?.subscription);
   const subscription = page.subscription;
   const state = subscribed ? "subscribed" : "available";
@@ -42,7 +78,13 @@ export default async function Page({
     <main className="relative grid min-h-dvh place-items-center px-6 py-16 font-sans">
       <Back copy={page.back} locale={locale} />
 
-      <div className="relative w-full max-w-88 text-center">
+      <div className="relative w-full max-w-88 animate-emerge text-center motion-reduce:animate-none">
+        {reason && (
+          <p className="mb-7 text-[14px] leading-relaxed text-[rgb(70_88_115/0.7)]">
+            {reason}
+          </p>
+        )}
+
         <h1 className="text-[16px] tracking-[0.01em] text-[rgb(70_88_115/0.55)]">
           {subscription.title[state]}
         </h1>
@@ -76,18 +118,21 @@ export default async function Page({
           </p>
         )}
 
-        <form
-          action={subscribed ? "/api/stripe/portal" : "/api/stripe/checkout"}
-          method="post"
-          className="mt-9"
-        >
-          <button
-            type="submit"
-            className="flex h-13 w-full items-center justify-center rounded-[18px] glass px-4 text-[15px] text-[rgb(70_88_115/0.85)] shadow-[inset_0_1px_0_rgb(255_255_255/0.95),inset_0_-1px_0_rgb(255_255_255/0.45)] transition-[background-color,border-color,transform] duration-150 ease-out hover:glass-lit active:translate-y-0.5 motion-reduce:transition-none"
+        {registered ? (
+          <form
+            action={subscribed ? "/api/stripe/portal" : "/api/stripe/checkout"}
+            method="post"
+            className="mt-9"
           >
-            {subscription.button[state]}
-          </button>
-        </form>
+            <button type="submit" className={ACTION}>
+              {subscription.button[state]}
+            </button>
+          </form>
+        ) : (
+          <Link href={`/${locale}/auth`} className={`mt-9 ${ACTION}`}>
+            {subscription.button.available}
+          </Link>
+        )}
 
         <Agreement
           copy={page.agreement}
