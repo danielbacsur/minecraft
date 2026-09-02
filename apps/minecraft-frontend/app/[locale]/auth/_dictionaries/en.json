@@ -5,6 +5,7 @@
       "description": "Sign in to keep making Minecraft skins."
     },
 
+    "back": "Back",
     "title": "Sign in to keep making skins",
     "subtitle": "A free account gives you three new skins every day.",
     "failure": "That sign-in did not go through. Try another account below, or — for a Microsoft child account — ask a parent to allow other apps at account.live.com/mk.",

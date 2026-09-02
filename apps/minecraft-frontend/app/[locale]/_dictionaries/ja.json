@@ -25,6 +25,11 @@
     "retry": "もう一度",
     "disclaimer": "これは公式の Minecraft 製品ではありません。Mojang や Microsoft が承認したものではなく、関係もありません。",
 
+    "nav": {
+      "pricing": "料金",
+      "signIn": "ログイン"
+    },
+
     "prompt": {
       "label": "作りたいスキンを説明してください",
       "placeholder": "作りたいスキンを入力…",

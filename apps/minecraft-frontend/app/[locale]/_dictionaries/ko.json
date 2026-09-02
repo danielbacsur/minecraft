@@ -25,6 +25,11 @@
     "retry": "다시 해 보기",
     "disclaimer": "공식 Minecraft 제품이 아니에요. Mojang이나 Microsoft의 승인을 받지 않았고, 관련도 없어요.",
 
+    "nav": {
+      "pricing": "요금제",
+      "signIn": "로그인"
+    },
+
     "prompt": {
       "label": "만들고 싶은 스킨을 설명해 주세요",
       "placeholder": "원하는 스킨을 적어 보세요...",

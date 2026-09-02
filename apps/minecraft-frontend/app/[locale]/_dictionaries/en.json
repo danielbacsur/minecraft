@@ -25,6 +25,11 @@
     "retry": "Try again",
     "disclaimer": "Not an official Minecraft product. Not approved by or associated with Mojang or Microsoft.",
 
+    "nav": {
+      "pricing": "Pricing",
+      "signIn": "Sign in"
+    },
+
     "prompt": {
       "label": "Describe your skin",
       "placeholder": "Type a prompt...",

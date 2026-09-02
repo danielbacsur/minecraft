@@ -5,6 +5,8 @@
       "description": "One plan for the Minecraft Skin Generator: as many skins as you like, every one ready to download."
     },
 
+    "back": "Back",
+
     "errors": {
       "plan": "There is nothing to subscribe to right now. Try again later.",
       "checkout": "We could not open the payment page. Nothing was charged.",

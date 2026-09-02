@@ -5,6 +5,8 @@
       "description": "Un solo plan para el Generador de skins de Minecraft: todas las skins que quieras, y todas listas para descargar."
     },
 
+    "back": "Volver",
+
     "errors": {
       "plan": "Ahora mismo no hay ninguna suscripción disponible. Inténtalo más tarde.",
       "checkout": "No pudimos abrir la página de pago. No se cobró nada.",

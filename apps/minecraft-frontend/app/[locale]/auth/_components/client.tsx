@@ -4,6 +4,8 @@ import { useSyncExternalStore } from "react";
 
 import { auth } from "@minecraft/auth/react";
 
+import type { Locale } from "@/utils/i18n";
+
 import type { Dictionary } from "../_dictionaries";
 import { Agreement } from "../../_components/agreement";
 
@@ -15,7 +17,13 @@ const PROVIDERS = [
 
 const settled = () => () => {};
 
-export function Client({ dictionary }: { dictionary: Dictionary["page"] }) {
+export function Client({
+  dictionary,
+  locale,
+}: {
+  dictionary: Dictionary["page"];
+  locale: Locale;
+}) {
   const lastUsed = useSyncExternalStore(
     settled,
     () => auth.getLastUsedLoginMethod(),
@@ -82,6 +90,7 @@ export function Client({ dictionary }: { dictionary: Dictionary["page"] }) {
 
         <Agreement
           copy={dictionary.agreement}
+          locale={locale}
           className="mt-5 text-center text-[12px] leading-relaxed text-[rgb(70_88_115/0.42)]"
         />
       </div>

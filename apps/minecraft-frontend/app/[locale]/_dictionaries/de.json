@@ -25,6 +25,11 @@
     "retry": "Noch mal",
     "disclaimer": "Kein offizielles Minecraft-Produkt. Nicht von Mojang oder Microsoft genehmigt und nicht mit ihnen verbunden.",
 
+    "nav": {
+      "pricing": "Preise",
+      "signIn": "Anmelden"
+    },
+
     "prompt": {
       "label": "Beschreib deinen Skin",
       "placeholder": "Schreib deine Idee …",

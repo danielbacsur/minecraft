@@ -25,6 +25,11 @@
     "retry": "أعد المحاولة",
     "disclaimer": "هذا ليس منتجًا رسميًا من Minecraft، وهو غير معتمد من Mojang أو Microsoft وغير مرتبط بهما.",
 
+    "nav": {
+      "pricing": "الأسعار",
+      "signIn": "تسجيل الدخول"
+    },
+
     "prompt": {
       "label": "صِف السكن الذي تريده",
       "placeholder": "اكتب وصفًا...",

@@ -5,6 +5,8 @@
       "description": "Ein Abo für den Minecraft-Skin-Generator: so viele Skins, wie du willst, und jeden davon kannst du herunterladen."
     },
 
+    "back": "Zurück",
+
     "errors": {
       "plan": "Gerade gibt es kein Abo. Probier es später noch mal.",
       "checkout": "Wir konnten die Zahlungsseite nicht öffnen. Es wurde nichts abgebucht.",
