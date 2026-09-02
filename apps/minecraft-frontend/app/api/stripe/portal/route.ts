@@ -4,12 +4,13 @@ import { auth } from "@minecraft/auth/server";
 import { stripe } from "@minecraft/stripe";
 
 import { withErrors } from "@/errors";
+import { redirect } from "@/utils/redirect";
 
 export const POST = withErrors(async (request: NextRequest) => {
   const session = await auth.api.getSession({ headers: request.headers });
 
   if (!session?.user.customerId) {
-    return Response.redirect(new URL("/pricing", request.url), 303);
+    return redirect(request, "/pricing");
   }
 
   try {
@@ -22,9 +23,6 @@ export const POST = withErrors(async (request: NextRequest) => {
   } catch (cause) {
     console.error(cause);
 
-    return Response.redirect(
-      new URL("/pricing?error=portal", request.url),
-      303,
-    );
+    return redirect(request, "/pricing?error=portal");
   }
 });
