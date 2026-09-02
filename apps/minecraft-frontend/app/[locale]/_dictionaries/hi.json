@@ -25,16 +25,21 @@
     "retry": "फिर कोशिश करो",
     "disclaimer": "यह कोई आधिकारिक Minecraft उत्पाद नहीं है। न तो इसे Mojang या Microsoft की मंज़ूरी मिली है, न ही इसका उनसे कोई नाता है।",
 
+    "nav": {
+      "pricing": "कीमत",
+      "signIn": "साइन इन"
+    },
+
     "prompt": {
       "label": "अपनी स्किन के बारे में लिखो",
       "placeholder": "यहाँ कुछ लिखो...",
-      "submit": "स्किन बनाने के लिए भेजो"
+      "submit": "स्किन बनाओ"
     },
 
     "download": {
       "subscribedTitle": "64x64 वाला .png डाउनलोड करो",
-      "lockedTitle": "डाउनलोड Unlimited के साथ मिलते हैं।",
-      "label": "डाउनलोड करो"
+      "lockedTitle": "डाउनलोड अनलिमिटेड के साथ मिलते हैं।",
+      "label": "स्किन डाउनलोड करो"
     },
 
     "legal": {

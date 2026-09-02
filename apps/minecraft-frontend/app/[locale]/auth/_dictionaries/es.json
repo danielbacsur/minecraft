@@ -5,6 +5,7 @@
       "description": "Inicia sesión para seguir creando skins de Minecraft."
     },
 
+    "back": "Volver",
     "title": "Inicia sesión para seguir creando skins",
     "subtitle": "Una cuenta gratis te da tres skins nuevas cada día.",
     "failure": "No se pudo iniciar sesión. Prueba con otra de las cuentas de abajo o, si usas una cuenta infantil de Microsoft, pídele a un adulto que permita otras aplicaciones en account.live.com/mk.",

@@ -5,6 +5,7 @@
       "description": "登录后继续做 Minecraft 皮肤。"
     },
 
+    "back": "返回",
     "title": "登录后继续做皮肤",
     "subtitle": "免费账号每天送你三个新皮肤。",
     "failure": "这次登录没有成功。可以在下面换一个账号试试。如果用的是 Microsoft 儿童账户，请让家里的大人打开 account.live.com/mk，允许使用其他应用。",

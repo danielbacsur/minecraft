@@ -25,20 +25,25 @@
     "retry": "Noch mal",
     "disclaimer": "Kein offizielles Minecraft-Produkt. Nicht von Mojang oder Microsoft genehmigt und nicht mit ihnen verbunden.",
 
+    "nav": {
+      "pricing": "Preise",
+      "signIn": "Anmelden"
+    },
+
     "prompt": {
-      "label": "Beschreib, wie dein Skin aussehen soll",
-      "placeholder": "Schreib deine Idee ...",
-      "submit": "Beschreibung abschicken"
+      "label": "Beschreib deinen Skin",
+      "placeholder": "Schreib deine Idee …",
+      "submit": "Skin machen"
     },
 
     "download": {
       "subscribedTitle": "64x64-PNG herunterladen",
-      "lockedTitle": "Downloads gehören zu Unlimited.",
+      "lockedTitle": "Downloads gibt es mit Unbegrenzt.",
       "label": "Skin herunterladen"
     },
 
     "legal": {
-      "terms": "Bedingungen",
+      "terms": "Nutzungsbedingungen",
       "privacy": "Datenschutz",
       "contact": "Kontakt"
     },

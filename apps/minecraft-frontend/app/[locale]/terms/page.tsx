@@ -1,8 +1,14 @@
 import Link from "next/link";
+import { notFound } from "next/navigation";
+
+import { hasLocale } from "@/utils/i18n";
 
 import { Document, Mail, Section } from "../_components/document";
 
-export default function Page() {
+export default async function Page({ params }: PageProps<"/[locale]/terms">) {
+  const { locale } = await params;
+  if (!hasLocale(locale)) notFound();
+
   return (
     <Document title="Terms of Service">
       <p>
@@ -102,7 +108,10 @@ export default function Page() {
         <p>
           You may cancel at any time, without charge, through the billing portal
           reached from the{" "}
-          <Link href="/pricing" className="underline underline-offset-4">
+          <Link
+            href={`/${locale}/pricing`}
+            className="underline underline-offset-4"
+          >
             pricing page
           </Link>
           . Cancellation takes effect at the end of the billing period in
@@ -215,7 +224,10 @@ export default function Page() {
           terminate at any time by cancelling and requesting deletion of your
           account at <Mail />, and we handle your personal data as described in
           the{" "}
-          <Link href="/privacy" className="underline underline-offset-4">
+          <Link
+            href={`/${locale}/privacy`}
+            className="underline underline-offset-4"
+          >
             Privacy Policy
           </Link>
           .

@@ -25,15 +25,20 @@
     "retry": "再试一次",
     "disclaimer": "这不是 Minecraft 官方产品，未获 Mojang 或 Microsoft 认可，也与它们没有关联。",
 
+    "nav": {
+      "pricing": "价格",
+      "signIn": "登录"
+    },
+
     "prompt": {
       "label": "描述你想要的皮肤",
       "placeholder": "写下你的想法……",
-      "submit": "提交你的皮肤描述"
+      "submit": "生成皮肤"
     },
 
     "download": {
       "subscribedTitle": "下载 64×64 的 .png 文件",
-      "lockedTitle": "下载是 Unlimited 才有的功能。",
+      "lockedTitle": "开通无限版就能下载。",
       "label": "下载皮肤"
     },
 

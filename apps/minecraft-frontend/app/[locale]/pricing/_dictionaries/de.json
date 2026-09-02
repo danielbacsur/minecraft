@@ -2,20 +2,22 @@
   "page": {
     "metadata": {
       "title": "Preise",
-      "description": "Preise für das Unlimited-Abo des Minecraft-Skin-Generators."
+      "description": "Ein Abo für den Minecraft-Skin-Generator: so viele Skins, wie du willst, und jeden davon kannst du herunterladen."
     },
+
+    "back": "Zurück",
 
     "errors": {
       "plan": "Gerade gibt es kein Abo. Probier es später noch mal.",
       "checkout": "Wir konnten die Zahlungsseite nicht öffnen. Es wurde nichts abgebucht.",
       "portal": "Wir konnten deine Rechnungsseite nicht öffnen. Probier es gleich noch mal.",
-      "callback": "Deine Zahlung hat geklappt. Es kann einen Moment dauern, bis Unlimited hier auftaucht."
+      "callback": "Deine Zahlung hat geklappt. Es kann einen Moment dauern, bis sie hier auftaucht."
     },
 
     "subscription": {
       "title": {
-        "subscribed": "Du hast Unlimited",
-        "available": "Unlimited"
+        "subscribed": "Du hast Unbegrenzt",
+        "available": "Unbegrenzt"
       },
 
       "price": "{price}",
@@ -28,14 +30,12 @@
 
       "button": {
         "subscribed": "Abo verwalten",
-        "available": "Unlimited holen"
-      },
-
-      "note": "Die Preise sind in US-Dollar. Deine eigene Währung und die Steuer siehst du, bevor du bezahlst."
+        "available": "Unbegrenzt holen"
+      }
     },
 
     "agreement": {
-      "text": "Wenn du ein Abo abschließt, akzeptierst du unsere {terms} und unsere {privacy}.",
+      "text": "Die Preise sind in US-Dollar. Deine eigene Währung und die Steuer siehst du, bevor du bezahlst. Wenn du ein Abo abschließt, akzeptierst du unsere {terms} und unsere {privacy}.",
       "terms": "Nutzungsbedingungen",
       "privacy": "Datenschutzerklärung"
     }

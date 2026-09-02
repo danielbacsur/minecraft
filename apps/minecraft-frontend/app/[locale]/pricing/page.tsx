@@ -6,6 +6,7 @@ import { auth } from "@minecraft/auth/server";
 import { hasLocale } from "@/utils/i18n";
 
 import { Agreement } from "../_components/agreement";
+import { Back } from "../_components/nav";
 import { getPriceByLocale } from "../_utils/price";
 import { getDictionary } from "./_dictionaries";
 
@@ -38,8 +39,10 @@ export default async function Page({
   const state = subscribed ? "subscribed" : "available";
 
   return (
-    <main className="grid min-h-dvh place-items-center bg-[#e3edf2] px-6 py-16 font-sans">
-      <div className="w-full max-w-88 text-center">
+    <main className="relative grid min-h-dvh place-items-center px-6 py-16 font-sans">
+      <Back copy={page.back} locale={locale} />
+
+      <div className="relative w-full max-w-88 text-center">
         <h1 className="text-[16px] tracking-[0.01em] text-[rgb(70_88_115/0.55)]">
           {subscription.title[state]}
         </h1>
@@ -86,15 +89,10 @@ export default async function Page({
           </button>
         </form>
 
-        {amount && (
-          <p className="mt-4 text-[12px] leading-relaxed text-[rgb(70_88_115/0.42)]">
-            {subscription.note}
-          </p>
-        )}
-
         <Agreement
           copy={page.agreement}
-          className="mt-2 text-[12px] leading-relaxed text-[rgb(70_88_115/0.42)]"
+          locale={locale}
+          className="mt-4 text-[12px] leading-relaxed text-[rgb(70_88_115/0.42)]"
         />
       </div>
     </main>
