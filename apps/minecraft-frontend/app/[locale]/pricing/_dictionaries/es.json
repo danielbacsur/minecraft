@@ -14,6 +14,15 @@
       "callback": "Tu pago se completó. Puede tardar un momento en aparecer aquí."
     },
 
+    "reasons": {
+      "download": "Las descargas vienen con el plan Ilimitado. Tu skin se queda aquí de todos modos.",
+
+      "quota": {
+        "soon": "Ya van 3 skins hoy. Tus próximas 3 llegan en menos de una hora.",
+        "later": "Ya van 3 skins hoy. Tus próximas 3 llegan {when}."
+      }
+    },
+
     "subscription": {
       "title": {
         "subscribed": "Tienes el plan Ilimitado",

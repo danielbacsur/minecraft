@@ -2,6 +2,8 @@
 
 import { use, useState } from "react";
 
+import { useRouter } from "next/navigation";
+
 import { auth } from "@minecraft/auth/react";
 
 import type { Failure } from "@/errors";
@@ -12,13 +14,25 @@ import { generate } from "../_utils/generate";
 import { Download } from "./download";
 import { Legal } from "./legal";
 import { Nav } from "./nav";
-import { Paywall } from "./paywall";
 import { Prompt } from "./prompt";
 import { CharacterContext } from "./studio";
 
-type Hint = Exclude<
-  Failure["code"],
-  "QUOTA_EXHAUSTED" | "SUBSCRIPTION_REQUIRED"
+const REASON = {
+  BAD_REQUEST: "words",
+  CAPACITY: "wait",
+  INTERNAL: "retry",
+  NETWORK_FAILED: "retry",
+  NO_MATCH: "words",
+  NOT_FOUND: "retry",
+  RATE_LIMITED: "wait",
+  RENDER_FAILED: "retry",
+  SEARCH_FAILED: "retry",
+  TEXTURE_MISSING: "retry",
+  TRANSLATION_FAILED: "retry",
+  UNAUTHENTICATED: "reload",
+} as const satisfies Record<
+  Exclude<Failure["code"], "QUOTA_EXHAUSTED" | "SUBSCRIPTION_REQUIRED">,
+  "retry" | "wait" | "words" | "reload"
 >;
 
 export function Client({
@@ -29,15 +43,32 @@ export function Client({
   locale: Locale;
 }) {
   const { data: session } = auth.useSession();
+  const router = useRouter();
 
-  const registered = Boolean(session && !session.user.isAnonymous);
   const subscribed = session?.subscription?.status === "active";
+  const registered = Boolean(session && !session.user.isAnonymous);
 
   const character = use(CharacterContext);
 
   const [failure, setFailure] = useState<Failure | null>(null);
   const [last, setLast] = useState("");
   const [id, setId] = useState<string | null>(null);
+
+  function report(failure: Failure) {
+    if (failure.code === "SUBSCRIPTION_REQUIRED") {
+      return router.push(`/${locale}/pricing?from=download`);
+    }
+
+    if (failure.code === "QUOTA_EXHAUSTED") {
+      return router.push(
+        failure.scope === "anonymous"
+          ? `/${locale}/auth?from=quota`
+          : `/${locale}/pricing?from=quota`,
+      );
+    }
+
+    setFailure(failure);
+  }
 
   async function run(prompt: string, retried: boolean): Promise<void> {
     if (!character.current) return;
@@ -57,7 +88,7 @@ export function Client({
       return run(prompt, true);
     }
 
-    setFailure(result.failure);
+    report(result.failure);
   }
 
   function start(prompt: string) {
@@ -72,61 +103,48 @@ export function Client({
     );
   }
 
-  const hint =
-    failure &&
-    failure.code !== "QUOTA_EXHAUSTED" &&
-    failure.code !== "SUBSCRIPTION_REQUIRED" ? (
-      <>
-        {dictionary.errors[failure.code as Hint]}
-        <button
-          type="button"
-          onClick={() => start(last)}
-          className="underline underline-offset-4 hover:text-[rgb(70_88_115/0.95)]"
-        >
-          {dictionary.retry}
-        </button>
-      </>
-    ) : null;
+  const notice = failure
+    ? dictionary.errors[REASON[failure.code as keyof typeof REASON]]
+        .split(/(\{retry\})/)
+        .map((part, index) =>
+          part === "{retry}" ? (
+            <button
+              key={index}
+              type="button"
+              onClick={() => start(last)}
+              className="underline underline-offset-4 hover:text-[rgb(70_88_115/0.95)]"
+            >
+              {dictionary.retry}
+            </button>
+          ) : (
+            part
+          ),
+        )
+    : null;
 
   return (
     <div className="pointer-events-none relative h-dvh w-full overflow-hidden font-sans">
-      {failure?.code === "QUOTA_EXHAUSTED" ? (
-        <Paywall
-          copy={dictionary.paywall}
-          locale={locale}
-          scope={failure.scope}
-          onDismiss={() => setFailure(null)}
-        />
-      ) : failure?.code === "SUBSCRIPTION_REQUIRED" ? (
-        <Paywall
-          copy={dictionary.paywall}
-          locale={locale}
-          scope="subscription"
-          onDismiss={() => setFailure(null)}
-        />
-      ) : null}
-
       <Nav copy={dictionary.nav} locale={locale} registered={registered}>
         <Download
           copy={dictionary.download}
           id={id}
           subscribed={subscribed}
-          onFailure={setFailure}
+          onFailure={report}
         />
       </Nav>
 
       <div className="pointer-events-auto fixed inset-x-0 bottom-2.5 z-10 touch-auto px-9">
         <div className="mb-2.5 grid">
           <p
-            className={`col-start-1 row-start-1 text-center text-[11px] leading-[1.5] text-balance text-[rgb(70_88_115/0.4)] transition-opacity duration-200 ease-out [text-shadow:0_1px_0_rgb(255_255_255/0.7)] motion-reduce:transition-none ${hint ? "opacity-0" : "opacity-100"}`}
+            className={`col-start-1 row-start-1 text-center text-[11px] leading-[1.5] text-balance text-[rgb(70_88_115/0.4)] transition-opacity duration-200 ease-out [text-shadow:0_1px_0_rgb(255_255_255/0.7)] motion-reduce:transition-none ${notice ? "opacity-0" : "opacity-100"}`}
           >
             {dictionary.disclaimer}
           </p>
 
           <p
-            className={`col-start-1 row-start-1 flex items-center justify-center gap-2 text-center text-[13px] leading-relaxed text-[rgb(70_88_115/0.72)] transition-opacity duration-200 ease-out [text-shadow:0_1px_0_rgb(255_255_255/0.8)] motion-reduce:transition-none ${hint ? "opacity-100" : "opacity-0"}`}
+            className={`col-start-1 row-start-1 flex flex-wrap items-center justify-center gap-x-2 gap-y-1 text-center text-[15px] leading-relaxed font-medium text-[rgb(70_88_115/0.95)] transition-opacity duration-200 ease-out [text-shadow:0_1px_0_rgb(255_255_255/0.8)] motion-reduce:transition-none ${notice ? "opacity-100" : "opacity-0"}`}
           >
-            {hint}
+            {notice}
           </p>
         </div>
 

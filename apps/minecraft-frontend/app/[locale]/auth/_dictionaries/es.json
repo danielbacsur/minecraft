@@ -8,6 +8,14 @@
     "back": "Volver",
     "title": "Inicia sesión para seguir creando skins",
     "subtitle": "Una cuenta gratis te da tres skins nuevas cada día.",
+
+    "reasons": {
+      "quota": {
+        "title": "Crea una cuenta gratis para seguir creando",
+        "subtitle": "Ya usaste tus 3 skins gratis. Una cuenta te da 3 más cada día y guarda todas las skins que crees."
+      }
+    },
+
     "failure": "No se pudo iniciar sesión. Prueba con otra de las cuentas de abajo o, si usas una cuenta infantil de Microsoft, pídele a un adulto que permita otras aplicaciones en account.live.com/mk.",
 
     "continueWith": {

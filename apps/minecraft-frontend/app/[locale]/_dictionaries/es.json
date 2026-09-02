@@ -8,18 +8,10 @@
 
   "page": {
     "errors": {
-      "BAD_REQUEST": "Escribe tu idea para crear una skin.",
-      "CAPACITY": "Hay mucha gente ahora mismo. Inténtalo de nuevo en un momento.",
-      "INTERNAL": "Algo salió mal. Inténtalo de nuevo.",
-      "NETWORK_FAILED": "Se perdió la conexión. Inténtalo de nuevo.",
-      "NO_MATCH": "No encontramos ninguna skin así. Prueba con otras palabras.",
-      "NOT_FOUND": "Esa skin no está disponible.",
-      "RATE_LIMITED": "Demasiadas skins seguidas. Espera un momento antes de volver a intentarlo.",
-      "RENDER_FAILED": "No se pudo terminar la skin.",
-      "SEARCH_FAILED": "La búsqueda de skins no funciona ahora mismo. Inténtalo de nuevo.",
-      "TEXTURE_MISSING": "No se pudo cargar esa skin.",
-      "TRANSLATION_FAILED": "No se pudo entender esa descripción. Inténtalo de nuevo.",
-      "UNAUTHENTICATED": "No se pudo iniciar tu sesión. Recarga la página."
+      "retry": "Algo salió mal. {retry}",
+      "wait": "Fueron muchas cosas a la vez. Espera un momento. {retry}",
+      "words": "No encontramos ninguna skin así. Prueba con otras palabras.",
+      "reload": "Tu sesión terminó. Recarga la página para seguir."
     },
 
     "retry": "Reintentar",
@@ -46,36 +38,6 @@
       "terms": "Términos",
       "privacy": "Privacidad",
       "contact": "Contacto"
-    },
-
-    "paywall": {
-      "close": "Cerrar",
-
-      "reset": {
-        "soon": "Tus próximas 3 skins llegan en menos de una hora.",
-        "later": "Tus próximas 3 skins llegan {when}."
-      },
-
-      "anonymous": {
-        "title": "Esa skin es tuya y puedes seguir mirándola.",
-        "body": "Ya usaste tus 3 skins gratis. Crea una cuenta gratis y tendrás 3 skins al día, guardadas en tu cuenta.",
-        "action": "Crear una cuenta gratis",
-        "note": "Un toque con Google, Discord o Microsoft. Sin correo que escribir ni contraseña que recordar."
-      },
-
-      "free": {
-        "title": "Ya van 3 skins hoy.",
-        "body": "O pásate a Unlimited: todas las skins que quieras, y todas se pueden descargar para Minecraft.",
-        "action": "Pásate a Unlimited",
-        "note": "Esperar también está bien. Tus skins seguirán aquí por la mañana."
-      },
-
-      "subscription": {
-        "title": "Las descargas forman parte de Unlimited.",
-        "body": "Tu skin está ahí y ahí se queda. Llevar el archivo a Minecraft viene con Unlimited: todas las skins que quieras, y todas se pueden descargar.",
-        "action": "Pásate a Unlimited",
-        "note": "Todo lo que creaste se queda aquí de todos modos. Pregúntale primero a un adulto: es un pago de verdad."
-      }
     }
   }
 }

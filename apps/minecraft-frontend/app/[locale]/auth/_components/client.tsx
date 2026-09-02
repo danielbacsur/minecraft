@@ -20,9 +20,11 @@ const settled = () => () => {};
 export function Client({
   dictionary,
   locale,
+  reason,
 }: {
   dictionary: Dictionary["page"];
   locale: Locale;
+  reason: { title: string; subtitle: string } | null;
 }) {
   const lastUsed = useSyncExternalStore(
     settled,
@@ -41,14 +43,14 @@ export function Client({
   );
 
   return (
-    <main className="grid min-h-dvh place-items-center bg-[#e3edf2] px-6 py-16 font-sans">
-      <div className="w-full max-w-88">
+    <main className="relative grid min-h-dvh place-items-center px-6 py-16 font-sans">
+      <div className="relative w-full max-w-88 animate-emerge motion-reduce:animate-none">
         <h1 className="text-center text-[16px] tracking-[0.01em] text-[rgb(70_88_115/0.7)]">
-          {dictionary.title}
+          {reason?.title ?? dictionary.title}
         </h1>
 
         <p className="mt-2 text-center text-[13px] leading-relaxed text-[rgb(70_88_115/0.5)]">
-          {dictionary.subtitle}
+          {reason?.subtitle ?? dictionary.subtitle}
         </p>
 
         {failed && (
@@ -69,7 +71,7 @@ export function Client({
                   errorCallbackURL: "/auth",
                 })
               }
-              className="flex h-13 items-center gap-3 rounded-[18px] glass px-4 text-[15px] text-[rgb(70_88_115/0.85)] shadow-[inset_0_1px_0_rgb(255_255_255/0.95),inset_0_-1px_0_rgb(255_255_255/0.45)] transition-[background-color,border-color,transform] duration-150 ease-out hover:glass-lit active:translate-y-0.5 motion-reduce:transition-none"
+              className="flex h-13 items-center gap-3 rounded-full glass px-4 text-[15px] text-[rgb(70_88_115/0.85)] shadow-[inset_0_1px_0_rgb(255_255_255/0.95),inset_0_-1px_0_rgb(255_255_255/0.45)] transition-[background-color,border-color,transform] duration-150 ease-out hover:glass-lit active:translate-y-0.5 motion-reduce:transition-none"
             >
               <span className="flex w-8 shrink-0 justify-center text-[rgb(70_88_115/0.5)]">
                 <Mark />

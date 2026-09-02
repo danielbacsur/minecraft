@@ -5,12 +5,13 @@ import { eq, postgres, schema } from "@minecraft/postgres";
 import { stripe } from "@minecraft/stripe";
 
 import { withErrors } from "@/errors";
+import { redirect } from "@/utils/redirect";
 
 export const POST = withErrors(async (request: NextRequest) => {
   const session = await auth.api.getSession({ headers: request.headers });
 
   if (!session || session.user.isAnonymous) {
-    return Response.redirect(new URL("/auth", request.url), 303);
+    return redirect(request, "/auth");
   }
 
   const { user } = session;
@@ -22,7 +23,7 @@ export const POST = withErrors(async (request: NextRequest) => {
   });
 
   if (!data[0]) {
-    return Response.redirect(new URL("/pricing?error=plan", request.url), 303);
+    return redirect(request, "/pricing?error=plan");
   }
 
   try {
@@ -54,9 +55,6 @@ export const POST = withErrors(async (request: NextRequest) => {
   } catch (cause) {
     console.error(cause);
 
-    return Response.redirect(
-      new URL("/pricing?error=checkout", request.url),
-      303,
-    );
+    return redirect(request, "/pricing?error=checkout");
   }
 });

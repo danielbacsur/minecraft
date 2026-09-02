@@ -14,6 +14,15 @@
       "callback": "Deine Zahlung hat geklappt. Es kann einen Moment dauern, bis sie hier auftaucht."
     },
 
+    "reasons": {
+      "download": "Downloads gibt es mit Unbegrenzt. Dein Skin bleibt so oder so hier.",
+
+      "quota": {
+        "soon": "Das waren 3 Skins für heute. Deine nächsten 3 kommen in weniger als einer Stunde.",
+        "later": "Das waren 3 Skins für heute. Deine nächsten 3 kommen {when}."
+      }
+    },
+
     "subscription": {
       "title": {
         "subscribed": "Du hast Unbegrenzt",

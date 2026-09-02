@@ -8,6 +8,14 @@
     "back": "Zurück",
     "title": "Melde dich an, um weiter Skins zu machen",
     "subtitle": "Mit einem kostenlosen Konto bekommst du jeden Tag drei neue Skins.",
+
+    "reasons": {
+      "quota": {
+        "title": "Erstell ein kostenloses Konto, dann geht es weiter",
+        "subtitle": "Deine 3 Gratis-Skins sind aufgebraucht. Mit einem Konto bekommst du jeden Tag 3 neue, und alle deine Skins bleiben gespeichert."
+      }
+    },
+
     "failure": "Die Anmeldung hat nicht geklappt. Probier es unten mit einem anderen Konto. Bei einem Microsoft-Kinderkonto müssen deine Eltern unter account.live.com/mk erst andere Apps erlauben.",
 
     "continueWith": {

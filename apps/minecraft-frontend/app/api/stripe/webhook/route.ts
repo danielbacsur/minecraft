@@ -26,6 +26,15 @@ export const POST = withErrors(async (request: NextRequest) => {
   }
 
   switch (event.type) {
+    case "customer.deleted": {
+      await postgres
+        .update(schema.users)
+        .set({ customerId: null })
+        .where(eq(schema.users.customerId, event.data.object.id));
+
+      break;
+    }
+
     case "customer.subscription.created":
     case "customer.subscription.updated":
     case "customer.subscription.deleted": {
