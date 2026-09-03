@@ -112,7 +112,7 @@ export function Client({
               key={index}
               type="button"
               onClick={() => start(last)}
-              className="underline underline-offset-4 transition-colors hover:text-foreground motion-reduce:transition-none"
+              className="underline underline-offset-4"
             >
               {dictionary.retry}
             </button>
@@ -142,7 +142,7 @@ export function Client({
           </p>
 
           <p
-            className={`col-start-1 row-start-1 flex flex-wrap items-center justify-center gap-x-2 gap-y-1 text-center text-base font-medium transition-opacity text-shadow-2xs text-shadow-white/70 motion-reduce:transition-none ${notice ? "opacity-100" : "opacity-0"}`}
+            className={`col-start-1 row-start-1 flex flex-wrap items-center justify-center gap-x-2 gap-y-1 text-center text-base font-medium text-error transition-opacity text-shadow-2xs text-shadow-white/70 motion-reduce:transition-none ${notice ? "opacity-100" : "opacity-0"}`}
           >
             {notice}
           </p>
@@ -150,6 +150,7 @@ export function Client({
 
         <Prompt
           copy={dictionary.prompt}
+          invalid={Boolean(failure)}
           onSubmit={({ query }) => start(query)}
         />
 

@@ -54,9 +54,7 @@ export function Client({
         </p>
 
         {failed && (
-          <p className="mt-6 text-sm text-muted-foreground">
-            {dictionary.failure}
-          </p>
+          <p className="mt-6 text-sm text-error">{dictionary.failure}</p>
         )}
 
         <div className="mt-10 flex flex-col gap-2">

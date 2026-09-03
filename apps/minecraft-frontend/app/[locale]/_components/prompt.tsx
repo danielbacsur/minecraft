@@ -4,9 +4,11 @@ import { LuArrowUp, LuMessageSquare } from "react-icons/lu";
 
 export function Prompt({
   copy,
+  invalid,
   onSubmit,
 }: {
   copy: { label: string; placeholder: string; submit: string };
+  invalid: boolean;
   onSubmit: (fields: { query: string }) => void;
 }) {
   return (
@@ -31,6 +33,7 @@ export function Prompt({
         placeholder={copy.placeholder}
         autoComplete="off"
         maxLength={1000}
+        aria-invalid={invalid}
         className="min-w-0 flex-1 bg-transparent text-base outline-none placeholder:text-muted-foreground"
       />
 

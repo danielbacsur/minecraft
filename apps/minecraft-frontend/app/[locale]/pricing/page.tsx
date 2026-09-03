@@ -108,9 +108,7 @@ export default async function Page({
           ))}
         </ul>
 
-        {failure && (
-          <p className="mt-6 text-sm text-muted-foreground">{failure}</p>
-        )}
+        {failure && <p className="mt-6 text-sm text-error">{failure}</p>}
 
         {registered ? (
           <form

@@ -9,6 +9,9 @@
 
   --success: rgb(104 152 112);
   --success-foreground: #fff;
+
+  --error: rgb(168 82 78);
+  --error-foreground: #fff;
 }
 
 @theme inline {
@@ -22,6 +25,9 @@
 
   --color-success: var(--success);
   --color-success-foreground: var(--success-foreground);
+
+  --color-error: var(--error);
+  --color-error-foreground: var(--error-foreground);
 
   --animate-emerge: emerge 520ms 420ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
 
@@ -57,5 +63,13 @@
       0 12px 40px rgb(70 90 120 / 0.18),
       inset 0 1px 0 rgb(255 255 255 / 1),
       inset 0 -1px 0 rgb(255 255 255 / 0.5);
+  }
+
+  &:is([aria-invalid="true"], :has([aria-invalid="true"])) {
+    border-color: --alpha(var(--error) / 60%);
+    box-shadow:
+      0 8px 32px --alpha(var(--error) / 18%),
+      inset 0 1px 0 rgb(255 255 255 / 0.95),
+      inset 0 -1px 0 rgb(255 255 255 / 0.45);
   }
 }
