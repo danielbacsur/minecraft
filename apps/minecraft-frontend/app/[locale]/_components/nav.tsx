@@ -7,7 +7,7 @@ import { LuArrowLeft } from "react-icons/lu";
 import type { Locale } from "@/utils/i18n";
 
 const LINK =
-  "flex h-11 items-center rounded-full px-3 text-[13px] tracking-[0.01em] text-[rgb(70_88_115/0.5)] transition-colors duration-100 ease-out hover:text-[rgb(70_88_115/0.9)] motion-reduce:transition-none";
+  "flex h-11 items-center gap-2 rounded-full px-4 text-sm text-muted-foreground transition-colors hover:text-foreground motion-reduce:transition-none";
 
 export function Nav({
   copy,
@@ -21,7 +21,7 @@ export function Nav({
   children?: ReactNode;
 }) {
   return (
-    <nav className="pointer-events-auto fixed end-5 top-5 z-10 flex items-center gap-0.5">
+    <nav className="pointer-events-auto fixed end-4 top-4 z-10 flex items-center gap-2">
       <Link href={`/${locale}/pricing`} className={LINK}>
         {copy.pricing}
       </Link>
@@ -32,7 +32,7 @@ export function Nav({
         </Link>
       )}
 
-      <span className="mx-1.5 h-5 w-px bg-[rgb(70_88_115/0.14)]" />
+      <span className="mx-1 h-4 w-px bg-muted" />
 
       {children}
     </nav>
@@ -43,7 +43,7 @@ export function Back({ copy, locale }: { copy: string; locale: Locale }) {
   return (
     <Link
       href={`/${locale}`}
-      className={`pointer-events-auto fixed start-5 top-5 z-10 animate-emerge gap-2 motion-reduce:animate-none ${LINK}`}
+      className={`pointer-events-auto fixed start-4 top-4 z-10 animate-emerge motion-reduce:animate-none ${LINK}`}
     >
       <LuArrowLeft className="size-4 rtl:-scale-x-100" />
       <span>{copy}</span>

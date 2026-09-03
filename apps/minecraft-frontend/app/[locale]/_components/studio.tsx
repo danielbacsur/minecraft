@@ -47,7 +47,7 @@ export function Studio({ children }: { children: ReactNode }) {
     <CharacterContext value={character}>
       <div
         aria-hidden={stage !== "stage"}
-        className={`fixed inset-0 transition-opacity duration-700 ease-out motion-reduce:transition-none ${
+        className={`fixed inset-0 transition-opacity duration-700 motion-reduce:transition-none ${
           stage === "hidden" ? "opacity-0" : "opacity-100"
         } ${stage === "stage" ? "touch-none" : "pointer-events-none"}`}
       >
@@ -87,7 +87,7 @@ export function Studio({ children }: { children: ReactNode }) {
           maskImage: VIGNETTE,
           WebkitMaskImage: VIGNETTE,
         }}
-        className={`pointer-events-none fixed inset-0 bg-[#e3edf2]/91 backdrop-blur-[13px] transition-opacity duration-700 ease-out motion-reduce:transition-none ${
+        className={`pointer-events-none fixed inset-0 bg-background/90 backdrop-blur-md transition-opacity duration-700 motion-reduce:transition-none ${
           stage === "backdrop" ? "opacity-100" : "opacity-0"
         }`}
       />

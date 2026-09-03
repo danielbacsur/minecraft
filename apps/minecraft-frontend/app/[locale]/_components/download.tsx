@@ -56,9 +56,9 @@ export function Download({
       disabled={!id || busy}
       title={subscribed ? copy.subscribedTitle : copy.lockedTitle}
       onClick={save}
-      className="flex h-11 items-center gap-2.5 rounded-full glass px-4 text-[14px] text-[rgb(70_88_115/0.78)] shadow-[0_8px_32px_rgb(70_90_120/0.14),inset_0_1px_0_rgb(255_255_255/0.95),inset_0_-1px_0_rgb(255_255_255/0.45)] transition-[background-color,border-color,opacity] duration-150 ease-out hover:glass-lit disabled:opacity-40 motion-reduce:transition-none"
+      className="flex h-11 items-center gap-2 rounded-full glass px-4 text-base transition disabled:opacity-40 motion-reduce:transition-none"
     >
-      {!subscribed && <LuLock className="size-4" />}
+      {!subscribed && <LuLock className="size-4 text-muted-foreground" />}
       {copy.label}
     </button>
   );
