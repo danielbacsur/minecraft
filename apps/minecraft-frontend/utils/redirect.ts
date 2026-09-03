@@ -6,5 +6,7 @@ export function redirect(request: NextRequest, path: string) {
   const remembered = request.cookies.get("locale")?.value;
   const locale = remembered && hasLocale(remembered) ? `/${remembered}` : "";
 
-  return Response.redirect(new URL(`${locale}${path}`, request.url), 303);
+  const target = path === "/" ? locale || "/" : `${locale}${path}`;
+
+  return Response.redirect(new URL(target, request.url), 303);
 }
