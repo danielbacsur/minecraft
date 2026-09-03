@@ -138,9 +138,11 @@ export const POST = withErrors(async (request: NextRequest) => {
     throw new TranslationFailed("Prompt translation failed.");
   });
 
-  const preprocessed = await preprocess(normalize(translation)).catch(() => {
-    throw new TranslationFailed("Prompt preprocessing failed.");
-  });
+  const preprocessed = await preprocess(query, normalize(translation)).catch(
+    () => {
+      throw new TranslationFailed("Prompt preprocessing failed.");
+    },
+  );
 
   const text = [
     preprocessed.names.join(", "),
