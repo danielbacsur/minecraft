@@ -1,5 +1,5 @@
-import type { Line } from "@/app/api/generate/_utils/stream";
 import type { Failure } from "@/errors";
+import { DONE, ERROR, FRAME } from "@/utils/wire";
 
 const OFFLINE: Failure = {
   code: "NETWORK_FAILED",
@@ -13,9 +13,57 @@ export type Result =
 
 let inflight: AbortController | null = null;
 
+async function inflate(packed: Uint8Array) {
+  const stream = new Blob([packed as BlobPart])
+    .stream()
+    .pipeThrough(new DecompressionStream("deflate-raw"));
+
+  return new Uint8Array(await new Response(stream).arrayBuffer());
+}
+
+function reader(body: ReadableStream<Uint8Array>) {
+  const source = body.getReader();
+
+  let buffer = new Uint8Array();
+
+  return async function next() {
+    while (true) {
+      if (buffer.length >= 5) {
+        const view = new DataView(
+          buffer.buffer,
+          buffer.byteOffset,
+          buffer.byteLength,
+        );
+
+        const length = view.getUint32(1);
+
+        if (buffer.length >= 5 + length) {
+          const type = buffer[0];
+          const payload = buffer.slice(5, 5 + length);
+
+          buffer = buffer.slice(5 + length);
+
+          return { type, payload };
+        }
+      }
+
+      const chunk = await source.read();
+
+      if (chunk.done) return null;
+
+      const merged = new Uint8Array(buffer.length + chunk.value.length);
+
+      merged.set(buffer);
+      merged.set(chunk.value, buffer.length);
+
+      buffer = merged;
+    }
+  };
+}
+
 export async function generate(
   query: string,
-  paint: (source: CanvasImageSource) => void,
+  paint: (pixels: Uint8ClampedArray<ArrayBuffer>) => void,
 ): Promise<Result> {
   inflight?.abort();
 
@@ -39,40 +87,30 @@ export async function generate(
 
     if (!id) return { ok: false, failure: OFFLINE };
 
-    const reader = response.body.getReader();
-    const decoder = new TextDecoder();
+    const next = reader(response.body);
 
-    let buffer = "";
+    while (true) {
+      const packet = await next();
 
-    reading: while (true) {
-      const chunk = await reader.read();
+      if (!packet) return { ok: false, failure: OFFLINE };
 
-      if (chunk.done) return { ok: false, failure: OFFLINE };
-
-      buffer += decoder.decode(chunk.value, { stream: true });
-
-      const lines = buffer.split("\n");
-      buffer = lines.pop() ?? "";
-
-      for (const text of lines) {
-        if (!text) continue;
-
-        const line = JSON.parse(text) as Line;
-
-        if ("code" in line) return { ok: false, failure: line };
-        if ("done" in line) break reading;
-
-        const image = new Image();
-        image.src = line.image;
-        await image.decode();
-
-        if (signal.aborted) return { aborted: true };
-
-        paint(image);
+      if (packet.type === ERROR) {
+        return {
+          ok: false,
+          failure: JSON.parse(new TextDecoder().decode(packet.payload)),
+        };
       }
-    }
 
-    return { ok: true, id };
+      if (packet.type === DONE) return { ok: true, id };
+
+      if (packet.type !== FRAME) return { ok: false, failure: OFFLINE };
+
+      const pixels = await inflate(packet.payload);
+
+      if (signal.aborted) return { aborted: true };
+
+      paint(new Uint8ClampedArray(pixels));
+    }
   } catch {
     if (signal.aborted) return { aborted: true };
 

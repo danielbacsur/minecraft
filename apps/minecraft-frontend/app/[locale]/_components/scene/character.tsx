@@ -22,7 +22,9 @@ const REGIONS = [
   [46, 52, 2, 12],
 ];
 
-export type CharacterRef = { paint: (source: CanvasImageSource) => void };
+export type CharacterRef = {
+  paint: (pixels: Uint8ClampedArray<ArrayBuffer>) => void;
+};
 
 type Joint = {
   w: number; h: number; d: number;
@@ -63,9 +65,8 @@ function getState({ onSlim }: { onSlim: (slim: boolean) => void }) {
   outerLimb.polygonOffsetFactor = 1;
   outerLimb.polygonOffsetUnits = 1;
 
-  const paint = (source: CanvasImageSource) => {
-    context.clearRect(0, 0, SKIN, SKIN);
-    context.drawImage(source, 0, 0, SKIN, SKIN);
+  const paint = (pixels: Uint8ClampedArray<ArrayBuffer>) => {
+    context.putImageData(new ImageData(pixels, SKIN, SKIN), 0, 0);
     texture.needsUpdate = true;
 
     const getPixels = (x: number, y: number, w: number, h: number) =>
@@ -115,7 +116,17 @@ export function Character({ ref }: { ref?: Ref<CharacterRef> }) {
 
   useEffect(() => {
     const image = new Image();
-    image.onload = () => paint(image);
+
+    image.onload = () => {
+      const scratch = document.createElement("canvas");
+      scratch.width = scratch.height = SKIN;
+
+      const scratchContext = scratch.getContext("2d")!;
+      scratchContext.drawImage(image, 0, 0, SKIN, SKIN);
+
+      paint(scratchContext.getImageData(0, 0, SKIN, SKIN).data);
+    };
+
     image.src = "/resources/client/minecraft/textures/entity/player/wide/steve.png"; // prettier-ignore
 
     return () => {

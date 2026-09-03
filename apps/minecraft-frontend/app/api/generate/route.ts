@@ -202,7 +202,7 @@ export const POST = withErrors(async (request: NextRequest) => {
 
   return new Response(stream(simulate(png)), {
     headers: {
-      "Content-Type": "text/plain; charset=utf-8",
+      "Content-Type": "application/octet-stream",
       "Cache-Control": "no-cache, no-transform",
       "X-Generation-Id": generation.id as string,
     },

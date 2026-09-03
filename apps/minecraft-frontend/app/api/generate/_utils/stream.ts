@@ -1,35 +1,47 @@
-import { failure, RenderFailed, type Failure } from "@/errors";
+import { deflateRawSync } from "node:zlib";
 
-export type Line = { image: string } | { done: true } | Failure;
+import { failure, RenderFailed, type Failure } from "@/errors";
+import { DONE, ERROR, FRAME } from "@/utils/wire";
 
 const encoder = new TextEncoder();
 
-function line(value: Line) {
-  return encoder.encode(JSON.stringify(value) + "\n");
+function packet(type: number, payload: Uint8Array) {
+  const out = new Uint8Array(5 + payload.length);
+
+  out[0] = type;
+  new DataView(out.buffer).setUint32(1, payload.length);
+  out.set(payload, 5);
+
+  return out;
 }
 
-export function stream(frames: AsyncGenerator<{ image: string }>) {
+function fault(cause: unknown): Failure {
+  console.error(cause);
+
+  return failure(
+    new RenderFailed("Skin rendering failed midway through the stream."),
+  );
+}
+
+export function stream(frames: AsyncGenerator<Uint8Array>) {
   return new ReadableStream<Uint8Array>({
     async pull(controller) {
       try {
         const { value, done } = await frames.next();
 
-        controller.enqueue(line(done ? { done: true } : value));
+        if (done) {
+          controller.enqueue(packet(DONE, new Uint8Array()));
+          controller.close();
+          return;
+        }
 
-        if (done) controller.close();
+        const packed = new Uint8Array(deflateRawSync(value));
+
+        controller.enqueue(packet(FRAME, packed));
       } catch (cause) {
-        console.error(cause);
+        const payload = encoder.encode(JSON.stringify(fault(cause)));
 
-        controller.enqueue(
-          line(
-            failure(
-              new RenderFailed(
-                "Skin rendering failed midway through the stream.",
-              ),
-            ),
-          ),
-        );
-
+        controller.enqueue(packet(ERROR, payload));
         controller.close();
       }
     },
