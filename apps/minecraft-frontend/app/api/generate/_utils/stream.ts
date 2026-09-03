@@ -1,7 +1,7 @@
 import { deflateRawSync } from "node:zlib";
 
 import { failure, RenderFailed, type Failure } from "@/errors";
-import { DONE, ERROR, FRAME } from "@/utils/wire";
+import { DONE, ERROR, FRAME, KEY, key, seal, secret } from "@/utils/wire";
 
 const encoder = new TextEncoder();
 
@@ -24,7 +24,14 @@ function fault(cause: unknown): Failure {
 }
 
 export function stream(frames: AsyncGenerator<Uint8Array>) {
+  const raw = secret();
+  const sealing = key(raw, "encrypt");
+
   return new ReadableStream<Uint8Array>({
+    start(controller) {
+      controller.enqueue(packet(KEY, raw));
+    },
+
     async pull(controller) {
       try {
         const { value, done } = await frames.next();
@@ -37,7 +44,7 @@ export function stream(frames: AsyncGenerator<Uint8Array>) {
 
         const packed = new Uint8Array(deflateRawSync(value));
 
-        controller.enqueue(packet(FRAME, packed));
+        controller.enqueue(packet(FRAME, await seal(await sealing, packed)));
       } catch (cause) {
         const payload = encoder.encode(JSON.stringify(fault(cause)));
 

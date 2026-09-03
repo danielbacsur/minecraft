@@ -1,5 +1,5 @@
 import type { Failure } from "@/errors";
-import { DONE, ERROR, FRAME } from "@/utils/wire";
+import { DONE, ERROR, FRAME, KEY, key, KEY_BYTES, unseal } from "@/utils/wire";
 
 const OFFLINE: Failure = {
   code: "NETWORK_FAILED",
@@ -89,10 +89,21 @@ export async function generate(
 
     const next = reader(response.body);
 
+    let opening: CryptoKey | null = null;
+
     while (true) {
       const packet = await next();
 
       if (!packet) return { ok: false, failure: OFFLINE };
+
+      if (packet.type === KEY) {
+        if (packet.payload.length !== KEY_BYTES) {
+          return { ok: false, failure: OFFLINE };
+        }
+
+        opening = await key(packet.payload, "decrypt");
+        continue;
+      }
 
       if (packet.type === ERROR) {
         return {
@@ -103,9 +114,11 @@ export async function generate(
 
       if (packet.type === DONE) return { ok: true, id };
 
-      if (packet.type !== FRAME) return { ok: false, failure: OFFLINE };
+      if (packet.type !== FRAME || !opening) {
+        return { ok: false, failure: OFFLINE };
+      }
 
-      const pixels = await inflate(packet.payload);
+      const pixels = await inflate(await unseal(opening, packet.payload));
 
       if (signal.aborted) return { aborted: true };
 
