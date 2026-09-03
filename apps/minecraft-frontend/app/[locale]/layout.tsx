@@ -25,7 +25,7 @@ export default async function Layout({
       dir={direction(locale)}
       className={`${geistSans.variable} antialiased`}
     >
-      <body className="bg-[#e3edf2]">
+      <body className="bg-background font-sans wrap-break-word text-foreground">
         <Studio>{children}</Studio>
       </body>
     </html>

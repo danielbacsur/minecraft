@@ -13,7 +13,6 @@ import type { Dictionary } from "../_dictionaries";
 import { generate } from "../_utils/generate";
 import { Download } from "./download";
 import { Legal } from "./legal";
-import { Nav } from "./nav";
 import { Prompt } from "./prompt";
 import { CharacterContext } from "./studio";
 
@@ -46,7 +45,6 @@ export function Client({
   const router = useRouter();
 
   const subscribed = session?.subscription?.status === "active";
-  const registered = Boolean(session && !session.user.isAnonymous);
 
   const character = use(CharacterContext);
 
@@ -112,7 +110,7 @@ export function Client({
               key={index}
               type="button"
               onClick={() => start(last)}
-              className="underline underline-offset-4 hover:text-[rgb(70_88_115/0.95)]"
+              className="underline underline-offset-4"
             >
               {dictionary.retry}
             </button>
@@ -123,26 +121,24 @@ export function Client({
     : null;
 
   return (
-    <div className="pointer-events-none relative h-dvh w-full overflow-hidden font-sans">
-      <Nav copy={dictionary.nav} locale={locale} registered={registered}>
-        <Download
-          copy={dictionary.download}
-          id={id}
-          subscribed={subscribed}
-          onFailure={report}
-        />
-      </Nav>
+    <div className="pointer-events-none relative h-dvh w-full overflow-hidden">
+      <Download
+        copy={dictionary.download}
+        id={id}
+        subscribed={subscribed}
+        onFailure={report}
+      />
 
-      <div className="pointer-events-auto fixed inset-x-0 bottom-2.5 z-10 touch-auto px-9">
-        <div className="mb-2.5 grid">
+      <div className="pointer-events-auto fixed inset-x-0 bottom-4 z-10 touch-auto px-6">
+        <div className="mb-2 grid">
           <p
-            className={`col-start-1 row-start-1 text-center text-[11px] leading-[1.5] text-balance text-[rgb(70_88_115/0.4)] transition-opacity duration-200 ease-out [text-shadow:0_1px_0_rgb(255_255_255/0.7)] motion-reduce:transition-none ${notice ? "opacity-0" : "opacity-100"}`}
+            className={`col-start-1 row-start-1 text-center text-xs text-balance text-muted-foreground transition-opacity text-shadow-2xs text-shadow-white/70 motion-reduce:transition-none ${notice ? "opacity-0" : "opacity-100"}`}
           >
             {dictionary.disclaimer}
           </p>
 
           <p
-            className={`col-start-1 row-start-1 flex flex-wrap items-center justify-center gap-x-2 gap-y-1 text-center text-[15px] leading-relaxed font-medium text-[rgb(70_88_115/0.95)] transition-opacity duration-200 ease-out [text-shadow:0_1px_0_rgb(255_255_255/0.8)] motion-reduce:transition-none ${notice ? "opacity-100" : "opacity-0"}`}
+            className={`col-start-1 row-start-1 flex flex-wrap items-center justify-center gap-x-2 gap-y-1 text-center text-base font-medium text-error transition-opacity text-shadow-2xs text-shadow-white/70 motion-reduce:transition-none ${notice ? "opacity-100" : "opacity-0"}`}
           >
             {notice}
           </p>
@@ -150,6 +146,7 @@ export function Client({
 
         <Prompt
           copy={dictionary.prompt}
+          invalid={Boolean(failure)}
           onSubmit={({ query }) => start(query)}
         />
 

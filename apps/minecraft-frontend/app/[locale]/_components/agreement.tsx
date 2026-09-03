@@ -4,7 +4,8 @@ import Link from "next/link";
 
 import type { Locale } from "@/utils/i18n";
 
-const LINK = "underline underline-offset-4 hover:text-[rgb(70_88_115/0.7)]";
+const LINK =
+  "underline underline-offset-4 transition-colors hover:text-foreground motion-reduce:transition-none";
 
 export function Agreement({
   copy,

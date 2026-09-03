@@ -17,11 +17,6 @@
     "retry": "再试一次",
     "disclaimer": "这不是 Minecraft 官方产品，未获 Mojang 或 Microsoft 认可，也与它们没有关联。",
 
-    "nav": {
-      "pricing": "价格",
-      "signIn": "登录"
-    },
-
     "prompt": {
       "label": "描述你想要的皮肤",
       "placeholder": "写下你的想法……",

@@ -34,7 +34,7 @@ function reset(locale: Locale, copy: { soon: string; later: string }) {
 }
 
 const ACTION =
-  "flex h-13 w-full items-center justify-center rounded-full glass px-4 text-[15px] text-[rgb(70_88_115/0.85)] shadow-[inset_0_1px_0_rgb(255_255_255/0.95),inset_0_-1px_0_rgb(255_255_255/0.45)] transition-[background-color,border-color,transform] duration-150 ease-out hover:glass-lit active:translate-y-0.5 motion-reduce:transition-none";
+  "mt-10 flex h-14 w-full items-center justify-center rounded-full glass px-6 text-base transition active:translate-y-px motion-reduce:transition-none";
 
 export default async function Page({
   params,
@@ -75,61 +75,52 @@ export default async function Page({
   const state = subscribed ? "subscribed" : "available";
 
   return (
-    <main className="relative grid min-h-dvh place-items-center px-6 py-16 font-sans">
+    <main className="relative grid min-h-dvh place-items-center px-6 py-16">
       <Back copy={page.back} locale={locale} />
 
-      <div className="relative w-full max-w-88 animate-emerge text-center motion-reduce:animate-none">
+      <div className="relative w-full max-w-sm animate-emerge text-center motion-reduce:animate-none">
         {reason && (
-          <p className="mb-7 text-[14px] leading-relaxed text-[rgb(70_88_115/0.7)]">
-            {reason}
-          </p>
+          <p className="mb-6 text-sm text-muted-foreground">{reason}</p>
         )}
 
-        <h1 className="text-[16px] tracking-[0.01em] text-[rgb(70_88_115/0.55)]">
+        <h1 className="text-sm text-muted-foreground">
           {subscription.title[state]}
         </h1>
 
         {amount && (
-          <p className="mt-6 text-[52px] leading-none text-[rgb(70_88_115/0.85)]">
+          <p className="mt-4 text-5xl">
             {subscription.price.replace("{price}", amount)}
           </p>
         )}
 
         {subscription.period && (
-          <p className="mt-2.5 text-[13px] tracking-[0.02em] text-[rgb(70_88_115/0.35)]">
+          <p className="mt-2 text-sm text-muted-foreground">
             {subscription.period}
           </p>
         )}
 
-        <ul className="mx-auto mt-8 flex w-fit flex-col gap-3.5 text-left text-[15px] leading-none text-[rgb(70_88_115/0.72)]">
+        <ul className="mx-auto mt-10 flex w-fit flex-col gap-2 text-left text-base">
           {subscription.features.map((feature) => (
-            <li key={feature} className="flex items-center gap-3.5">
-              <span className="text-[rgb(104_152_112)]">
-                <Tick />
-              </span>
+            <li key={feature} className="flex items-center gap-4">
+              <Tick />
               {feature}
             </li>
           ))}
         </ul>
 
-        {failure && (
-          <p className="mt-7 text-[13px] leading-relaxed text-[rgb(70_88_115/0.7)]">
-            {failure}
-          </p>
-        )}
+        {failure && <p className="mt-6 text-sm text-error">{failure}</p>}
 
         {registered ? (
           <form
             action={subscribed ? "/api/stripe/portal" : "/api/stripe/checkout"}
             method="post"
-            className="mt-9"
           >
             <button type="submit" className={ACTION}>
               {subscription.button[state]}
             </button>
           </form>
         ) : (
-          <Link href={`/${locale}/auth`} className={`mt-9 ${ACTION}`}>
+          <Link href={`/${locale}/auth`} className={ACTION}>
             {subscription.button.available}
           </Link>
         )}
@@ -137,7 +128,7 @@ export default async function Page({
         <Agreement
           copy={page.agreement}
           locale={locale}
-          className="mt-4 text-[12px] leading-relaxed text-[rgb(70_88_115/0.42)]"
+          className="mt-4 text-xs text-muted-foreground"
         />
       </div>
     </main>
@@ -148,11 +139,10 @@ function Tick() {
   return (
     <svg
       aria-hidden="true"
-      width="12"
-      height="12"
       viewBox="0 0 7 7"
       fill="currentColor"
       shapeRendering="crispEdges"
+      className="size-4 shrink-0 text-success"
     >
       <path d="M0 3h1v1H0zM1 4h1v1H1zM2 5h1v1H2z" />
       <path d="M3 4h1v1H3zM4 3h1v1H4zM5 2h1v1H5zM6 1h1v1H6z" />
