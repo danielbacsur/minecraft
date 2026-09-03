@@ -14,7 +14,7 @@
   },
 
   "dependencies": {
-    "stripe": "22.5.0"
+    "stripe": "22.6.1"
   },
 
   "devDependencies": {
