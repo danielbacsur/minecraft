@@ -175,7 +175,7 @@ export async function search(
 
   const results = scores.slice(0, limit).map(({ index }) => candidates[index].id); // prettier-ignore
 
-  await cache.set(key, results);
+  cache.set(key, results);
 
   return results.map((id) => ({ id }));
 }

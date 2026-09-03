@@ -29,12 +29,12 @@ export async function* simulate(target: Buffer) {
   }
 
   for (let s = 0; s < STEPS; s++) {
-    yield { image: await render(s / (STEPS - 1), linear, alpha, null, inner) };
+    yield render(s / (STEPS - 1), linear, alpha, null, inner);
     await new Promise((resolve) => setTimeout(resolve, 100));
   }
 
   for (let s = 0; s < STEPS; s++) {
-    yield { image: await render(s / (STEPS - 1), linear, alpha, inner, outer) };
+    yield render(s / (STEPS - 1), linear, alpha, inner, outer);
     await new Promise((resolve) => setTimeout(resolve, 100));
   }
 }

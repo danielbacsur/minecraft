@@ -1,17 +1,15 @@
-import sharp from "sharp";
-
 import { NOISE } from "./noise";
 import { linearToSrgb } from "./utils";
 
-export async function render(
+export function render(
   t: number,
   linear: Float32Array,
   alpha: Uint8Array,
   from: Uint8Array | null,
   to: Uint8Array,
-): Promise<string> {
+) {
   const blend = Math.sin(0.5 * Math.PI * t);
-  const frame = Buffer.alloc(64 * 64 * 4);
+  const frame = new Uint8Array(64 * 64 * 4);
 
   const offsetX = (Math.random() * 64) | 0;
   const offsetY = (Math.random() * 64) | 0;
@@ -39,10 +37,5 @@ export async function render(
     }
   }
 
-  // prettier-ignore
-  const buffer = await sharp(frame, {
-    raw: { width: 64, height: 64, channels: 4 },
-  }).png().toBuffer();
-
-  return `data:image/png;base64,${buffer.toString("base64")}`;
+  return frame;
 }

@@ -76,10 +76,26 @@ export const POST = withErrors(async (request: NextRequest) => {
   const { id: userId, isAnonymous } = session.user;
   const subscribed = Boolean(session.subscription);
 
-  const [overallLimit, perIpLimit, perUserLimit] = await Promise.all([
+  const [overallLimit, perIpLimit, perUserLimit, quota] = await Promise.all([
     overall.limit("all"),
     perIp.limit(ip(request)),
     perUser.limit(userId),
+
+    subscribed
+      ? null
+      : postgres.execute(sql`
+          SELECT (
+            SELECT count(*) FROM app.generations
+            WHERE user_id = ${userId}::uuid
+              AND (
+                ${Boolean(isAnonymous)}::boolean
+                OR created_at >= greatest(
+                     date_trunc('day', now() AT TIME ZONE 'utc') AT TIME ZONE 'utc',
+                     (SELECT created_at AT TIME ZONE 'utc' FROM auth.users WHERE id = ${userId}::uuid)
+                   )
+              )
+          ) >= 3 AS exhausted
+        `),
   ]);
 
   if (!overallLimit.success) {
@@ -104,6 +120,12 @@ export const POST = withErrors(async (request: NextRequest) => {
     });
   }
 
+  if (quota?.rows[0].exhausted) {
+    throw new QuotaExhausted("Daily generation quota is already spent.", {
+      scope: isAnonymous ? "anonymous" : "free",
+    });
+  }
+
   const body = Query.safeParse(await request.json().catch(() => null));
 
   if (!body.success) {
@@ -112,35 +134,15 @@ export const POST = withErrors(async (request: NextRequest) => {
 
   const query = body.data.query;
 
-  if (!subscribed) {
-    const { rows } = await postgres.execute(sql`
-      SELECT (
-        SELECT count(*) FROM app.generations
-        WHERE user_id = ${userId}::uuid
-          AND (
-            ${Boolean(isAnonymous)}::boolean
-            OR created_at >= greatest(
-                 date_trunc('day', now() AT TIME ZONE 'utc') AT TIME ZONE 'utc',
-                 (SELECT created_at AT TIME ZONE 'utc' FROM auth.users WHERE id = ${userId}::uuid)
-               )
-          )
-      ) >= 3 AS exhausted
-    `);
-
-    if (rows[0].exhausted) {
-      throw new QuotaExhausted("Daily generation quota is already spent.", {
-        scope: isAnonymous ? "anonymous" : "free",
-      });
-    }
-  }
-
   const translation = await translate(query).catch(() => {
     throw new TranslationFailed("Prompt translation failed.");
   });
 
-  const preprocessed = await preprocess(normalize(translation)).catch(() => {
-    throw new TranslationFailed("Prompt preprocessing failed.");
-  });
+  const preprocessed = await preprocess(query, normalize(translation)).catch(
+    () => {
+      throw new TranslationFailed("Prompt preprocessing failed.");
+    },
+  );
 
   const text = [
     preprocessed.names.join(", "),
@@ -202,7 +204,7 @@ export const POST = withErrors(async (request: NextRequest) => {
 
   return new Response(stream(simulate(png)), {
     headers: {
-      "Content-Type": "text/plain; charset=utf-8",
+      "Content-Type": "application/octet-stream",
       "Cache-Control": "no-cache, no-transform",
       "X-Generation-Id": generation.id as string,
     },

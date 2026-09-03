@@ -7,7 +7,7 @@ const INSTRUCTIONS = `You turn a child's request for a Minecraft skin into a sea
 
 Every skin in the catalogue has an English caption with two parts. Identity: the character's name, aliases and franchise. Appearance: hair, head, face, top, bottom, footwear, accessories, motifs, colors written as "<color> <item>", plus archetypes, themes, subjects and vibes.
 
-The request was machine-translated into English and may carry translation slips, misspellings, slang or leftover words from another language. Work out what the child meant.
+The request arrives in the child's own language and may carry misspellings, slang or playground shorthand. Work out what the child meant and answer in English.
 
 Names are only for things asked for by name: characters, creatures, people, games, shows, brands. Spell each the canonical way. Minecraft itself is never a name; its mobs and characters are. Never turn a description into a person's name, and never guess a real person from a description.
 
@@ -41,21 +41,20 @@ export type Preprocessed = z.infer<typeof Preprocessed>;
 
 const cache = new Cache<Preprocessed>("preprocess");
 
-export async function preprocess(english: string) {
-  const cached = await cache.get(english);
+export async function preprocess(query: string, key: string) {
+  const cached = await cache.get(key);
   if (cached !== undefined) return cached;
 
   const { output } = await generateText({
     model: "openai/gpt-5.6-luna",
     instructions: INSTRUCTIONS,
-    prompt: english,
+    prompt: query,
     output: Output.object({ schema: Preprocessed }),
     temperature: 0,
     maxOutputTokens: 512,
+    providerOptions: { openai: { serviceTier: "priority" } },
   });
 
-  console.log(output);
-
-  await cache.set(english, output);
+  cache.set(key, output);
   return output;
 }
