@@ -1,5 +1,7 @@
 "use client";
 
+import { LuArrowUp, LuMessageSquare } from "react-icons/lu";
+
 export function Prompt({
   copy,
   onSubmit,
@@ -16,7 +18,7 @@ export function Prompt({
       }}
     >
       <span className="flex w-15 shrink-0 justify-center border-r border-[rgb(120_140_160/0.12)] text-[rgb(70_88_115/0.45)]">
-        <Bubble />
+        <LuMessageSquare className="size-4" />
       </span>
 
       <label className="sr-only" htmlFor="query">
@@ -37,41 +39,8 @@ export function Prompt({
         aria-label={copy.submit}
         className="mr-2.5 grid size-11 shrink-0 place-items-center rounded-full text-[rgb(70_88_115/0.5)] transition-[color,transform] duration-100 ease-out hover:text-[rgb(70_88_115/0.85)] active:translate-y-0.5 motion-reduce:transition-none"
       >
-        <Enter />
+        <LuArrowUp className="size-4" />
       </button>
     </form>
-  );
-}
-
-function Bubble() {
-  return (
-    <svg
-      aria-hidden="true"
-      width="18"
-      height="18"
-      viewBox="0 0 9 9"
-      fill="currentColor"
-      shapeRendering="crispEdges"
-    >
-      <path d="M1 1h7v5H4L2 8V6H1z" />
-    </svg>
-  );
-}
-
-function Enter() {
-  return (
-    <svg
-      aria-hidden="true"
-      width="16"
-      height="16"
-      viewBox="0 0 8 8"
-      fill="currentColor"
-      shapeRendering="crispEdges"
-    >
-      <path d="M6 1h1v3H6z" />
-      <path d="M2 4h5v1H2z" />
-      <path d="M3 3h1v1H3z" />
-      <path d="M3 5h1v1H3z" />
-    </svg>
   );
 }

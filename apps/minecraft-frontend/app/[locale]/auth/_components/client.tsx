@@ -2,6 +2,8 @@
 
 import { useSyncExternalStore } from "react";
 
+import { FaDiscord, FaGoogle, FaMicrosoft } from "react-icons/fa6";
+
 import { auth } from "@minecraft/auth/react";
 
 import type { Locale } from "@/utils/i18n";
@@ -10,9 +12,9 @@ import type { Dictionary } from "../_dictionaries";
 import { Agreement } from "../../_components/agreement";
 
 const PROVIDERS = [
-  { id: "google", Mark: Google },
-  { id: "discord", Mark: Discord },
-  { id: "microsoft", Mark: Microsoft },
+  { id: "google", Mark: FaGoogle },
+  { id: "discord", Mark: FaDiscord },
+  { id: "microsoft", Mark: FaMicrosoft },
 ] as const;
 
 const settled = () => () => {};
@@ -74,7 +76,7 @@ export function Client({
               className="flex h-13 items-center gap-3 rounded-full glass px-4 text-[15px] text-[rgb(70_88_115/0.85)] shadow-[inset_0_1px_0_rgb(255_255_255/0.95),inset_0_-1px_0_rgb(255_255_255/0.45)] transition-[background-color,border-color,transform] duration-150 ease-out hover:glass-lit active:translate-y-0.5 motion-reduce:transition-none"
             >
               <span className="flex w-8 shrink-0 justify-center text-[rgb(70_88_115/0.5)]">
-                <Mark />
+                <Mark className="size-4" />
               </span>
 
               <span className="min-w-0 flex-1 truncate text-left">
@@ -97,65 +99,5 @@ export function Client({
         />
       </div>
     </main>
-  );
-}
-
-function Google() {
-  return (
-    <svg
-      aria-hidden="true"
-      width="16"
-      height="16"
-      viewBox="0 0 8 8"
-      fill="currentColor"
-      shapeRendering="crispEdges"
-    >
-      <path d="M2 1h4v1H2z" />
-      <path d="M6 1h1v1H6z" />
-      <path d="M1 2h1v4H1z" />
-      <path d="M4 4h2v1H4z" />
-      <path d="M6 4h1v3H6z" />
-      <path d="M2 6h4v1H2z" />
-    </svg>
-  );
-}
-
-function Discord() {
-  return (
-    <svg
-      aria-hidden="true"
-      width="16"
-      height="16"
-      viewBox="0 0 8 8"
-      fill="currentColor"
-      shapeRendering="crispEdges"
-    >
-      <path d="M2 1h4v1H2z" />
-      <path d="M1 2h6v1H1z" />
-      <path d="M1 3h2v2H1z" />
-      <path d="M4 3h1v2H4z" />
-      <path d="M6 3h1v2H6z" />
-      <path d="M1 5h6v1H1z" />
-      <path d="M0 6h2v1H0z" />
-      <path d="M6 6h2v1H6z" />
-    </svg>
-  );
-}
-
-function Microsoft() {
-  return (
-    <svg
-      aria-hidden="true"
-      width="16"
-      height="16"
-      viewBox="0 0 7 7"
-      fill="currentColor"
-      shapeRendering="crispEdges"
-    >
-      <path d="M0 0h3v3H0z" />
-      <path d="M4 0h3v3H4z" />
-      <path d="M0 4h3v3H0z" />
-      <path d="M4 4h3v3H4z" />
-    </svg>
   );
 }

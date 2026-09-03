@@ -2,6 +2,8 @@ import type { ReactNode } from "react";
 
 import Link from "next/link";
 
+import { LuArrowLeft } from "react-icons/lu";
+
 import type { Locale } from "@/utils/i18n";
 
 const LINK =
@@ -43,28 +45,8 @@ export function Back({ copy, locale }: { copy: string; locale: Locale }) {
       href={`/${locale}`}
       className={`pointer-events-auto fixed start-5 top-5 z-10 animate-emerge gap-2 motion-reduce:animate-none ${LINK}`}
     >
-      <Arrow />
+      <LuArrowLeft className="size-4 rtl:-scale-x-100" />
       <span>{copy}</span>
     </Link>
-  );
-}
-
-function Arrow() {
-  return (
-    <svg
-      aria-hidden="true"
-      width="12"
-      height="12"
-      viewBox="0 0 8 8"
-      fill="currentColor"
-      shapeRendering="crispEdges"
-      className="rtl:-scale-x-100"
-    >
-      <path d="M1 3h6v2H1z" />
-      <path d="M3 1h1v1H3z" />
-      <path d="M2 2h1v1H2z" />
-      <path d="M2 5h1v1H2z" />
-      <path d="M3 6h1v1H3z" />
-    </svg>
   );
 }
