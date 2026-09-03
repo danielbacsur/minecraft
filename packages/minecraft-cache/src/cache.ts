@@ -76,10 +76,12 @@ export class Cache<V> {
     return redis;
   }
 
-  async set(key: string, value: V) {
-    const $ = `${this.prefix}:${await sha256(key)}`;
+  set(key: string, value: V) {
+    void (async () => {
+      const $ = `${this.prefix}:${await sha256(key)}`;
 
-    this.lru.set($, value);
-    await this.redis.set($, value);
+      this.lru.set($, value);
+      await this.redis.set($, value);
+    })().catch(() => {});
   }
 }

@@ -55,6 +55,6 @@ export async function preprocess(english: string) {
     providerOptions: { openai: { serviceTier: "priority" } },
   });
 
-  await cache.set(english, output);
+  cache.set(english, output);
   return output;
 }

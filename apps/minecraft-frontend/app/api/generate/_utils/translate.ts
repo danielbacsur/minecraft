@@ -24,6 +24,6 @@ export async function translate(text: string) {
 
   const translation = data.translations[0].translatedText as string;
 
-  await cache.set(text, translation);
+  cache.set(text, translation);
   return translation;
 }
