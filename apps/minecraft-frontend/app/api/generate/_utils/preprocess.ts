@@ -52,9 +52,8 @@ export async function preprocess(english: string) {
     output: Output.object({ schema: Preprocessed }),
     temperature: 0,
     maxOutputTokens: 512,
+    providerOptions: { openai: { serviceTier: "priority" } },
   });
-
-  console.log(output);
 
   await cache.set(english, output);
   return output;
