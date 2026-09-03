@@ -15,7 +15,10 @@ import {
 import { texture } from "@/utils/texture";
 
 export const GET = withErrors(async (request: NextRequest) => {
-  const session = await auth.api.getSession({ headers: request.headers });
+  const session = await auth.api.getSession({
+    headers: request.headers,
+    query: { disableCookieCache: true },
+  });
 
   if (!session) {
     throw new Unauthenticated("Session could not be established.");

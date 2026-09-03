@@ -41,6 +41,13 @@ export const auth = betterAuth({
     schema,
   }),
 
+  session: {
+    cookieCache: {
+      enabled: true,
+      maxAge: 60,
+    },
+  },
+
   baseURL: {
     allowedHosts: [
       "*.vercel.app",
