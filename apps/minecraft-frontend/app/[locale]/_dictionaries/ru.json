@@ -17,11 +17,6 @@
     "retry": "Ещё раз",
     "disclaimer": "Это не официальный продукт Minecraft. Не одобрено Mojang или Microsoft и не связано с ними.",
 
-    "nav": {
-      "pricing": "Тарифы",
-      "signIn": "Вход"
-    },
-
     "prompt": {
       "label": "Опиши свой скин",
       "placeholder": "Напиши свою идею...",

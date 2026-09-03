@@ -56,7 +56,7 @@ export function Download({
       disabled={!id || busy}
       title={subscribed ? copy.subscribedTitle : copy.lockedTitle}
       onClick={save}
-      className="flex h-11 items-center gap-2 rounded-full glass px-4 text-base transition disabled:opacity-40 motion-reduce:transition-none"
+      className="pointer-events-auto fixed end-4 top-4 z-10 flex h-11 items-center gap-2 rounded-full glass px-4 text-base transition disabled:opacity-40 motion-reduce:transition-none"
     >
       {!subscribed && <LuLock className="size-4 text-muted-foreground" />}
       {copy.label}

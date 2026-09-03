@@ -13,7 +13,6 @@ import type { Dictionary } from "../_dictionaries";
 import { generate } from "../_utils/generate";
 import { Download } from "./download";
 import { Legal } from "./legal";
-import { Nav } from "./nav";
 import { Prompt } from "./prompt";
 import { CharacterContext } from "./studio";
 
@@ -46,7 +45,6 @@ export function Client({
   const router = useRouter();
 
   const subscribed = session?.subscription?.status === "active";
-  const registered = Boolean(session && !session.user.isAnonymous);
 
   const character = use(CharacterContext);
 
@@ -124,14 +122,12 @@ export function Client({
 
   return (
     <div className="pointer-events-none relative h-dvh w-full overflow-hidden">
-      <Nav copy={dictionary.nav} locale={locale} registered={registered}>
-        <Download
-          copy={dictionary.download}
-          id={id}
-          subscribed={subscribed}
-          onFailure={report}
-        />
-      </Nav>
+      <Download
+        copy={dictionary.download}
+        id={id}
+        subscribed={subscribed}
+        onFailure={report}
+      />
 
       <div className="pointer-events-auto fixed inset-x-0 bottom-4 z-10 touch-auto px-6">
         <div className="mb-2 grid">

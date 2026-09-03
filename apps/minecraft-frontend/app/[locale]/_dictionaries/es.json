@@ -17,11 +17,6 @@
     "retry": "Reintentar",
     "disclaimer": "No es un producto oficial de Minecraft. No está aprobado por Mojang ni Microsoft, ni asociado con ellos.",
 
-    "nav": {
-      "pricing": "Precios",
-      "signIn": "Iniciar sesión"
-    },
-
     "prompt": {
       "label": "Describe tu skin",
       "placeholder": "Escribe tu idea...",
