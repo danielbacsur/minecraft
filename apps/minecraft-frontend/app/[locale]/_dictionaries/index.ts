@@ -7,7 +7,7 @@ const dictionaries = {
   de: () => import("./de.json").then((module) => module.default),
   es: () => import("./es.json").then((module) => module.default),
   ar: () => import("./ar.json").then((module) => module.default),
-  "zh-cn": () => import("./zh-cn.json").then((module) => module.default),
+  "zh-hans": () => import("./zh-hans.json").then((module) => module.default),
   ja: () => import("./ja.json").then((module) => module.default),
   ko: () => import("./ko.json").then((module) => module.default),
   hi: () => import("./hi.json").then((module) => module.default),

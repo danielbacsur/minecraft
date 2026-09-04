@@ -48,7 +48,6 @@ export const POST = withErrors(async (request: NextRequest) => {
       managed_payments: { enabled: true },
       success_url: new URL("/api/stripe/callback?session_id={CHECKOUT_SESSION_ID}", request.url).toString(),
       cancel_url: new URL("/pricing", request.url).toString(),
-      allow_promotion_codes: true,
     } );
 
     return Response.redirect(checkout.url as string, 303);
