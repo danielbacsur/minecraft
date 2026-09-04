@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Geist } from "next/font/google";
 import { notFound } from "next/navigation";
 
@@ -20,6 +20,11 @@ const geistSans = Geist({
 });
 
 const gaId = process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_ID;
+
+export const viewport: Viewport = {
+  themeColor: "#e3edf2",
+  colorScheme: "light",
+};
 
 export function generateStaticParams() {
   return locales.map((locale) => ({ locale }));
