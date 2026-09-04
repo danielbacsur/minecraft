@@ -6,6 +6,7 @@ import { notFound } from "next/navigation";
 import { auth } from "@minecraft/auth/server";
 
 import { hasLocale, type Locale } from "@/utils/i18n";
+import { alternates } from "@/utils/metadata";
 
 import { Agreement } from "../_components/agreement";
 import { Back } from "../_components/nav";
@@ -20,7 +21,10 @@ export async function generateMetadata({
 
   const dictionary = await getDictionary(locale);
 
-  return dictionary.page.metadata;
+  return {
+    ...dictionary.page.metadata,
+    alternates: alternates(locale, "/pricing"),
+  };
 }
 
 function reset(locale: Locale, copy: { soon: string; later: string }) {

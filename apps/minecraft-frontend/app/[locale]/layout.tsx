@@ -7,6 +7,7 @@ import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 
 import { direction, hasLocale, locales } from "@/utils/i18n";
+import { origin } from "@/utils/metadata";
 
 import { Studio } from "./_components/studio";
 import { getDictionary } from "./_dictionaries";
@@ -34,10 +35,13 @@ export async function generateMetadata({
   const metadata = dictionary.layout.metadata;
 
   return {
+    metadataBase: new URL(origin),
+
     title: {
       default: metadata.title,
       template: `%s — ${metadata.title}`,
     },
+
     description: metadata.description,
   };
 }

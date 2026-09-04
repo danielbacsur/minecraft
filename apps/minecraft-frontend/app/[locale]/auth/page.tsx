@@ -15,7 +15,11 @@ export async function generateMetadata({
 
   const dictionary = await getDictionary(locale);
 
-  return dictionary.page.metadata;
+  return {
+    ...dictionary.page.metadata,
+    alternates: { canonical: `/${locale}/auth` },
+    robots: { index: false, follow: true },
+  };
 }
 
 export default async function Page({
