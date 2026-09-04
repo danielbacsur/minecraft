@@ -1,6 +1,9 @@
 import { Geist } from "next/font/google";
 import { notFound } from "next/navigation";
 
+import { Analytics } from "@vercel/analytics/next";
+import { SpeedInsights } from "@vercel/speed-insights/next";
+
 import { direction, hasLocale } from "@/utils/i18n";
 
 import { Studio } from "./_components/studio";
@@ -27,6 +30,9 @@ export default async function Layout({
     >
       <body className="bg-background font-sans wrap-break-word text-foreground">
         <Studio>{children}</Studio>
+
+        <Analytics />
+        <SpeedInsights />
       </body>
     </html>
   );
