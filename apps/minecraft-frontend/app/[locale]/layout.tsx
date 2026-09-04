@@ -1,6 +1,7 @@
 import { Geist } from "next/font/google";
 import { notFound } from "next/navigation";
 
+import { GoogleAnalytics } from "@next/third-parties/google";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 
@@ -14,6 +15,8 @@ const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
 });
+
+const gaId = process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_ID;
 
 export default async function Layout({
   children,
@@ -33,6 +36,7 @@ export default async function Layout({
 
         <Analytics />
         <SpeedInsights />
+        {gaId && <GoogleAnalytics gaId={gaId} />}
       </body>
     </html>
   );
