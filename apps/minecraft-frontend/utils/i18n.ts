@@ -5,7 +5,7 @@ export const locales = [
   "de",
   "es",
   "ar",
-  "zh-cn",
+  "zh-hans",
   "ja",
   "ko",
   "hi",
