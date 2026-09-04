@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { headers } from "next/headers";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -10,6 +11,17 @@ import { Agreement } from "../_components/agreement";
 import { Back } from "../_components/nav";
 import { getPriceByLocale } from "../_utils/price";
 import { getDictionary } from "./_dictionaries";
+
+export async function generateMetadata({
+  params,
+}: PageProps<"/[locale]/pricing">): Promise<Metadata> {
+  const { locale } = await params;
+  if (!hasLocale(locale)) notFound();
+
+  const dictionary = await getDictionary(locale);
+
+  return dictionary.page.metadata;
+}
 
 function reset(locale: Locale, copy: { soon: string; later: string }) {
   const now = new Date();
@@ -149,5 +161,3 @@ function Tick() {
     </svg>
   );
 }
-
-export * from "./_metadata";

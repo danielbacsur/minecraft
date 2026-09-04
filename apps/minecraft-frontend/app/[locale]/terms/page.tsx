@@ -1,9 +1,16 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
 import { hasLocale } from "@/utils/i18n";
 
 import { Document, Mail, Section } from "../_components/document";
+
+export const metadata: Metadata = {
+  title: "Terms of Service",
+  description:
+    "The agreement between you and Daniel Bacsur LLC governing use of minecraft.danielbacsur.dev.",
+};
 
 export default async function Page({ params }: PageProps<"/[locale]/terms">) {
   const { locale } = await params;
@@ -262,5 +269,3 @@ export default async function Page({ params }: PageProps<"/[locale]/terms">) {
     </Document>
   );
 }
-
-export * from "./_metadata";

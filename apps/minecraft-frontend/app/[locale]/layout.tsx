@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { Geist } from "next/font/google";
 import { notFound } from "next/navigation";
 
@@ -5,9 +6,10 @@ import { GoogleAnalytics } from "@next/third-parties/google";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 
-import { direction, hasLocale } from "@/utils/i18n";
+import { direction, hasLocale, locales } from "@/utils/i18n";
 
 import { Studio } from "./_components/studio";
+import { getDictionary } from "./_dictionaries";
 
 import "../globals.css";
 
@@ -17,6 +19,28 @@ const geistSans = Geist({
 });
 
 const gaId = process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_ID;
+
+export function generateStaticParams() {
+  return locales.map((locale) => ({ locale }));
+}
+
+export async function generateMetadata({
+  params,
+}: LayoutProps<"/[locale]">): Promise<Metadata> {
+  const { locale } = await params;
+  if (!hasLocale(locale)) notFound();
+
+  const dictionary = await getDictionary(locale);
+  const metadata = dictionary.layout.metadata;
+
+  return {
+    title: {
+      default: metadata.title,
+      template: `%s — ${metadata.title}`,
+    },
+    description: metadata.description,
+  };
+}
 
 export default async function Layout({
   children,
@@ -41,5 +65,3 @@ export default async function Layout({
     </html>
   );
 }
-
-export * from "./_metadata";
