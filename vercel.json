@@ -1,0 +1,20 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+
+  "regions": ["iad1"],
+
+  "services": {
+    "app-frontend": {
+      "framework": "nextjs",
+      "root": "apps/minecraft-frontend",
+      "buildCommand": "node ../../node_modules/next/dist/bin/next build"
+    }
+  },
+
+  "routes": [
+    {
+      "src": "^(.*)$",
+      "destination": { "type": "service", "service": "app-frontend" }
+    }
+  ]
+}
